@@ -57,9 +57,9 @@ Aggiornato: fase 1 completata, fase 2 iniziata.
   fuori di Chromium headless. I controlli touch sono testati solo in emulazione.
 
 ## Problemi aperti
-- GitHub: `gh auth status` riporta "not logged into any GitHub hosts".
-  Servono autorizzazione/login per creare il repository remoto e pubblicare
-  su GitHub Pages.
+- GitHub: repository remoto creato e pubblicato. Login effettuato, push
+  riuscito, Pages attiva con GitHub Actions. URL:
+  https://walkingbad10.github.io/bacoli-life/
 - La generazione AI delle immagini richiede credenziali valide.
 - Mancano ancora: veicoli, trasporti pubblici giocabili, famiglia, proprietà,
   ampliamento territoriale e sistema ferroviario (vedi `ROADMAP.md`).
