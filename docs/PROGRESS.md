@@ -2,7 +2,48 @@
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
 
-Aggiornato: **24 novembre 2026 — milestone 4 pubblicata e verificata live** su https://walkingbad10.github.io/bacoli-life/ (commit `e1788fe`, workflow Pages #9 riuscito, bundle live `index-DAQv4rwW.js`).
+Aggiornato: **25 novembre 2026 — checkpoint M6 (lavoro in corso, non pubblicato)**. Ultima versione pubblicata/verificata: milestone 5, commit `336a5dc`, tag `milestone-5-verified`, Pages run #12.
+
+## CHECKPOINT M6 — punto esatto da cui riprendere (25 novembre 2026)
+
+Stato: **incompleto ma salvato su branch di lavoro**. La versione live resta M5: non pubblicare questo stato.
+
+### Già fatto in M6
+- Backup pre-M6: `bacoli-life-20261125-010000-prima-milestone6.zip` (fuori repo, in `bacoli-life-backups/`).
+- Piano operativo completo: `docs/M6_PLAN.md` (fasi 0-12, matrice di rischio E2E, criteri di accettazione).
+- Audit integrati: asset originali (4 override sicuri + problemi alpha/GrabCut di `extract_original_assets.py`), geografia/trasporti (doppio sistema di coordinate stazioni, fermate bus mancanti, teletrasporti del traffico), performance/rendering (`scale.on('resize')` e `window.keydown` della HUD non rimossi al restart; `BootScene` precarica 9,4 MB).
+- Nuovo tileset M6 `public/assets/scale/tileset.png` **256x256** (16x16 frame), GID legacy 1-16 preservati: asfalto caldo `#5F5E58` invece del nero, basolato lavico, lastricato, cordoli, 16 maschere di adiacenza per classe, segnaletica, attraversamenti pedonali, parcheggi.
+- Nuovi moduli: `tools/m6_tiles.py`, `tools/m6_paving.py`, `tools/generate_tileset_m6.py`.
+- `tools/build_map_centro.py` e `tools/build_map_regions.py` riscritti per usare autotiling deterministico (zero `(x+y)%n` su strade/marciapiedi), coastline OSM anche in presenza di laghi, e scrittura di `roads.bin` per il futuro grafo stradale.
+- `tools/check_proportions.py` aggiornato: `tileset.png` atteso `256x256`.
+
+### Stato generazione al checkpoint
+- `python tools/build_map_regions.py` **completato**: 9 regioni metriche, `bacoli_world.json` e tutti i buffer riscritti con autotiling M6. Centro invariato `463x722`, 376 luoghi, 226 edifici; Baia 827 luoghi/740 edifici, Fusaro 882/835, Torregaveta 457/414.
+- `roads.bin` ora **per regione** in ogni `public/assets/maps/<regione>/`; il file globale obsoleto è stato rimosso. Il sorgente `build_map_regions.py` è corretto di conseguenza per le prossime rigenerazioni.
+- `tools/generate_assets_scale.py` ora scrive anche il tileset M6 e `tileset_m5_legacy.png`; **non rieseguirlo** senza controllare gli override originali (`car_white`, `car_blue`, `boat`, `station_eav`, `platform`, `rail`).
+
+### Da fare subito dopo il ripristino (in ordine)
+1. Eseguire validators: `validate_geography.py`, `validate_m5_world.py`, `check_proportions.py`, `check_m5_screenshots.py`; poi `npm.cmd run build`, `npm.cmd test -- --run`, `npm.cmd run test:e2e`.Gli hook/selettori E2E e i vincoli Baia devono restare intatti.
+4. **Fase 3 del piano**: screenshot "prima/dopo" della zona campione in `docs/M6_SCREENSHOTS/` (centro storico: strada, palazzi, bar visitabile, auto, pedoni, marciapiedi, arredo). Non dichiarare qualità visiva verificata solo perché i test sono verdi.
+5. Fase 4-11 del piano: grafo stradale e traffico senza teletrasporti, collisioni reali, arredo urbanistico, palazzi/personaggi, inventario asset, interni, geografia EAV/bus, caricamento dinamico.
+
+### Istruzioni da conservare integralmente (priorità assoluta)
+- Qualità visiva, coerenza urbanistica e fedeltà geografica prima del numero di funzioni. **Sospendere l'espansione territoriale**: non iniziare Pianura né Napoli 80126. Prima una zona campione di qualità elevata nel centro storico, poi estensione alle altre regioni.
+- Strade: asfalto realistico pixel art, pietra lavica dove reale, marciapiedi, cordoli, attraversamenti, incroci, segnaletica, parcheggi, raccordi e transizioni naturali asfalto/pietra/terra/erba, autotiling con maschere di adiacenza.
+- Traffico: grafo stradale OSM, corsie, sensi unici, percorsi validi auto/moto/autobus, sprite orientati, precedenze, distanze di sicurezza, parcheggi compatibili, fermate autobus, treni solo sui binari; eliminare i teletrasporti di `updateTraffic()`.
+- Collisioni reali per edifici, muri, recinzioni, veicoli, alberi, lampioni, panchine, mobili e ostacoli naturali; distinguere collisione a terra da rappresentazione verticale; NPC/protagonista/animali su navigazione coerente; verificare movimento reale via Playwright.
+- Posizionamento intelligente di lampioni, panchine, cartelli, fermate, alberi, fioriere, tavolini, barche, cassonetti e parcheggi con controlli spaziali; non riempire zone vuote.
+- Palazzi con balconi in ferro battuto, persiane, terrazzi, panni stesi, cornicioni, finestre allineate, portoni, intonaco mediterraneo, tetti, grondaie, insegne, ombre, profondità, condizionatori; geometria OSM senza deformare asset.
+- Integrare concretamente le tavole fornite (`docs/source_assets/sheets/`), le 9 fotografie (`docs/source_assets/photos/`) e i 102 asset in `public/assets/original/`: ritagliare/rimuovere sfondo e correggere prospettiva; inventario asset usati vs archiviati in `docs/M6_ASSET_INVENTORY.md`.
+- Personaggi originali dettagliati, 4 direzioni, animazioni fluide, WASD corretto, ombre, differenze NPC; prospettiva 2D dall'alto a tre quarti uniforme, Stardew Valley solo come riferimento qualitativo (mai copiare asset), ordinamento profondità sul punto di contatto a terra.
+- Strumenti da usare concretamente: Phaser 3, Tiled JSON, OSM/Overpass, Shapely/GeoPandas, LibreSprite/Pixelorama, Python/Pillow/OpenCV, Ollama visivo (solo supporto), Playwright.
+- Preservare famiglia, abitazioni, lavoro, veicoli, carburante, animali, trasporti pubblici, interni e salvataggi (`SAVE_VERSION = 4`).
+- Hook E2E intatti: `__bacoliDebug`, `__bacoliTest`; selettori `#game canvas`, `#hud-clock`, `#hud-panel.open`, `#hud-save`, `E/T/ESC/WASD/SHIFT`; viaggio `baia_station` da `centro` via `bus_101` con arrivo entro 140 px da `(4296,4096)` px.
+
+### Vincoli tecnici chiave
+- `1 m = 16 px`; centro `463x722` tile; `solidTiles = 129975`; player `16x32`; auto `72x40`; bus `192x52`; tetto `roof.height = 24`; overlay label `1m=16px` e `solidi`.
+- GID correnti: `GRASS..PAVING = 1..8`, acqua `9..12`, `FLOWERS = 16`; update acqua runtime rileva `tile.index >= 8 && <= 11` — **non spostare** i GID dell'acqua.
+- Playwright `workers: 1`; usare `npm.cmd`, non `npm`, su PowerShell.
 
 ## Stato attuale della revisione M4
 

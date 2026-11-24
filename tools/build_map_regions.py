@@ -18,6 +18,8 @@ import random
 from pathlib import Path
 
 from build_map import EAST_COAST
+import m6_paving as PAVE
+import m6_tiles as TILES
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "tools" / "generated" / "m5_osm_raw.json"
@@ -27,10 +29,13 @@ OUT_MAPS = ROOT / "public" / "assets" / "maps"
 DATA_OUT = ROOT / "src" / "data" / "bacoli_world.json"
 
 TILE = 16
-GRASS, GRASS2, SAND, SAND2, COBBLE, COBBLE2, ASPHALT, PAVING = 1, 2, 3, 4, 5, 6, 7, 8
-WATER_GIDS = (9, 10, 11, 12)
+GRASS, GRASS2, SAND, SAND2, COBBLE, COBBLE2, ASPHALT, PAVING_GID = (
+    TILES.GRASS, TILES.GRASS2, TILES.SAND, TILES.SAND2,
+    TILES.COBBLE, TILES.COBBLE2, TILES.ASPHALT, TILES.PAVING,
+)
+WATER_GIDS = TILES.WATER_GIDS
 WATER_IDS = set(WATER_GIDS)
-FLOWERS = 16
+FLOWERS = TILES.FLOWERS
 
 M5_ZONES = {
     "marina_grande", "lago_miseno", "villa_comunale", "miseno", "miliscola",
@@ -279,11 +284,12 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
         y = int(round((north - lat) * m_per_lat))
         return max(0, min(width - 1, x)), max(0, min(height - 1, y))
 
-    ground = [[GRASS if (x + y * 3) % 13 else GRASS2 for x in range(width)]
-              for y in range(height)]
+    ground = [[0 for _ in range(width)] for _ in range(height)]
     collision = [[0 for _ in range(width)] for _ in range(height)]
     roads: set[tuple[int, int]] = set()
     sidewalks: set[tuple[int, int]] = set()
+    road_tiles: dict[tuple[int, int], str] = {}
+    road_hints: dict[tuple[int, int], int] = {}
     street_names: dict[tuple[int, int], str] = {}
 
     water_tiles: set[tuple[int, int]] = set()
@@ -299,9 +305,9 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
         poly = [to_tile(p["lat"], p["lon"]) for p in geom]
         water_tiles |= fill_tiles(poly, width, height)
 
-    # I poligoni OSM dell'acqua hanno priorità. In assenza di laghi, la costa
-    # OSM (o la sagoma storica EAST_COAST) delimita il mare sul lato corretto.
-    if not water_tiles:
+    # La coastline OSM delinea il mare anche quando la zona contiene un lago:
+    # i poligoni lacustri e il mare coexistono, senza sostituirsi a vicenda.
+    if coast_points or not water_tiles:
         coast = sorted((p for p in (coast_points or EAST_COAST)
                         if south - 0.004 <= p[0] <= north + 0.004), key=lambda p: p[0])
         side = COAST_SIDE.get(region_id, "east")
@@ -323,6 +329,8 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
                 for x in xs:
                     water_tiles.add((x, y))
 
+    # Terreno a macchie deterministiche (nessuno scacchiere `(x + y) % n`).
+    PAVE.fill_base(ground, width, height, water_tiles, seed)
     for x, y in water_tiles:
         ground[y][x] = WATER_GIDS[(x // 4 + y // 3) % 4]
         collision[y][x] = 1
@@ -345,17 +353,20 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
             continue
         roads |= tiles
         sidewalks |= rasterize(pts, radius + 2, width, height)
+        kind = PAVE.road_class(road.get("kind"))
+        assert kind is not None
+        hint = 0 if abs(pts[-1][0] - pts[0][0]) >= abs(pts[-1][1] - pts[0][1]) else 1
         for x, y in tiles:
             if ground[y][x] not in WATER_IDS:
-                ground[y][x] = ASPHALT if radius >= 2 and (x + y) % 5 else COBBLE
+                road_tiles[(x, y)] = kind
+                road_hints[(x, y)] = hint
                 collision[y][x] = 0
         if road.get("name"):
             cx, cy = pts[len(pts) // 2]
             street_names[(cx // 12, cy // 12)] = road["name"]
 
-    for x, y in sidewalks - roads:
-        if ground[y][x] not in WATER_IDS:
-            ground[y][x] = PAVING if (x + y) % 7 else COBBLE2
+    # I marciapiedi sono affidati ad `autotiling` insieme alle strade, in fondo
+    # alla funzione: qui si conserva solo l'insieme dei tile pedonali.
 
     places: list[dict] = []
     assigned: set[object] = set()
@@ -418,7 +429,7 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
             variant = 3
         entry_x, entry_y = entrance_tile(footprint, roads, cx, cy)
         for x, y in footprint:
-            ground[y][x] = PAVING
+            ground[y][x] = PAVING_GID
             collision[y][x] = 1
         add_place(
             places, region_id, name or f"Casa {len(places) + 1}", kind,
@@ -449,6 +460,15 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
         sx, sy = nearest_tile(tx, ty, roads) or (tx, ty)
         add_place(places, region_id, name, kind, sx, sy, marker=True,
                   source="posizione approssimata nella frazione; servizio non georeferenziato")
+
+    # Pavimentazione finale: maschere di adiacenza, cordoli, attraversamenti
+    # pedonali e segnaletica derivata dalle geometrie OSM (non da pattern casuali).
+    PAVE.paint(
+        ground, collision, width, height, road_tiles, sidewalks - roads,
+        water_tiles, road_hints, seed,
+    )
+    classes = PAVE.rebuild_classes(ground, width, height)
+    PAVE.write_roads(OUT_MAPS / region_id, width, height, classes)
 
     for i in range(0, width * height, 53):
         x, y = (i * 17) % width, (i * 29) % height

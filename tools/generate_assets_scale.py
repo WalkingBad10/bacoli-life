@@ -1182,7 +1182,9 @@ tile_fns = (
 )
 for idx, fn in enumerate(tile_fns):
     fn((idx % 4) * 16, (idx // 4) * 16)  # indice 1 = (0,0) ... indice 16 = (48,48)
-save(tileset, "tileset.png")
+# Il tileset M5 a 4x4(frame) resta disponibile come riferimento storico;
+# quello M6 a 16x16 frame è la sorgente runtime con pavimentazioni autotilate.
+tileset.save(OUT / "tileset_m5_legacy.png")
 
 floors, fd = canvas(48, 16)
 rect(fd, 0, 0, 16, 16, "wood")
@@ -1210,6 +1212,12 @@ save(floors, "room_floors.png")
 # ---------------------------------------------------------------------------
 # VERIFICA FINALE
 # ---------------------------------------------------------------------------
+
+# La generazione degli asset termina sovrascrivendo tileset.png con la versione
+# M6: tutti i GID legacy 1-16 restano compatibili con i buffer esistenti.
+from m6_tiles import build_tileset  # noqa: E402
+
+build_tileset().save(OUT / "tileset.png")
 
 print(f"File creati in {OUT}: {len(FILES)}")
 chiavi = ("player.png", "building_160_3_0.png", "car_white.png", "bus.png", "train.png", "tileset.png")

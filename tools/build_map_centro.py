@@ -31,6 +31,8 @@ import random
 from pathlib import Path
 
 from build_map import EAST_COAST
+import m6_paving as PAVE
+import m6_tiles as TILES
 
 ROOT = Path(__file__).resolve().parents[1]
 GEO = ROOT / "src" / "data" / "bacoli_geo.json"
@@ -54,9 +56,15 @@ FACADE_WIDTHS = tuple(range(96, 449, 16)) + (
     480, 512, 544, 576, 608, 640, 672, 704, 768, 832, 896, 960, 1024, 1088,
 )
 
-GRASS, GRASS2, SAND, SAND2, COBBLE, COBBLE2, ASPHALT, PAVING = 1, 2, 3, 4, 5, 6, 7, 8
-WATER0, WATER1, WATER2, WATER3, FOAM, WALL, ROOF, FLOWERS = 9, 10, 11, 12, 13, 14, 15, 16
-WATER_GIDS = (WATER0, WATER1, WATER2, WATER3)
+GRASS, GRASS2, SAND, SAND2, COBBLE, COBBLE2, ASPHALT, PAVING_GID = (
+    TILES.GRASS, TILES.GRASS2, TILES.SAND, TILES.SAND2,
+    TILES.COBBLE, TILES.COBBLE2, TILES.ASPHALT, TILES.PAVING,
+)
+WATER0, WATER1, WATER2, WATER3, FOAM, WALL, ROOF, FLOWERS = (
+    TILES.WATER0, TILES.WATER1, TILES.WATER2, TILES.WATER3,
+    TILES.FOAM, TILES.WALL, TILES.ROOF, TILES.FLOWERS,
+)
+WATER_GIDS = TILES.WATER_GIDS
 WATER_IDS = set(WATER_GIDS)
 
 ROAD_RADIUS = {
@@ -255,10 +263,13 @@ def main() -> None:
     geo = json.loads(GEO.read_text(encoding="utf-8"))
     rng = random.Random(20261124)
 
-    ground = [[GRASS if (x + y * 3) % 13 else GRASS2 for x in range(TW)] for y in range(TH)]
+    ground = [[0 for _ in range(TW)] for _ in range(TH)]
     collision = [[0 for _ in range(TW)] for _ in range(TH)]
     roads: set[tuple[int, int]] = set()
     sidewalks: set[tuple[int, int]] = set()
+    road_tiles: dict[tuple[int, int], str] = {}
+    road_hints: dict[tuple[int, int], int] = {}
+    water_tiles: set[tuple[int, int]] = set()
 
     # Mare e battigia: sagoma OSM semplificata già verificata nel progetto.
     for y in range(TH):
@@ -267,7 +278,12 @@ def main() -> None:
             if x > coast + 3:
                 ground[y][x] = WATER_GIDS[(x // 4 + y // 3) % 4]
                 collision[y][x] = 1
-            elif coast - 4 <= x <= coast + 3:
+                water_tiles.add((x, y))
+    PAVE.fill_base(ground, TW, TH, water_tiles, 20261124)
+    for y in range(TH):
+        coast = coast_x(y)
+        for x in range(coast - 4, coast + 4):
+            if 0 <= x < TW and (x, y) not in water_tiles:
                 ground[y][x] = SAND if (x + y) % 3 else SAND2
 
     # Strade OSM reali, con marciapiedi larghi 1-2 metri.
@@ -283,9 +299,13 @@ def main() -> None:
             continue
         roads |= tiles
         sidewalks |= rasterize(pts, radius + 2)
+        kind = PAVE.road_class(road.get('kind'))
+        assert kind is not None
+        hint = 0 if abs(pts[-1][0] - pts[0][0]) >= abs(pts[-1][1] - pts[0][1]) else 1
         for x, y in tiles:
             if ground[y][x] not in WATER_IDS:
-                ground[y][x] = ASPHALT if radius >= 2 and (x + y) % 5 else COBBLE
+                road_tiles[(x, y)] = kind
+                road_hints[(x, y)] = hint
                 collision[y][x] = 0
         name = road.get("name")
         if name:
@@ -294,7 +314,7 @@ def main() -> None:
 
     for x, y in sidewalks - roads:
         if 0 <= x < TW and 0 <= y < TH and ground[y][x] not in WATER_IDS | {FOAM}:
-            ground[y][x] = PAVING if (x + y) % 7 else COBBLE2
+            ground[y][x] = PAVING_GID if (x + y) % 7 else COBBLE2
 
     places: list[dict] = []
     occupied: set[tuple[int, int]] = set()
@@ -361,7 +381,7 @@ def main() -> None:
         entry_x, entry_y = entrance_tile(footprint, roads, cx, cy)
 
         for x, y in footprint:
-            ground[y][x] = PAVING
+            ground[y][x] = PAVING_GID
             collision[y][x] = 1
             occupied.add((x, y))
         add_place(
@@ -404,6 +424,15 @@ def main() -> None:
         sx, sy = nearest_tile(tx, ty, roads) or (tx, ty)
         add_place(places, name, kind, sx, sy, marker=True, source=note)
 
+    # Pavimentazione finale: maschere di adiacenza, cordoli, attraversamenti pedonali e
+    # segnaletica orizzontale derivata dalle geometrie OSM, non da pattern casuali.
+    paving_counts = PAVE.paint(
+        ground, collision, TW, TH, road_tiles, sidewalks, water_tiles,
+        road_hints, 20261124,
+    )
+    classes = PAVE.rebuild_classes(ground, TW, TH)
+    PAVE.write_roads(OUT, TW, TH, classes)
+
     # Fiori: solo su prato, mai sopra strade o edifici.
     for i in range(0, TW * TH, 53):
         x, y = (i * 17) % TW, (i * 29) % TH
@@ -434,9 +463,9 @@ def main() -> None:
         "orientation": "orthogonal", "renderorder": "right-down",
         "tiledversion": "1.11.0", "tileheight": TILE, "tilewidth": TILE,
         "tilesets": [{
-            "columns": 4, "firstgid": 1, "image": "tileset.png",
-            "imageheight": 64, "imagewidth": 64, "margin": 0, "name": "base",
-            "spacing": 0, "tilecount": 16, "tileheight": TILE, "tilewidth": TILE,
+            "columns": 16, "firstgid": 1, "image": "tileset.png",
+            "imageheight": 256, "imagewidth": 256, "margin": 0, "name": "base",
+            "spacing": 0, "tilecount": 256, "tileheight": TILE, "tilewidth": TILE,
         }],
         "type": "map", "version": "1.10",
     }

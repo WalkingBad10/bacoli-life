@@ -47,7 +47,7 @@ EXPECTED = {
     "cafe_table.png": (80, 48),
     "fisher.png": (16, 32),
     "casina.png": (256, 208),
-    "tileset.png": (64, 64),
+    "tileset.png": (256, 256),
     "room_floors.png": (48, 16),
     "f_bed.png": (96, 64),
     "f_fridge.png": (64, 128),
