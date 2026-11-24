@@ -61,7 +61,7 @@ def main() -> None:
         f"{datetime.now().isoformat(timespec='seconds')}",
         "",
         "Analisi locale (nessuna API key) degli screenshot prodotti dai test E2E. "
-        "Serve a individuare deformazioni, elementi sospesi e zone vuote dopo la Milestone 3.",
+        "Serve a individuare deformazioni, elementi sospesi e zone vuote dopo la revisione metrica M4.",
         "",
     ]
     for name in NAMES:

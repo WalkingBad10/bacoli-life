@@ -19,13 +19,25 @@ test('il mondo si carica e mostra HUD e canvas', async ({ page }) => {
 test('movimento, interazione e smartphone non bloccano il gioco', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForTimeout(500);
   await page.keyboard.down('KeyD');
   await page.waitForTimeout(600);
   await page.keyboard.up('KeyD');
   await page.keyboard.press('KeyE');
   await page.waitForTimeout(300);
+  // Lascia al pannello aperto da E il tempo di chiudersi prima di aprire
+  // lo smartphone: su Android emulato il caricamento iniziale è più lento.
+  await page.waitForTimeout(250);
   await page.keyboard.press('Escape');
-  await page.keyboard.press('KeyT');
+  await page.waitForTimeout(250);
+  // Su Android emulato il primo input può arrivare prima che la HUD sia
+  // completamente pronta: riprova senza mai ri-chiudere un pannello già aperto.
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const className = (await page.locator('#hud-panel').getAttribute('class')) ?? '';
+    if (/open/.test(className)) break;
+    await page.keyboard.press('KeyT');
+    await page.waitForTimeout(300);
+  }
   await expect(page.locator('#hud-panel')).toHaveClass(/open/);
   await page.screenshot({ path: `screenshots/smartphone-${test.info().project.name}.png` });
   await page.keyboard.press('Escape');
@@ -134,7 +146,7 @@ test('negli interni il giocatore cammina e interagisce con gli arredi', async ({
   });
   expect(before.furniture).toBeGreaterThan(5);
   await page.keyboard.down('KeyA');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(900);
   await page.keyboard.up('KeyA');
   const after = await page.evaluate(() => {
     const room = (window as any).__bacoli.scene.getScene('Interior');
@@ -165,13 +177,14 @@ test('i viaggi EAV sono animati con interni, passeggeri e paesaggio mobile', asy
   await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
   await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
   await page.evaluate(() => {
-    (window as any).__bacoliTest.teleport(194 * 16 + 8, 257 * 16 + 16);
+    // La nuova mappa metrica copre il centro storico: la fermata locale è
+    // Bacoli centro, collegata a Baia dalla linea EAV 101.
     (window as any).__bacoliTest.giveTickets();
   });
   const origin = await page.evaluate(() => (window as any).__bacoliTest.origin());
   const line = await page.evaluate(() => (window as any).__bacoliTest.tripLine('baia_station'));
-  expect(origin).toBe('fusaro_station');
-  expect(line).toBe('cumana');
+  expect(origin).toBe('bacoli_centro');
+  expect(line).toBe('bus_101');
   await page.evaluate(() => (window as any).__bacoliTest.travel('baia_station'));
   await page.waitForFunction(() => typeof (window as any).__bacoliTransit === 'object');
 
@@ -181,7 +194,7 @@ test('i viaggi EAV sono animati con interni, passeggeri e paesaggio mobile', asy
     passengers: (window as any).__bacoliTransit.passengers(),
     line: (window as any).__bacoliTransit.line(),
   }));
-  expect(first.line).toBe('cumana');
+  expect(first.line).toBe('bus_101');
   expect(first.passengers).toBeGreaterThanOrEqual(4);
   await page.waitForTimeout(700);
   const second = await page.evaluate(() => ({
@@ -336,6 +349,96 @@ test('nel bar si beve il caffè e si occupa un posto a sedere', async ({ page })
     return Object.values(room.seats).every((s: any) => s.occupiedBy === null);
   });
   expect(released).toBe(true);
+  expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
+});
+
+test('la scala universale è rispettata da personaggi, edifici e veicoli', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+
+  const scale = await page.evaluate(() => {
+    const world = (window as any).__bacoli.scene.getScene('World');
+    const find = (prefix: string) => world.children.list.find((item: any) =>
+      typeof item.texture?.key === 'string' && item.texture.key.startsWith(prefix));
+    const player = world.player;
+    const building = find('building_');
+    const roof = find('roof_');
+    const car = find('car_');
+    const bus = world.children.list.find((item: any) => item.texture?.key === 'bus');
+    return {
+      playerFrame: { width: player.width, height: player.height },
+      building: building && {
+        key: building.texture.key,
+        width: building.width,
+        height: building.height,
+        scaleX: building.scaleX,
+        scaleY: building.scaleY,
+      },
+      roof: roof && { width: roof.width, height: roof.height },
+      car: car && { width: car.width, height: car.height },
+      bus: bus && { width: bus.width, height: bus.height },
+      tileWidth: world.map?.tileWidth,
+      mapWidth: world.width,
+      mapHeight: world.height,
+    };
+  });
+
+  expect(scale.playerFrame).toEqual({ width: 16, height: 32 });
+  expect(scale.tileWidth).toBe(16);
+  expect(scale.mapWidth).toBe(463);
+  expect(scale.mapHeight).toBe(722);
+  expect(scale.building).not.toBeNull();
+  expect(scale.building!.scaleX).toBe(1);
+  expect(scale.building!.scaleY).toBe(1);
+  expect([...Array.from({ length: 23 }, (_, i) => 96 + i * 16),
+    480, 512, 544, 576, 608, 640, 672, 704, 768, 832, 896, 960, 1024, 1088,
+  ]).toContain(scale.building!.width);
+  // CORNICE 4 px + 52 px per piano: il palazzo è sempre molto più alto
+  // del riquadro del personaggio (16x32), senza alcuno stiramento.
+  expect(scale.building!.height).toBeGreaterThanOrEqual(56);
+  expect(scale.building!.height).toBeLessThanOrEqual(212);
+  expect(scale.roof!.height).toBe(24);
+  expect(scale.car).toEqual({ width: 72, height: 40 });
+  expect(scale.bus).toEqual({ width: 192, height: 52 });
+  expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
+});
+
+test('il debug mostra griglia, collisioni e impronte senza bloccare il gioco', async ({ page }, testInfo) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  expect(await page.evaluate(() => (window as any).__bacoliTest.debugOverlay())).toBe(false);
+
+  await page.keyboard.press('KeyG');
+  await page.waitForTimeout(150);
+  const overlay = await page.evaluate(() => {
+    const world = (window as any).__bacoli.scene.getScene('World');
+    const graphics = world.children.list.find((item: any) =>
+      item.type === 'Graphics' && item.depth === 1_000_000);
+    const label = world.children.list.find((item: any) =>
+      item.type === 'Text' && item.depth === 1_000_001);
+    return {
+      active: (window as any).__bacoliTest.debugOverlay(),
+      graphicsVisible: graphics?.visible ?? false,
+      labelVisible: label?.visible ?? false,
+      label: label?.text ?? '',
+    };
+  });
+  expect(overlay.active).toBe(true);
+  expect(overlay.graphicsVisible).toBe(true);
+  expect(overlay.labelVisible).toBe(true);
+  expect(overlay.label).toContain('1m=16px');
+  expect(overlay.label).toContain('solidi');
+  await page.screenshot({ path: `screenshots/debug-scale-${testInfo.project.name}.png` });
+
+  await page.keyboard.press('KeyG');
+  await page.waitForTimeout(150);
+  expect(await page.evaluate(() => (window as any).__bacoliTest.debugOverlay())).toBe(false);
   expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
 });
 

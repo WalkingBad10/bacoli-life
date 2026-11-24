@@ -13,7 +13,17 @@ export interface Place {
   x: number;
   y: number;
   sprite: number;
-  footprint: [number, number][];
+  /** Vecchi dataset: elenco completo dei tile dell'impronta. */
+  footprint?: [number, number][];
+  /** Nuovo dataset metrico: [minX, minY, maxX, maxY] in tile da 1 metro. */
+  bounds?: [number, number, number, number];
+  /** Metadati della ricostruzione metrica del centro storico (1 tile = 1 m). */
+  floors?: number;
+  facadeWidth?: number;
+  variant?: number;
+  marker?: boolean;
+  meters?: { width: number; depth: number; area: number };
+  source?: string;
 }
 
 export type VehicleKind = 'car' | 'moto' | 'bus';

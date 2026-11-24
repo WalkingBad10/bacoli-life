@@ -1,0 +1,96 @@
+[
+  {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\afddf867-7aaa-4875-b09f-06808c466191\\b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "backgroundRGB": [
+      138,
+      119,
+      95
+    ],
+    "maskCoverage": 0.7836,
+    "columnPeaks": [
+      442,
+      453,
+      501,
+      516,
+      614,
+      627,
+      723
+    ],
+    "rowPeaks": [],
+    "components": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 1536,
+        "h": 1024,
+        "area": 1471287
+      }
+    ],
+    "componentCount": 1
+  },
+  {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\8a3153af-15a8-41b0-ad87-843805808f5d\\fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "backgroundRGB": [
+      128,
+      155,
+      71
+    ],
+    "maskCoverage": 0.9882,
+    "columnPeaks": [],
+    "rowPeaks": [],
+    "components": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 1536,
+        "h": 1024,
+        "area": 1566455
+      }
+    ],
+    "componentCount": 1
+  },
+  {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\ecb979fa-a823-4146-aaba-caba514882f5\\f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "backgroundRGB": [
+      193,
+      159,
+      144
+    ],
+    "maskCoverage": 0.9093,
+    "columnPeaks": [
+      6,
+      430,
+      656,
+      874,
+      1083,
+      1198,
+      1210,
+      1358,
+      1373,
+      1530
+    ],
+    "rowPeaks": [],
+    "components": [
+      {
+        "x": 0,
+        "y": 0,
+        "w": 1536,
+        "h": 1024,
+        "area": 1570032
+      }
+    ],
+    "componentCount": 1
+  }
+]

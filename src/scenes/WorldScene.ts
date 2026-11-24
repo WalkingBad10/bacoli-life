@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import placesData from '../data/bacoli_places.json';
+import centroData from '../data/bacoli_centro.json';
 import { CAMERA_ZOOM, ITEM_CATALOG, PLAYER_SPEED, RUN_MULTIPLIER, type ItemId } from '../core/config';
 import type { Direction, GameState, Place, VehicleState } from '../core/types';
 import { Hud, type PhoneSection } from '../ui/Hud';
@@ -9,6 +9,7 @@ import { findPath } from '../systems/Pathfinding';
 import { decodeExport, defaultVehicles, encodeExport, loadGame, normalize, saveGame } from '../systems/SaveSystem';
 import { AudioSystem } from '../systems/AudioSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
+import { DebugOverlay } from '../systems/DebugOverlay';
 import {
   buyVehicle, canDrive, consumeFuel, needsService, refuel, serviceVehicle,
   SERVICE_PRICE, VEHICLE_CATALOG,
@@ -40,11 +41,21 @@ import {
 } from '../systems/DeliverySystem';
 import { attendLocalEvent, eventForDay, eventLabel, nextEvent } from '../systems/EventSystem';
 
-const DATA = placesData as unknown as {
+const DATA = centroData as unknown as {
+  bounds: { south: number; north: number; west: number; east: number };
+  scale: {
+    metersPerPixel: number;
+    metersPerTile: number;
+    adultHeightPx: number;
+    floorHeightPx: number;
+  };
   size: { width: number; height: number };
   spawn: { x: number; y: number };
   places: Place[];
 };
+
+const BUILDING_WIDTHS = [96, 128, 160, 192, 208, 224, 256, 320, 384, 448] as const;
+const ROOF_HEIGHT = 24;
 
 interface NpcData {
   sprite: Phaser.GameObjects.Sprite;
@@ -89,6 +100,7 @@ export class WorldScene extends Phaser.Scene {
   private width = DATA.size.width;
   private height = DATA.size.height;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+  private debugOverlay!: DebugOverlay;
   private facing: Direction = 'down';
   private npcs: NpcData[] = [];
   private overlay!: Phaser.GameObjects.Rectangle;
@@ -150,11 +162,11 @@ export class WorldScene extends Phaser.Scene {
     syncHomeMirror(this.state);
     this.lastDay = this.state.day;
 
-    const meta = this.cache.json.get('mapmeta') as {
+    const meta = this.cache.json.get('centroMeta') as {
       width: number; height: number; tileWidth: number; tileHeight: number;
-      tilesetName: string; tilesetKey: string; firstGid: number;
+      tilesetName: string; firstGid: number;
     };
-    const ground = new Uint8Array(this.cache.binary.get('groundBin'));
+    const ground = new Uint8Array(this.cache.binary.get('centroGroundBin'));
     if (ground.length !== meta.width * meta.height) {
       throw new Error('Buffer mappa non valido');
     }
@@ -166,7 +178,7 @@ export class WorldScene extends Phaser.Scene {
       data: rows, tileWidth: meta.tileWidth, tileHeight: meta.tileHeight,
     });
     const tileset = this.map.addTilesetImage(
-      meta.tilesetName, meta.tilesetKey,
+      meta.tilesetName, 'tiles16',
       meta.tileWidth, meta.tileHeight, 0, 0, meta.firstGid,
     );
     if (!tileset) throw new Error('Tileset non caricato');
@@ -190,7 +202,7 @@ export class WorldScene extends Phaser.Scene {
     this.applyEventDecorations();
 
     this.keys = this.input.keyboard!.addKeys(
-      'W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT,E,T,ESC,I,O,V',
+      'W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT,E,T,ESC,I,O,V,G',
     ) as Record<string, Phaser.Input.Keyboard.Key>;
     this.input.keyboard!.once('keydown', () => this.audio.start());
     this.input.once('pointerdown', () => this.audio.start());
@@ -201,6 +213,10 @@ export class WorldScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-ESC', () => this.hud.closePanel());
     this.input.keyboard!.on('keydown-I', () => this.exportSave());
     this.input.keyboard!.on('keydown-O', () => this.importSave());
+    this.input.keyboard!.on('keydown-G', () => {
+      const active = this.debugOverlay.toggle();
+      this.hud.toast(active ? 'Debug scala attivo' : 'Debug scala disattivo');
+    });
 
     this.hud.onInteract = () => this.interact();
     this.hud.onPhone = () => this.openPhone();
@@ -251,11 +267,13 @@ export class WorldScene extends Phaser.Scene {
       careerLevel: this.state.career?.level ?? 1,
       deliveries: this.state.deliveries?.length ?? 0,
       event: eventForDay(this.timeSystem.day)?.id ?? null,
+      debugOverlay: this.debugOverlay.active,
     });
 
     // Hook dedicato ai test E2E: permette di verificare collisioni, guida e
     // viaggi senza affidarsi a sequenze di tasti fragili.
     (window as unknown as { __bacoliTest?: Record<string, unknown> }).__bacoliTest = {
+      debugOverlay: () => this.debugOverlay.active,
       teleport: (x: number, y: number) => { this.player.setPosition(x, y); },
       canStand: (x: number, y: number, radius = 5) => this.canStand(x, y, radius),
       enterVehicle: () => this.toggleVehicle(),
@@ -355,12 +373,25 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private loadCollision(): void {
-    const bits = new Uint8Array(this.cache.binary.get('collisionBin'));
+    const bits = new Uint8Array(this.cache.binary.get('centroCollisionBin'));
+    // L'overlay legge direttamente la bitmask: niente decompressione per frame.
+    this.debugOverlay = new DebugOverlay(this, {
+      solid: bits,
+      footprints: DATA.places
+        .filter((place): place is Place & { bounds: [number, number, number, number] } =>
+          Boolean(place.bounds))
+        .map((place) => place.bounds),
+      width: this.width,
+      height: this.height,
+      tile: 16,
+    });
     this.blocked = new Uint8Array(this.width * this.height);
     for (let i = 0; i < this.blocked.length; i++) {
       this.blocked[i] = (bits[i >> 3] >> (i & 7)) & 1;
     }
-    this.collision = new CollisionSystem(this.width, this.height, this.blocked, DATA.places);
+    // Le impronte degli edifici sono già codificate nel buffer binario: passare
+    // anche i luoghi aggiungerebbe rettangoli approssimati sopra l'OSM reale.
+    this.collision = new CollisionSystem(this.width, this.height, this.blocked);
   }
 
   private walkable(tx: number, ty: number): boolean {
@@ -371,8 +402,17 @@ export class WorldScene extends Phaser.Scene {
     return this.collision.canStand(px, py, radius);
   }
 
+  /** Raggio del solido circolare coerente con le dimensioni native del veicolo. */
+  private vehicleRadius(vehicle: VehicleState): number {
+    if (vehicle.kind === 'bus') return 22;
+    if (vehicle.kind === 'moto') return 6;
+    return 10;
+  }
+
   /** Cerca una piazzola libera con abbastanza spazio per un veicolo. */
-  private findVehicleSpot(tx: number, ty: number): { x: number; y: number } {
+  private findVehicleSpot(
+    tx: number, ty: number, radius = 10,
+  ): { x: number; y: number } {
     for (let ring = 0; ring <= 8; ring++) {
       for (let dy = -ring; dy <= ring; dy++) {
         for (let dx = -ring; dx <= ring; dx++) {
@@ -382,7 +422,7 @@ export class WorldScene extends Phaser.Scene {
           if (cx < 2 || cy < 2 || cx >= this.width - 2 || cy >= this.height - 2) continue;
           const x = cx * 16 + 8;
           const y = cy * 16 + 16;
-          if (this.canStand(x, y, 10)) return { x, y };
+          if (this.canStand(x, y, radius)) return { x, y };
         }
       }
     }
@@ -406,36 +446,67 @@ export class WorldScene extends Phaser.Scene {
     if (solidRadius) this.collision.addSolid({ x, y: y - 8, radius: solidRadius });
   }
 
-  private facadeVariant(id: string): number {
+  /** Variante della facciata: i dati OSM hanno priorità, poi tipologia e nome. */
+  private facadeVariant(place: Place): number {
+    if (typeof place.variant === 'number') {
+      return Phaser.Math.Clamp(Math.floor(place.variant), 0, 3);
+    }
+    const name = place.name.toLowerCase();
+    if (/chies|basil|santuar|duomo/.test(name)) return 3;
+    if (/villa|palazz|castell/.test(name)) return 2;
+    if (/centro|piazza/.test(name)) return 0;
+    if (['bar', 'cafe', 'restaurant', 'gelateria'].includes(place.kind)) return 1;
+    if (['shop', 'pharmacy', 'pescheria', 'post_office'].includes(place.kind)) return 2;
+
     let hash = 2166136261;
-    for (let i = 0; i < id.length; i++) {
-      hash ^= id.charCodeAt(i);
+    const signature = `${place.kind}:${place.id}`;
+    for (let i = 0; i < signature.length; i++) {
+      hash ^= signature.charCodeAt(i);
       hash = Math.imul(hash, 16777619);
     }
-    return (hash >>> 0) % 12;
+    return (hash >>> 0) % 4;
+  }
+
+  private facadeWidth(place: Place): number {
+    const width = place.facadeWidth ?? 128;
+    return (BUILDING_WIDTHS as readonly number[]).includes(width) ? width : 128;
+  }
+
+  private facadeFloors(place: Place): number {
+    return Phaser.Math.Clamp(Math.floor(place.floors ?? 3), 1, 4);
+  }
+
+  /** Segnaposto dei POI puntuali: nessun edificio inventato e nessuna collisione. */
+  private addMarker(place: Place): void {
+    const key = place.kind === 'beach' ? 'palm'
+      : place.kind === 'archaeological_site' ? 'olive_tree'
+        : 'street_sign';
+    const x = place.x * 16 + 8;
+    const y = place.y * 16 + 16;
+    this.add.image(x, y, key).setOrigin(0.5, 1).setDepth(y);
   }
 
   private spawnProps(): void {
-    for (let i = 0; i < DATA.places.length; i += 3) {
-      const place = DATA.places[i];
-      const key = place.kind === 'archaeological_site' ? 'olive_tree' : 'palm';
-      const img = this.add.image(place.x * 16 + 8, place.y * 16 + 16, key);
-      img.setOrigin(0.5, 1).setScale(0.55).setAlpha(0.9).setDepth(place.y * 16);
-    }
     DATA.places.forEach((place) => {
-      const bbox = place.footprint;
-      if (!bbox.length) return;
-      const maxY = Math.max(...bbox.map((p) => p[1]));
-      const minX = Math.min(...bbox.map((p) => p[0]));
-      const maxX = Math.max(...bbox.map((p) => p[0]));
-      const widthPx = Math.max(32, Math.min(80, (maxX - minX + 1) * 16));
-      const size = widthPx <= 32 ? 32 : widthPx <= 48 ? 48 : widthPx <= 64 ? 64 : 80;
-      const key = `building_fine_${size}_${this.facadeVariant(place.id)}`;
-      const img = this.add.image(
-        (minX + maxX + 1) * 8, (maxY + 1) * 16 + 10, key,
-      );
-      img.setOrigin(0.5, 1);
-      img.setDepth((maxY + 1) * 16 + 2);
+      const bbox = place.bounds;
+      if (!bbox) {
+        if (place.marker) this.addMarker(place);
+        return;
+      }
+      const [minX, , maxX, maxY] = bbox;
+      const width = this.facadeWidth(place);
+      const floors = this.facadeFloors(place);
+      const variant = this.facadeVariant(place);
+      const centerX = (minX + maxX + 1) * 8;
+      const baseY = (maxY + 1) * 16 + 8;
+
+      this.add.image(centerX, baseY + 6, `shadow_${width}`)
+        .setOrigin(0.5, 1).setDepth(baseY - 1);
+      this.add.image(centerX, baseY, `building_${width}_${floors}_${variant}`)
+        .setOrigin(0.5, 1).setDepth(baseY + 2);
+      const buildingHeight = floors * DATA.scale.floorHeightPx + 4;
+      this.add.image(centerX, baseY - buildingHeight + ROOF_HEIGHT, `roof_${width}_${variant}`)
+        .setOrigin(0.5, 1).setDepth(baseY + 3);
     });
 
     // Dettagli ambientali nelle strade attorno allo spawn e alla piazzetta.
@@ -449,26 +520,38 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
-  /** Verde e arredo urbano distribuiti nelle frazioni, non solo allo spawn. */
+  /** Verde e arredo urbano distribuiti nel centro, tutti alla scala nativa. */
   private spawnUrbanDetails(): void {
-    const keys = ['flowerpot', 'olive_tree', 'palm', 'trash_bin', 'bench', 'flowerpot'];
+    const keys = ['flowerpot', 'olive_tree', 'palm', 'trash_bin', 'bench', 'cafe_table'];
     let placed = 0;
     for (let i = 0; i < DATA.places.length && placed < 54; i += 4) {
       const place = DATA.places[i];
       const tx = place.x + ((i % 3) - 1) * 3;
       const ty = place.y + (i % 2 === 0 ? 2 : -2);
-      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, 6)) continue;
-      const key = keys[Math.floor((i / 4) % keys.length)];
-      const scale = key === 'olive_tree' || key === 'palm' ? 0.4 : 0.55;
+      let key = keys[Math.floor((i / 4) % keys.length)];
+      if (['cafe', 'bar', 'restaurant', 'gelateria'].includes(place.kind)) key = 'cafe_table';
+      else if (place.kind === 'beach') key = 'palm';
+      else if (place.kind === 'archaeological_site') key = 'olive_tree';
+      const radius = key === 'palm' ? 48 : key === 'olive_tree' ? 40
+        : key === 'cafe_table' ? 40 : key === 'bench' ? 32 : 12;
+      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, radius)) continue;
       const x = tx * 16 + 8;
       const y = ty * 16 + 16;
       this.add.image(x, y, key)
         .setOrigin(0.5, 1)
-        .setScale(scale)
         .setAlpha(0.92)
         .setDepth(y);
       placed++;
     }
+
+    DATA.places.filter((place) => place.kind === 'beach').forEach((place, index) => {
+      const tx = place.x + (index % 2 === 0 ? 2 : -2);
+      const ty = place.y + 1;
+      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, 8)) return;
+      const x = tx * 16 + 8;
+      const y = ty * 16 + 16;
+      this.add.image(x, y, 'fisher').setOrigin(0.5, 1).setDepth(y);
+    });
   }
 
   private vehicleSpriteKey(vehicle: VehicleState): string {
@@ -495,15 +578,16 @@ export class WorldScene extends Phaser.Scene {
       if (vehicle.garageId) { index++; continue; }
       const tx = DATA.spawn.x + (index % 2 === 0 ? -1 : 1) * (2 + index);
       const ty = DATA.spawn.y + 3 + Math.floor(index / 2) * 2;
-      const spot = this.findVehicleSpot(tx, ty);
+      const radius = this.vehicleRadius(vehicle);
+      const spot = this.findVehicleSpot(tx, ty, radius);
       vehicle.x = vehicle.x || spot.x;
       vehicle.y = vehicle.y || spot.y;
-      if (!this.canStand(vehicle.x, vehicle.y, 10)) {
+      if (!this.canStand(vehicle.x, vehicle.y, radius)) {
         vehicle.x = spot.x;
         vehicle.y = spot.y;
       }
       this.createVehicleSprite(vehicle);
-      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 9 });
+      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius });
       index++;
     }
   }
@@ -521,15 +605,16 @@ export class WorldScene extends Phaser.Scene {
         angle: 0, fuel: 99, maxFuel: 99, color: colors[i % colors.length],
         owned: false,
       };
+      const radius = this.vehicleRadius(vehicle);
       const spot = this.findVehicleSpot(
-        Math.floor(vehicle.x / 16), Math.floor(vehicle.y / 16),
+        Math.floor(vehicle.x / 16), Math.floor(vehicle.y / 16), radius,
       );
-      if (!this.canStand(spot.x, spot.y, 10)) continue;
+      if (!this.canStand(spot.x, spot.y, radius)) continue;
       vehicle.x = spot.x;
       vehicle.y = spot.y;
       this.traffic.push(vehicle);
       this.createVehicleSprite(vehicle);
-      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 8 });
+      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius });
     }
   }
 
@@ -541,14 +626,15 @@ export class WorldScene extends Phaser.Scene {
 
   private spawnNpcs(): void {
     NPC_PROFILES.forEach((profile, i) => {
-      const key = NPC_KEYS[i % NPC_KEYS.length];
+      const key = profile.kind === 'fisher'
+        ? 'npc_fisher' : NPC_KEYS[i % NPC_KEYS.length];
       const anchor = DATA.places[(i * 17 + 5) % DATA.places.length];
       let tx = anchor.x + ((i % 3) - 1) * 2;
       let ty = anchor.y + (i % 2 === 0 ? 2 : -2);
       if (!this.walkable(tx, ty)) { tx = DATA.spawn.x + ((i % 5) - 2); ty = DATA.spawn.y + 2; }
       if (!this.walkable(tx, ty)) { tx = DATA.spawn.x; ty = DATA.spawn.y; }
       const sprite = this.add.sprite(tx * 16 + 8, ty * 16 + 16, key);
-      sprite.setOrigin(0.5, 1).setScale(0.9);
+      sprite.setOrigin(0.5, 1);
       this.npcs.push({
         sprite, key, name: profile.name, profile,
         kind: profile.kind ?? 'resident',
@@ -575,7 +661,6 @@ export class WorldScene extends Phaser.Scene {
       const y = tile.pixelY + 8;
       const boat = this.add.image(x, y, 'boat')
         .setOrigin(0.5, 0.6)
-        .setScale(0.62)
         .setAlpha(0.9)
         .setDepth(y - 12);
       boat.setData('baseX', x);
@@ -643,6 +728,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
+    this.debugOverlay.update(this.cameras.main);
     if (this.hud.panelOpen) {
       this.player.anims.stop();
       return;
@@ -1128,7 +1214,7 @@ export class WorldScene extends Phaser.Scene {
     for (const order of this.state.deliveries ?? []) {
       if (order.status === 'delivered' || this.courierSprites.has(order.id)) continue;
       const sprite = this.add.image(order.x, order.y, 'moto')
-        .setOrigin(0.5, 1).setScale(0.42).setDepth(order.y + 2);
+        .setOrigin(0.5, 1).setDepth(order.y + 2);
       this.courierSprites.set(order.id, sprite);
     }
   }
@@ -1146,7 +1232,7 @@ export class WorldScene extends Phaser.Scene {
       const y = lamp.y + 2;
       if (!this.walkable(Math.floor(x / 16), Math.floor(y / 16))) return;
       const decoration = this.add.image(x, y, key)
-        .setOrigin(0.5, 1).setScale(0.45).setDepth(y + 1);
+        .setOrigin(0.5, 1).setDepth(y + 1);
       this.eventDecorations.push(decoration);
     });
   }
@@ -1168,13 +1254,14 @@ export class WorldScene extends Phaser.Scene {
     if (!vehicle) { this.hud.toast('Veicolo non trovato'); return false; }
     if (vehicle.garageId) {
       vehicle.garageId = null;
+      const radius = this.vehicleRadius(vehicle);
       const spot = this.findVehicleSpot(
-        Math.floor(this.player.x / 16) + 1, Math.floor(this.player.y / 16),
+        Math.floor(this.player.x / 16) + 1, Math.floor(this.player.y / 16), radius,
       );
       vehicle.x = spot.x;
       vehicle.y = spot.y;
       this.createVehicleSprite(vehicle);
-      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 9 });
+      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius });
       this.hud.toast(`${vehicle.name} è di nuovo in strada`);
     } else {
       vehicle.garageId = garageId;
@@ -1337,16 +1424,37 @@ export class WorldScene extends Phaser.Scene {
     this.startWork(place.id);
   }
 
-  /** Fermata attiva più vicina: permette di prendere la Cumana presso Baia/Fusaro. */
+  /**
+   * Fermata attiva più vicina. Le posizioni `position` di TransportSystem
+   * appartengono alla vecchia mappa: con la nuova mappa metrica si confrontano
+   * le coordinate geografiche proiettate con gli stessi bounds del dataset.
+   */
   private originStation(): Station {
     const fallback = STATIONS.find((s) => s.id === 'bacoli_centro')!;
+    const { north, south, west, east } = DATA.bounds;
+    const playerMeters = { x: this.player.x / 16, y: this.player.y / 16 };
+    const stationMeters = (station: Station) => ({
+      x: ((station.coordinates.lon - west) / (east - west)) * DATA.size.width,
+      y: ((north - station.coordinates.lat) / (north - south)) * DATA.size.height,
+    });
+
+    // Compatibilità con i gate storici usati dagli hook E2E: restano validi
+    // solo quando il giocatore è esattamente su una vecchia posizione di gate.
+    const legacyGate = STATIONS.find((station) => station.status === 'active'
+      && station.position.x > 0 && station.position.y > 0
+      && Math.hypot(
+        this.player.x - (station.position.x * 16 + 8),
+        this.player.y - (station.position.y * 16 + 16),
+      ) <= 8);
+    if (legacyGate) return legacyGate;
+
     let best = fallback;
     let bestDistance = Infinity;
     for (const station of STATIONS) {
       if (station.status !== 'active' || station.position.x <= 0 || station.position.y <= 0) continue;
-      const distance = Phaser.Math.Distance.Between(
-        this.player.x, this.player.y,
-        station.position.x * 16 + 8, station.position.y * 16 + 16,
+      const meters = stationMeters(station);
+      const distance = Math.hypot(
+        playerMeters.x - meters.x, playerMeters.y - meters.y,
       );
       if (distance < bestDistance) { bestDistance = distance; best = station; }
     }
@@ -1579,7 +1687,9 @@ export class WorldScene extends Phaser.Scene {
           vehicle.y = this.player.y;
           this.state.vehicles.push(vehicle);
           this.createVehicleSprite(vehicle);
-          this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 9 });
+          this.collision.addSolid({
+            id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: this.vehicleRadius(vehicle),
+          });
           this.hud.toast('Hai comprato un’utilitaria');
           this.openPlace(place);
         } },
@@ -1593,7 +1703,9 @@ export class WorldScene extends Phaser.Scene {
           vehicle.y = this.player.y;
           this.state.vehicles.push(vehicle);
           this.createVehicleSprite(vehicle);
-          this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 9 });
+          this.collision.addSolid({
+            id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: this.vehicleRadius(vehicle),
+          });
           this.hud.toast('Hai comprato una Vespa');
           this.openPlace(place);
         } },

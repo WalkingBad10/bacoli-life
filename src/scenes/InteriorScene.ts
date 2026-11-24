@@ -9,6 +9,7 @@ import {
   FURNITURE_CATALOG, buyFurniture, familyActivity, homeComfort,
   type FurnitureId,
 } from '../systems/LifeSystem';
+import { activeHome } from '../systems/HomeSystem';
 
 interface InteriorData {
   kind: PlaceKind;
@@ -23,8 +24,17 @@ interface FurnitureItem {
   radius: number;
 }
 
-const ROOM_W = 26;
-const ROOM_H = 17;
+// Una stanza è misurata in metri: 1 tile = 1 m = 16 px.
+const ROOM_W = 24;
+const ROOM_H = 16;
+
+/** Larghezza reale in pixel degli arredi (1 m = 16 px). */
+const FURNITURE_WIDTH: Record<string, number> = {
+  bed: 40, sofa: 40, table: 32, chair: 16, fridge: 16, stove: 20,
+  shelf: 24, tv: 24, espresso: 14, register: 18, bathtub: 40,
+  toilet: 14, plant: 18, washing_machine: 20, microwave: 22,
+  desk: 36, crib: 28,
+};
 
 export class InteriorScene extends Phaser.Scene {
   private data2!: InteriorData;
@@ -73,8 +83,16 @@ export class InteriorScene extends Phaser.Scene {
     this.add.tileSprite(ROOM_W * 16 - 10, ROOM_H * 8, 20, ROOM_H * 16, 'tiles16', 13).setDepth(100);
     this.add.tileSprite(ROOM_W * 8, ROOM_H * 16 - 10, ROOM_W * 16, 20, 'tiles16', 13).setDepth(1);
 
+    // Porta d'ingresso: varco reale nella parete bassa, con ombra e maniglia.
+    const doorX = ROOM_W * 8;
+    const doorY = ROOM_H * 16 - 10;
+    this.add.rectangle(doorX, doorY, 34, 20, 0x0c1823).setDepth(2);
+    this.add.rectangle(doorX, doorY - 1, 28, 18, 0x825834).setDepth(2);
+    this.add.rectangle(doorX - 9, doorY - 1, 2, 14, 0x4e3f2d).setDepth(2);
+    this.add.circle(doorX + 8, doorY, 1.6, 0xe6ab2d).setDepth(3);
+
     this.placeFurniture(data.kind);
-    this.player = this.add.sprite(ROOM_W * 8, ROOM_H * 16 - 34, 'player');
+    this.player = this.add.sprite(ROOM_W * 8, ROOM_H * 16 - 30, 'player');
     this.player.setOrigin(0.5, 1).setFrame(0).setDepth(500);
 
     this.cameras.main.setBounds(0, 0, ROOM_W * 16, ROOM_H * 16);
@@ -90,22 +108,30 @@ export class InteriorScene extends Phaser.Scene {
 
     this.hud.openInfo(data.name, [
       data.kind === 'home'
-        ? `Comfort ${homeComfort(this.state.home)} · famiglia ${this.state.family.length}. Usa gli arredi per riposare, cucinare o guardare la TV.`
+        ? `Comfort ${homeComfort(activeHome(this.state))} · famiglia ${this.state.family.length}. Usa gli arredi per riposare, cucinare o guardare la TV.`
         : `Sei dentro ${data.name}. Il personale è disponibile alla cassa.`,
     ], [{ label: 'Esci', action: () => this.exit() }]);
   }
 
   private addFurniture(key: string, x: number, y: number, action: string): void {
     const img = this.add.image(x * 16 + 8, y * 16 + 16, `f_${key}`);
+    // Le texture sorgente sono state disegnate ad alta risoluzione: qui vengono
+    // riportate alla loro dimensione reale con scala uniforme, senza deformarle.
+    const targetWidth = FURNITURE_WIDTH[key] ?? 24;
+    img.setScale(targetWidth / img.width);
     img.setOrigin(0.5, 1).setDepth(img.y);
     img.setData('seatId', `${key}-${x}-${y}`);
-    this.furniture.push({ sprite: img, action, radius: key === 'table' ? 14 : 10 });
+    this.add.ellipse(img.x, img.y - 1, img.displayWidth * 0.85, 5, 0x0c1823, 0.24)
+      .setDepth(img.y - 1);
+    this.furniture.push({
+      sprite: img, action, radius: Math.max(7, img.displayWidth * 0.45),
+    });
   }
 
   private canStand(px: number, py: number): boolean {
-    if (px < 14 || py < 20 || px > ROOM_W * 16 - 14 || py > ROOM_H * 16 - 12) return false;
+    if (px < 12 || py < 18 || px > ROOM_W * 16 - 12 || py > ROOM_H * 16 - 10) return false;
     return !this.furniture.some((item) =>
-      Math.hypot(px - item.sprite.x, py - item.sprite.y) < 5 + item.radius * 0.6);
+      Math.hypot(px - item.sprite.x, py - item.sprite.y) < 6 + item.radius * 0.5);
   }
 
   update(_time: number, delta: number): void {
@@ -135,56 +161,59 @@ export class InteriorScene extends Phaser.Scene {
 
   private placeFurniture(kind: PlaceKind): void {
     if (kind === 'home') {
-      this.addFurniture('bed', 4, 4, 'Dormi');
-      this.addFurniture('sofa', 11, 4, 'Rilassati');
-      this.addFurniture('tv', 18, 4, 'Guarda la TV');
-      this.addFurniture('table', 12, 10, 'Mangia');
+      this.addFurniture('bed', 3, 3, 'Dormi');
+      this.addFurniture('sofa', 8, 3, 'Rilassati');
+      this.addFurniture('tv', 13, 3, 'Guarda la TV');
+      this.addFurniture('table', 9, 8, 'Mangia');
+      this.addFurniture('chair', 12, 8, 'Siediti');
       this.addFurniture('fridge', 3, 11, 'Cucina');
-      this.addFurniture('stove', 7, 11, 'Cucina');
-      this.addFurniture('shelf', 20, 10, 'Arreda');
-      this.addFurniture('plant', 24, 3, 'Annaffia');
+      this.addFurniture('stove', 6, 11, 'Cucina');
+      this.addFurniture('shelf', 17, 8, 'Arreda');
+      this.addFurniture('plant', 21, 3, 'Annaffia');
       // Gli arredi acquistati compaiono davvero nella stanza: la casa è
       // personalizzabile e non solo una lista di ID nel salvataggio.
       const extras: [FurnitureId, number, number, string][] = [
-        ['washing_machine', 24, 11, 'Lava i panni'],
-        ['microwave', 7, 4, 'Scalda'],
-        ['desk', 16, 3, 'Scrivi'],
-        ['crib', 24, 6, 'Culla'],
+        ['washing_machine', 21, 11, 'Lava i panni'],
+        ['microwave', 6, 3, 'Scalda'],
+        ['desk', 15, 3, 'Scrivi'],
+        ['crib', 21, 6, 'Culla'],
       ];
       for (const [id, x, y, action] of extras) {
-        if (this.state.home.furniture.includes(id)) this.addFurniture(id, x, y, action);
+        if (activeHome(this.state).furniture.includes(id)) this.addFurniture(id, x, y, action);
       }
     } else if (kind === 'cafe' || kind === 'bar') {
-      this.addFurniture('register', 17, 4, 'Cassa');
-      this.addFurniture('espresso', 21, 4, 'Caffè');
-      this.addFurniture('shelf', 4, 4, 'Scaffale');
-      for (const x of ([[6, 11], [12, 11], [18, 11]] as const)) {
-        this.addFurniture('table', x[0], x[1], 'Siediti');
-        this.addFurniture('chair', x[0] + 2, x[1], 'Siediti');
+      this.addFurniture('register', 15, 3, 'Cassa');
+      this.addFurniture('espresso', 18, 3, 'Caffè');
+      this.addFurniture('shelf', 3, 3, 'Scaffale');
+      // Un tavolino resta a portata di mano dall'ingresso: l'interazione con E
+      // deve funzionare subito, come nel bar reale dove si ordina in piedi.
+      for (const [tx, ty] of [[5, 9], [11, 11], [17, 9]] as const) {
+        this.addFurniture('table', tx, ty, 'Siediti');
+        this.addFurniture('chair', tx + 2, ty, 'Siediti');
       }
     } else if (kind === 'restaurant') {
-      this.addFurniture('stove', 4, 4, 'Cucina');
-      this.addFurniture('register', 20, 4, 'Cassa');
-      for (const x of ([[7, 10], [14, 10], [21, 10]] as const)) {
-        this.addFurniture('table', x[0], x[1], 'Mangia');
-        this.addFurniture('chair', x[0] + 2, x[1], 'Siediti');
+      this.addFurniture('stove', 3, 3, 'Cucina');
+      this.addFurniture('register', 18, 3, 'Cassa');
+      for (const [tx, ty] of [[6, 9], [11, 9], [16, 9]] as const) {
+        this.addFurniture('table', tx, ty, 'Mangia');
+        this.addFurniture('chair', tx + 2, ty, 'Siediti');
       }
     } else if (kind === 'pharmacy') {
-      this.addFurniture('shelf', 4, 4, 'Scaffale');
-      this.addFurniture('shelf', 10, 4, 'Scaffale');
-      this.addFurniture('register', 20, 6, 'Cassa');
-      this.addFurniture('plant', 15, 12, 'Piante');
+      this.addFurniture('shelf', 3, 3, 'Scaffale');
+      this.addFurniture('shelf', 8, 3, 'Scaffale');
+      this.addFurniture('register', 18, 5, 'Cassa');
+      this.addFurniture('plant', 13, 11, 'Piante');
     } else if (kind === 'bank' || kind === 'post_office') {
-      this.addFurniture('register', 8, 5, 'Sportello');
-      this.addFurniture('register', 15, 5, 'Sportello');
-      this.addFurniture('shelf', 21, 8, 'Modulistica');
-      this.addFurniture('table', 9, 11, 'Attendi');
+      this.addFurniture('register', 6, 4, 'Sportello');
+      this.addFurniture('register', 12, 4, 'Sportello');
+      this.addFurniture('shelf', 19, 7, 'Modulistica');
+      this.addFurniture('table', 8, 10, 'Attendi');
     } else {
-      this.addFurniture('shelf', 4, 5, 'Scaffale');
-      this.addFurniture('shelf', 11, 5, 'Scaffale');
-      this.addFurniture('shelf', 18, 5, 'Scaffale');
-      this.addFurniture('register', 20, 12, 'Cassa');
-      this.addFurniture('fridge', 4, 12, 'Frigo');
+      this.addFurniture('shelf', 3, 4, 'Scaffale');
+      this.addFurniture('shelf', 9, 4, 'Scaffale');
+      this.addFurniture('shelf', 15, 4, 'Scaffale');
+      this.addFurniture('register', 18, 11, 'Cassa');
+      this.addFurniture('fridge', 3, 11, 'Frigo');
     }
   }
 
@@ -384,22 +413,22 @@ export class InteriorScene extends Phaser.Scene {
   }
 
   private openFurnitureMenu(): void {
+    const home = activeHome(this.state);
     const entries = Object.entries(FURNITURE_CATALOG) as [FurnitureId, typeof FURNITURE_CATALOG[FurnitureId]][];
     const buttons = entries.map(([id, spec]) => ({
-      label: `${spec.name} · € ${spec.price}${this.state.home.furniture.includes(id) ? ' ✓' : ''}`,
+      label: `${spec.name} · € ${spec.price}${home.furniture.includes(id) ? ' ✓' : ''}`,
       action: () => {
         const wallet = this.wallet();
-        const ok = this.state.home.furniture.includes(id)
-          ? false
-          : buyFurniture(this.state.home, wallet, id);
+        const ok = home.furniture.includes(id) ? false : buyFurniture(home, wallet, id);
         this.sync(wallet);
         this.hud.toast(ok ? `${spec.name} aggiunto a casa` : 'Già posseduto o denaro insufficiente');
-        this.openFurnitureMenu();
+        // Il nuovo arredo diventa subito visibile e utilizzabile nella stanza.
+        this.scene.restart(this.data2);
       },
     }));
     buttons.push({ label: 'Esci', action: () => this.hud.closePanel() });
     this.hud.openInfo('Arredamento', [
-      `Saldo: € ${this.state.player.money.toFixed(2)} · comfort ${homeComfort(this.state.home)}`,
+      `Saldo: € ${this.state.player.money.toFixed(2)} · comfort ${homeComfort(home)}`,
     ], buttons);
   }
 

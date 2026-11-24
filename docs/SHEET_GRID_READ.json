@@ -1,0 +1,26 @@
+[
+  {
+    "file": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\docs\\grid_b3b88625.png",
+    "grid": [
+      4,
+      4
+    ],
+    "response": "A1: Casa con balconi e fiori\nA2: Casa con balconi e fiori\nA3: Casa con balconi e fiori\nA4: Chiesa con campanile\nB1: Casa con balconi e fiori\nB2: Casa con balconi e fiori\nB3: Casa con balconi e fiori\nB4: Chiesa con campanile\nC1: Casa con balconi e fiori\nC2: Casa con balconi e fiori\nC3: Casa con balconi e fiori\nC4: Chiesa con campanile\nD1: Casa con balconi e fiori\nD2: Casa con balconi e fiori\nD3: Casa con balconi e fiori\nD4: Chiesa con campanile"
+  },
+  {
+    "file": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\docs\\grid_fb51c0b3.png",
+    "grid": [
+      3,
+      3
+    ],
+    "response": "A1: Caffetteria con balcone fiorito, tende a strisce blu e bianche, e un forno a legna.\nA2: Ristorante con tavoli e sedie, tavoli con tovaglioli rossi, e un forno a legna.\nA3: Ristorante con tavoli e sedie, tavoli con tovaglioli blu e bianchi, e un forno a legna.\nB1: Bar con tavoli e sedie, tavoli con tovaglioli bianchi, e un forno a legna.\nB2: Cucina con tavoli e sedie, tavoli con tovaglioli rossi, e un forno a legna.\nB3: Cucina con tavoli e sedie, tavoli con tovaglioli blu e bianchi, e un forno a legna.\nC1: Cucina con tavoli e sedie, tavoli con tovaglioli bianchi, e un forno a legna.\nC2: Camera da letto con letto, tavolo, e un forno a legna.\nC3: Bagno con vasca, lavandino, e un forno a legna."
+  },
+  {
+    "file": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\docs\\grid_f5b6326b.png",
+    "grid": [
+      4,
+      10
+    ],
+    "response": "A1: pavimento in pietra\nA2: pavimento in pietra\nA3: scalinata con fiori\nA4: arco con fiori\nB1: muro in pietra\nB2: muro in pietra\nB3: scala con fiori\nB4: arco con fiori\nC1: muro in pietra\nC2: porta con disegno disabili\nC3: paliere con fiori\nC4: muro in pietra\nD1: mosaico\nD2: scarico\nD3: recinzione in metallo\nD4: recinzione in metallo\nE1: muro in pietra\nE2: muro in pietra\nE3: recinzione in metallo\nE4: recinzione in metallo\nF1: lampione\nF2: panchina\nF3: fontana\nF4: cactus\nG1: auto\nG2: auto\nG3: scooter\nG4: bicicletta\nH1: albero\nH2: palma\nH3: pergola con fiori\nH4: albero\nI1: muro in pietra\nI2: muro in pietra\nI3: pergola con fiori\nI4: albero\nJ1: roccia\nJ2: mare\nJ3: spiaggia\nJ4: barca con pesci"
+  }
+]

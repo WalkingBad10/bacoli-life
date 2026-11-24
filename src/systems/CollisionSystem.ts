@@ -26,7 +26,16 @@ export class CollisionSystem {
     this.blocked = new Uint8Array(collisionData.length);
     this.blocked.set(collisionData);
     for (const place of places) {
-      for (const [tx, ty] of place.footprint) {
+      if (place.bounds) {
+        const [minX, minY, maxX, maxY] = place.bounds;
+        for (let ty = Math.max(0, minY); ty <= Math.min(height - 1, maxY); ty++) {
+          for (let tx = Math.max(0, minX); tx <= Math.min(width - 1, maxX); tx++) {
+            this.blocked[ty * width + tx] = 1;
+          }
+        }
+        continue;
+      }
+      for (const [tx, ty] of place.footprint ?? []) {
         if (tx >= 0 && ty >= 0 && tx < width && ty < height) {
           this.blocked[ty * width + tx] = 1;
         }

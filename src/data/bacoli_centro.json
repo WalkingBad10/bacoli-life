@@ -1,0 +1,6739 @@
+{
+ "bounds": {
+  "south": 40.7995,
+  "north": 40.806,
+  "west": 14.0775,
+  "east": 14.083
+ },
+ "scale": {
+  "metersPerPixel": 0.0625,
+  "metersPerTile": 1,
+  "adultHeightPx": 28,
+  "floorHeightPx": 52
+ },
+ "size": {
+  "width": 463,
+  "height": 722
+ },
+ "spawn": {
+  "x": 324,
+  "y": 478
+ },
+ "places": [
+  {
+   "id": "place-1",
+   "name": "Casa 1",
+   "kind": "home",
+   "x": 152,
+   "y": 563,
+   "sprite": 0,
+   "bounds": [
+    116,
+    512,
+    164,
+    567
+   ],
+   "floors": 1,
+   "facadeWidth": 768,
+   "variant": 1,
+   "meters": {
+    "width": 49,
+    "depth": 56,
+    "area": 1147
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-2",
+   "name": "Casa 2",
+   "kind": "home",
+   "x": 346,
+   "y": 304,
+   "sprite": 0,
+   "bounds": [
+    321,
+    301,
+    346,
+    326
+   ],
+   "floors": 2,
+   "facadeWidth": 416,
+   "variant": 0,
+   "meters": {
+    "width": 26,
+    "depth": 26,
+    "area": 239
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-3",
+   "name": "Casa 3",
+   "kind": "home",
+   "x": 348,
+   "y": 296,
+   "sprite": 0,
+   "bounds": [
+    339,
+    282,
+    351,
+    300
+   ],
+   "floors": 3,
+   "facadeWidth": 208,
+   "variant": 0,
+   "meters": {
+    "width": 13,
+    "depth": 19,
+    "area": 131
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-4",
+   "name": "Casa 4",
+   "kind": "home",
+   "x": 347,
+   "y": 300,
+   "sprite": 0,
+   "bounds": [
+    328,
+    292,
+    336,
+    302
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 11,
+    "area": 64
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-5",
+   "name": "Casa 5",
+   "kind": "home",
+   "x": 353,
+   "y": 279,
+   "sprite": 0,
+   "bounds": [
+    340,
+    272,
+    354,
+    283
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 3,
+   "meters": {
+    "width": 15,
+    "depth": 12,
+    "area": 111
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-6",
+   "name": "Casa 6",
+   "kind": "home",
+   "x": 201,
+   "y": 509,
+   "sprite": 0,
+   "bounds": [
+    178,
+    488,
+    197,
+    517
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 3,
+   "meters": {
+    "width": 20,
+    "depth": 30,
+    "area": 366
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-7",
+   "name": "Casa 7",
+   "kind": "home",
+   "x": 167,
+   "y": 413,
+   "sprite": 0,
+   "bounds": [
+    147,
+    403,
+    169,
+    426
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 1,
+   "meters": {
+    "width": 23,
+    "depth": 24,
+    "area": 323
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-8",
+   "name": "Casa 8",
+   "kind": "home",
+   "x": 181,
+   "y": 450,
+   "sprite": 0,
+   "bounds": [
+    158,
+    447,
+    184,
+    470
+   ],
+   "floors": 2,
+   "facadeWidth": 432,
+   "variant": 3,
+   "meters": {
+    "width": 27,
+    "depth": 24,
+    "area": 333
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-9",
+   "name": "Casa 9",
+   "kind": "home",
+   "x": 188,
+   "y": 468,
+   "sprite": 0,
+   "bounds": [
+    174,
+    463,
+    189,
+    483
+   ],
+   "floors": 2,
+   "facadeWidth": 256,
+   "variant": 3,
+   "meters": {
+    "width": 16,
+    "depth": 21,
+    "area": 204
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-10",
+   "name": "Casa 10",
+   "kind": "home",
+   "x": 99,
+   "y": 178,
+   "sprite": 0,
+   "bounds": [
+    109,
+    180,
+    114,
+    185
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 6,
+    "depth": 6,
+    "area": 21
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-11",
+   "name": "Casa 11",
+   "kind": "home",
+   "x": 348,
+   "y": 296,
+   "sprite": 0,
+   "bounds": [
+    318,
+    286,
+    325,
+    295
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 0,
+   "meters": {
+    "width": 8,
+    "depth": 10,
+    "area": 42
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-12",
+   "name": "Casa 12",
+   "kind": "home",
+   "x": 204,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    208,
+    140,
+    216,
+    152
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 13,
+    "area": 47
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-13",
+   "name": "Casa 13",
+   "kind": "home",
+   "x": 153,
+   "y": 559,
+   "sprite": 0,
+   "bounds": [
+    84,
+    531,
+    101,
+    550
+   ],
+   "floors": 3,
+   "facadeWidth": 288,
+   "variant": 0,
+   "meters": {
+    "width": 18,
+    "depth": 20,
+    "area": 179
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-14",
+   "name": "Casa 14",
+   "kind": "home",
+   "x": 321,
+   "y": 171,
+   "sprite": 0,
+   "bounds": [
+    332,
+    159,
+    338,
+    165
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 1,
+   "meters": {
+    "width": 7,
+    "depth": 7,
+    "area": 32
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-15",
+   "name": "Casa 15",
+   "kind": "home",
+   "x": 262,
+   "y": 557,
+   "sprite": 0,
+   "bounds": [
+    251,
+    553,
+    260,
+    561
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 3,
+   "meters": {
+    "width": 10,
+    "depth": 9,
+    "area": 36
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-16",
+   "name": "Il Portico",
+   "kind": "restaurant",
+   "x": 154,
+   "y": 610,
+   "sprite": 2,
+   "bounds": [
+    137,
+    573,
+    172,
+    609
+   ],
+   "floors": 1,
+   "facadeWidth": 576,
+   "variant": 3,
+   "meters": {
+    "width": 36,
+    "depth": 37,
+    "area": 544
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-17",
+   "name": "Casa 17",
+   "kind": "home",
+   "x": 136,
+   "y": 391,
+   "sprite": 0,
+   "bounds": [
+    137,
+    386,
+    158,
+    405
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 0,
+   "meters": {
+    "width": 22,
+    "depth": 20,
+    "area": 281
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-18",
+   "name": "Casa 18",
+   "kind": "home",
+   "x": 132,
+   "y": 214,
+   "sprite": 0,
+   "bounds": [
+    132,
+    198,
+    141,
+    203
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 2,
+   "meters": {
+    "width": 10,
+    "depth": 6,
+    "area": 29
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-19",
+   "name": "Casa 19",
+   "kind": "home",
+   "x": 99,
+   "y": 193,
+   "sprite": 0,
+   "bounds": [
+    98,
+    165,
+    122,
+    196
+   ],
+   "floors": 2,
+   "facadeWidth": 400,
+   "variant": 2,
+   "meters": {
+    "width": 25,
+    "depth": 32,
+    "area": 335
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-20",
+   "name": "Casa 20",
+   "kind": "home",
+   "x": 172,
+   "y": 719,
+   "sprite": 0,
+   "bounds": [
+    138,
+    626,
+    176,
+    720
+   ],
+   "floors": 1,
+   "facadeWidth": 608,
+   "variant": 0,
+   "meters": {
+    "width": 39,
+    "depth": 95,
+    "area": 1041
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-21",
+   "name": "Casa 21",
+   "kind": "home",
+   "x": 217,
+   "y": 489,
+   "sprite": 0,
+   "bounds": [
+    205,
+    487,
+    226,
+    510
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 0,
+   "meters": {
+    "width": 22,
+    "depth": 24,
+    "area": 286
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-22",
+   "name": "Casa 22",
+   "kind": "home",
+   "x": 164,
+   "y": 407,
+   "sprite": 0,
+   "bounds": [
+    144,
+    408,
+    153,
+    425
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 2,
+   "meters": {
+    "width": 10,
+    "depth": 18,
+    "area": 52
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-23",
+   "name": "Casa 23",
+   "kind": "home",
+   "x": 213,
+   "y": 448,
+   "sprite": 0,
+   "bounds": [
+    215,
+    430,
+    244,
+    446
+   ],
+   "floors": 2,
+   "facadeWidth": 480,
+   "variant": 1,
+   "meters": {
+    "width": 30,
+    "depth": 17,
+    "area": 359
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-24",
+   "name": "Casa 24",
+   "kind": "home",
+   "x": 238,
+   "y": 379,
+   "sprite": 0,
+   "bounds": [
+    221,
+    378,
+    249,
+    398
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 3,
+   "meters": {
+    "width": 29,
+    "depth": 21,
+    "area": 399
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-25",
+   "name": "Casa 25",
+   "kind": "home",
+   "x": 278,
+   "y": 106,
+   "sprite": 0,
+   "bounds": [
+    257,
+    120,
+    262,
+    126
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 7,
+    "area": 22
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-26",
+   "name": "Casa 26",
+   "kind": "home",
+   "x": 152,
+   "y": 312,
+   "sprite": 0,
+   "bounds": [
+    124,
+    311,
+    127,
+    313
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 4,
+    "depth": 3,
+    "area": 12
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-27",
+   "name": "Casa 27",
+   "kind": "home",
+   "x": 151,
+   "y": 331,
+   "sprite": 0,
+   "bounds": [
+    111,
+    325,
+    117,
+    327
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 2,
+   "meters": {
+    "width": 7,
+    "depth": 3,
+    "area": 20
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-28",
+   "name": "Casa 28",
+   "kind": "home",
+   "x": 81,
+   "y": 246,
+   "sprite": 0,
+   "bounds": [
+    83,
+    244,
+    90,
+    253
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 2,
+   "meters": {
+    "width": 8,
+    "depth": 10,
+    "area": 52
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-29",
+   "name": "Casa 29",
+   "kind": "home",
+   "x": 364,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    355,
+    170,
+    367,
+    176
+   ],
+   "floors": 2,
+   "facadeWidth": 208,
+   "variant": 2,
+   "meters": {
+    "width": 13,
+    "depth": 7,
+    "area": 58
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-30",
+   "name": "Casa 30",
+   "kind": "home",
+   "x": 225,
+   "y": 83,
+   "sprite": 0,
+   "bounds": [
+    205,
+    84,
+    232,
+    110
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 2,
+   "meters": {
+    "width": 28,
+    "depth": 27,
+    "area": 360
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-31",
+   "name": "Casa 31",
+   "kind": "home",
+   "x": 85,
+   "y": 135,
+   "sprite": 0,
+   "bounds": [
+    73,
+    133,
+    93,
+    152
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 1,
+   "meters": {
+    "width": 21,
+    "depth": 20,
+    "area": 295
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-32",
+   "name": "Casa 32",
+   "kind": "home",
+   "x": 82,
+   "y": 244,
+   "sprite": 0,
+   "bounds": [
+    102,
+    250,
+    107,
+    253
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 4,
+    "area": 12
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-33",
+   "name": "Casa 33",
+   "kind": "home",
+   "x": 128,
+   "y": 390,
+   "sprite": 0,
+   "bounds": [
+    102,
+    351,
+    123,
+    367
+   ],
+   "floors": 3,
+   "facadeWidth": 352,
+   "variant": 0,
+   "meters": {
+    "width": 22,
+    "depth": 17,
+    "area": 154
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-34",
+   "name": "Casa 34",
+   "kind": "home",
+   "x": 157,
+   "y": 192,
+   "sprite": 0,
+   "bounds": [
+    215,
+    190,
+    218,
+    194
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 4,
+    "depth": 5,
+    "area": 10
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-35",
+   "name": "Casa 35",
+   "kind": "home",
+   "x": 117,
+   "y": 109,
+   "sprite": 0,
+   "bounds": [
+    121,
+    109,
+    142,
+    121
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 0,
+   "meters": {
+    "width": 22,
+    "depth": 13,
+    "area": 209
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-36",
+   "name": "Casa 36",
+   "kind": "home",
+   "x": 310,
+   "y": 503,
+   "sprite": 0,
+   "bounds": [
+    281,
+    490,
+    308,
+    506
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 1,
+   "meters": {
+    "width": 28,
+    "depth": 17,
+    "area": 357
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-37",
+   "name": "Casa 37",
+   "kind": "home",
+   "x": 258,
+   "y": 453,
+   "sprite": 0,
+   "bounds": [
+    236,
+    452,
+    244,
+    459
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 8,
+    "area": 45
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-38",
+   "name": "Casa 38",
+   "kind": "home",
+   "x": 242,
+   "y": 91,
+   "sprite": 0,
+   "bounds": [
+    214,
+    94,
+    251,
+    125
+   ],
+   "floors": 1,
+   "facadeWidth": 608,
+   "variant": 2,
+   "meters": {
+    "width": 38,
+    "depth": 32,
+    "area": 502
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-39",
+   "name": "Casa 39",
+   "kind": "home",
+   "x": 66,
+   "y": 155,
+   "sprite": 0,
+   "bounds": [
+    65,
+    153,
+    91,
+    180
+   ],
+   "floors": 2,
+   "facadeWidth": 432,
+   "variant": 3,
+   "meters": {
+    "width": 27,
+    "depth": 28,
+    "area": 529
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-40",
+   "name": "Casa 40",
+   "kind": "home",
+   "x": 358,
+   "y": 489,
+   "sprite": 0,
+   "bounds": [
+    354,
+    489,
+    359,
+    495
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 6,
+    "depth": 7,
+    "area": 37
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-41",
+   "name": "Casa 41",
+   "kind": "home",
+   "x": 81,
+   "y": 417,
+   "sprite": 0,
+   "bounds": [
+    106,
+    443,
+    118,
+    458
+   ],
+   "floors": 3,
+   "facadeWidth": 208,
+   "variant": 3,
+   "meters": {
+    "width": 13,
+    "depth": 16,
+    "area": 110
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-42",
+   "name": "Casa 42",
+   "kind": "home",
+   "x": 359,
+   "y": 276,
+   "sprite": 0,
+   "bounds": [
+    361,
+    276,
+    380,
+    285
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 3,
+   "meters": {
+    "width": 20,
+    "depth": 10,
+    "area": 77
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-43",
+   "name": "Casa 43",
+   "kind": "home",
+   "x": 59,
+   "y": 352,
+   "sprite": 0,
+   "bounds": [
+    85,
+    351,
+    95,
+    367
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 3,
+   "meters": {
+    "width": 11,
+    "depth": 17,
+    "area": 145
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-44",
+   "name": "Casa 44",
+   "kind": "home",
+   "x": 345,
+   "y": 202,
+   "sprite": 0,
+   "bounds": [
+    338,
+    186,
+    356,
+    206
+   ],
+   "floors": 2,
+   "facadeWidth": 304,
+   "variant": 1,
+   "meters": {
+    "width": 19,
+    "depth": 21,
+    "area": 185
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-45",
+   "name": "Casa 45",
+   "kind": "home",
+   "x": 273,
+   "y": 591,
+   "sprite": 0,
+   "bounds": [
+    271,
+    590,
+    281,
+    611
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 2,
+   "meters": {
+    "width": 11,
+    "depth": 22,
+    "area": 94
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-46",
+   "name": "Casa 46",
+   "kind": "home",
+   "x": 205,
+   "y": 132,
+   "sprite": 0,
+   "bounds": [
+    214,
+    145,
+    241,
+    165
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 1,
+   "meters": {
+    "width": 28,
+    "depth": 21,
+    "area": 216
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-47",
+   "name": "Casa 47",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    379,
+    106,
+    398,
+    120
+   ],
+   "floors": 3,
+   "facadeWidth": 320,
+   "variant": 1,
+   "meters": {
+    "width": 20,
+    "depth": 15,
+    "area": 171
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-48",
+   "name": "Casa 48",
+   "kind": "home",
+   "x": 142,
+   "y": 618,
+   "sprite": 0,
+   "bounds": [
+    101,
+    605,
+    115,
+    621
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 0,
+   "meters": {
+    "width": 15,
+    "depth": 17,
+    "area": 142
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-49",
+   "name": "Casa 49",
+   "kind": "home",
+   "x": 225,
+   "y": 406,
+   "sprite": 0,
+   "bounds": [
+    220,
+    408,
+    233,
+    424
+   ],
+   "floors": 2,
+   "facadeWidth": 224,
+   "variant": 1,
+   "meters": {
+    "width": 14,
+    "depth": 17,
+    "area": 212
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-50",
+   "name": "Casa 50",
+   "kind": "home",
+   "x": 299,
+   "y": 141,
+   "sprite": 0,
+   "bounds": [
+    263,
+    148,
+    282,
+    162
+   ],
+   "floors": 3,
+   "facadeWidth": 320,
+   "variant": 3,
+   "meters": {
+    "width": 20,
+    "depth": 15,
+    "area": 150
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-51",
+   "name": "Casa 51",
+   "kind": "home",
+   "x": 258,
+   "y": 542,
+   "sprite": 0,
+   "bounds": [
+    228,
+    541,
+    237,
+    553
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 3,
+   "meters": {
+    "width": 10,
+    "depth": 13,
+    "area": 64
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-52",
+   "name": "Casa 52",
+   "kind": "home",
+   "x": 143,
+   "y": 221,
+   "sprite": 0,
+   "bounds": [
+    119,
+    220,
+    151,
+    387
+   ],
+   "floors": 1,
+   "facadeWidth": 512,
+   "variant": 1,
+   "meters": {
+    "width": 33,
+    "depth": 168,
+    "area": 2576
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-53",
+   "name": "Casa 53",
+   "kind": "home",
+   "x": 201,
+   "y": 132,
+   "sprite": 0,
+   "bounds": [
+    184,
+    141,
+    187,
+    144
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 4,
+    "depth": 4,
+    "area": 12
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-54",
+   "name": "Casa 54",
+   "kind": "home",
+   "x": 303,
+   "y": 141,
+   "sprite": 0,
+   "bounds": [
+    333,
+    109,
+    358,
+    131
+   ],
+   "floors": 2,
+   "facadeWidth": 416,
+   "variant": 3,
+   "meters": {
+    "width": 26,
+    "depth": 23,
+    "area": 238
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-55",
+   "name": "Casa 55",
+   "kind": "home",
+   "x": 202,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    189,
+    155,
+    192,
+    157
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 4,
+    "depth": 3,
+    "area": 7
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-56",
+   "name": "Casa 56",
+   "kind": "home",
+   "x": 208,
+   "y": 68,
+   "sprite": 0,
+   "bounds": [
+    194,
+    69,
+    215,
+    92
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 3,
+   "meters": {
+    "width": 22,
+    "depth": 24,
+    "area": 279
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-57",
+   "name": "Casa 57",
+   "kind": "home",
+   "x": 201,
+   "y": 128,
+   "sprite": 0,
+   "bounds": [
+    192,
+    127,
+    194,
+    130
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 3,
+    "depth": 4,
+    "area": 10
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-58",
+   "name": "Casa 58",
+   "kind": "home",
+   "x": 160,
+   "y": 540,
+   "sprite": 0,
+   "bounds": [
+    105,
+    515,
+    112,
+    525
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 3,
+   "meters": {
+    "width": 8,
+    "depth": 11,
+    "area": 44
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-59",
+   "name": "Casa 59",
+   "kind": "home",
+   "x": 64,
+   "y": 328,
+   "sprite": 0,
+   "bounds": [
+    86,
+    326,
+    117,
+    345
+   ],
+   "floors": 2,
+   "facadeWidth": 512,
+   "variant": 0,
+   "meters": {
+    "width": 32,
+    "depth": 20,
+    "area": 397
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-60",
+   "name": "Casa 60",
+   "kind": "home",
+   "x": 203,
+   "y": 118,
+   "sprite": 0,
+   "bounds": [
+    203,
+    113,
+    213,
+    127
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 3,
+   "meters": {
+    "width": 11,
+    "depth": 15,
+    "area": 96
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-61",
+   "name": "Casa 61",
+   "kind": "home",
+   "x": 197,
+   "y": 411,
+   "sprite": 0,
+   "bounds": [
+    173,
+    390,
+    199,
+    412
+   ],
+   "floors": 2,
+   "facadeWidth": 432,
+   "variant": 0,
+   "meters": {
+    "width": 27,
+    "depth": 23,
+    "area": 403
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-62",
+   "name": "Casa 62",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    405,
+    131,
+    420,
+    147
+   ],
+   "floors": 2,
+   "facadeWidth": 256,
+   "variant": 3,
+   "meters": {
+    "width": 16,
+    "depth": 17,
+    "area": 196
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-63",
+   "name": "Casa 63",
+   "kind": "home",
+   "x": 214,
+   "y": 377,
+   "sprite": 0,
+   "bounds": [
+    187,
+    352,
+    221,
+    383
+   ],
+   "floors": 1,
+   "facadeWidth": 544,
+   "variant": 3,
+   "meters": {
+    "width": 35,
+    "depth": 32,
+    "area": 623
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-64",
+   "name": "Casa 64",
+   "kind": "home",
+   "x": 179,
+   "y": 609,
+   "sprite": 0,
+   "bounds": [
+    187,
+    602,
+    196,
+    620
+   ],
+   "floors": 3,
+   "facadeWidth": 160,
+   "variant": 0,
+   "meters": {
+    "width": 10,
+    "depth": 19,
+    "area": 107
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-65",
+   "name": "Casa 65",
+   "kind": "home",
+   "x": 122,
+   "y": 209,
+   "sprite": 0,
+   "bounds": [
+    109,
+    168,
+    142,
+    210
+   ],
+   "floors": 2,
+   "facadeWidth": 544,
+   "variant": 0,
+   "meters": {
+    "width": 34,
+    "depth": 43,
+    "area": 454
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-66",
+   "name": "Casa 66",
+   "kind": "home",
+   "x": 301,
+   "y": 137,
+   "sprite": 0,
+   "bounds": [
+    360,
+    89,
+    374,
+    104
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 3,
+   "meters": {
+    "width": 15,
+    "depth": 16,
+    "area": 122
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-67",
+   "name": "Il Portico",
+   "kind": "restaurant",
+   "x": 167,
+   "y": 602,
+   "sprite": 2,
+   "bounds": [
+    160,
+    593,
+    168,
+    601
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 3,
+   "meters": {
+    "width": 9,
+    "depth": 9,
+    "area": 36
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-68",
+   "name": "Casa 68",
+   "kind": "home",
+   "x": 353,
+   "y": 278,
+   "sprite": 0,
+   "bounds": [
+    335,
+    270,
+    341,
+    280
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 2,
+   "meters": {
+    "width": 7,
+    "depth": 11,
+    "area": 41
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-69",
+   "name": "Casa 69",
+   "kind": "home",
+   "x": 303,
+   "y": 393,
+   "sprite": 0,
+   "bounds": [
+    297,
+    367,
+    317,
+    390
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 3,
+   "meters": {
+    "width": 21,
+    "depth": 24,
+    "area": 339
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-70",
+   "name": "Casa 70",
+   "kind": "home",
+   "x": 74,
+   "y": 281,
+   "sprite": 0,
+   "bounds": [
+    104,
+    284,
+    108,
+    293
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 5,
+    "depth": 10,
+    "area": 37
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-71",
+   "name": "Casa 71",
+   "kind": "home",
+   "x": 317,
+   "y": 172,
+   "sprite": 0,
+   "bounds": [
+    312,
+    171,
+    320,
+    183
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 13,
+    "area": 66
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-72",
+   "name": "Casa 72",
+   "kind": "home",
+   "x": 200,
+   "y": 123,
+   "sprite": 0,
+   "bounds": [
+    185,
+    113,
+    200,
+    128
+   ],
+   "floors": 3,
+   "facadeWidth": 256,
+   "variant": 3,
+   "meters": {
+    "width": 16,
+    "depth": 16,
+    "area": 157
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-73",
+   "name": "Casa 73",
+   "kind": "home",
+   "x": 142,
+   "y": 618,
+   "sprite": 0,
+   "bounds": [
+    129,
+    612,
+    134,
+    617
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 6,
+    "area": 22
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-74",
+   "name": "Casa 74",
+   "kind": "home",
+   "x": 202,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    192,
+    157,
+    200,
+    163
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 7,
+    "area": 39
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-75",
+   "name": "Casa 75",
+   "kind": "home",
+   "x": 346,
+   "y": 304,
+   "sprite": 0,
+   "bounds": [
+    311,
+    292,
+    314,
+    296
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 4,
+    "depth": 5,
+    "area": 10
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-76",
+   "name": "Casa 76",
+   "kind": "home",
+   "x": 262,
+   "y": 608,
+   "sprite": 0,
+   "bounds": [
+    237,
+    604,
+    250,
+    612
+   ],
+   "floors": 2,
+   "facadeWidth": 224,
+   "variant": 3,
+   "meters": {
+    "width": 14,
+    "depth": 9,
+    "area": 70
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-77",
+   "name": "Casa 77",
+   "kind": "home",
+   "x": 217,
+   "y": 461,
+   "sprite": 0,
+   "bounds": [
+    217,
+    451,
+    236,
+    471
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 3,
+   "meters": {
+    "width": 20,
+    "depth": 21,
+    "area": 251
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-78",
+   "name": "Casa 78",
+   "kind": "home",
+   "x": 311,
+   "y": 164,
+   "sprite": 0,
+   "bounds": [
+    283,
+    180,
+    286,
+    183
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 4,
+    "depth": 4,
+    "area": 10
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-79",
+   "name": "Casa 79",
+   "kind": "home",
+   "x": 73,
+   "y": 286,
+   "sprite": 0,
+   "bounds": [
+    84,
+    284,
+    104,
+    295
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 2,
+   "meters": {
+    "width": 21,
+    "depth": 12,
+    "area": 198
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-80",
+   "name": "Casa 80",
+   "kind": "home",
+   "x": 106,
+   "y": 397,
+   "sprite": 0,
+   "bounds": [
+    60,
+    381,
+    125,
+    405
+   ],
+   "floors": 1,
+   "facadeWidth": 1024,
+   "variant": 0,
+   "meters": {
+    "width": 66,
+    "depth": 25,
+    "area": 703
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-81",
+   "name": "Casa 81",
+   "kind": "home",
+   "x": 258,
+   "y": 518,
+   "sprite": 0,
+   "bounds": [
+    261,
+    511,
+    272,
+    529
+   ],
+   "floors": 3,
+   "facadeWidth": 192,
+   "variant": 0,
+   "meters": {
+    "width": 12,
+    "depth": 19,
+    "area": 142
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-82",
+   "name": "Casa 82",
+   "kind": "home",
+   "x": 130,
+   "y": 395,
+   "sprite": 0,
+   "bounds": [
+    133,
+    399,
+    138,
+    407
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 6,
+    "depth": 9,
+    "area": 27
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-83",
+   "name": "Casa 83",
+   "kind": "home",
+   "x": 262,
+   "y": 556,
+   "sprite": 0,
+   "bounds": [
+    241,
+    542,
+    262,
+    559
+   ],
+   "floors": 3,
+   "facadeWidth": 352,
+   "variant": 1,
+   "meters": {
+    "width": 22,
+    "depth": 18,
+    "area": 145
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-84",
+   "name": "Casa 84",
+   "kind": "home",
+   "x": 156,
+   "y": 291,
+   "sprite": 0,
+   "bounds": [
+    222,
+    274,
+    231,
+    308
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 2,
+   "meters": {
+    "width": 10,
+    "depth": 35,
+    "area": 208
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-85",
+   "name": "Casa 85",
+   "kind": "home",
+   "x": 242,
+   "y": 91,
+   "sprite": 0,
+   "bounds": [
+    233,
+    112,
+    251,
+    131
+   ],
+   "floors": 2,
+   "facadeWidth": 304,
+   "variant": 1,
+   "meters": {
+    "width": 19,
+    "depth": 20,
+    "area": 187
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-86",
+   "name": "Casa 86",
+   "kind": "home",
+   "x": 226,
+   "y": 375,
+   "sprite": 0,
+   "bounds": [
+    220,
+    323,
+    224,
+    333
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 5,
+    "depth": 11,
+    "area": 48
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-87",
+   "name": "Casa 87",
+   "kind": "home",
+   "x": 327,
+   "y": 179,
+   "sprite": 0,
+   "bounds": [
+    339,
+    154,
+    362,
+    169
+   ],
+   "floors": 2,
+   "facadeWidth": 384,
+   "variant": 0,
+   "meters": {
+    "width": 24,
+    "depth": 16,
+    "area": 192
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-88",
+   "name": "Casa 88",
+   "kind": "home",
+   "x": 321,
+   "y": 171,
+   "sprite": 0,
+   "bounds": [
+    351,
+    128,
+    372,
+    150
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 1,
+   "meters": {
+    "width": 22,
+    "depth": 23,
+    "area": 232
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-89",
+   "name": "Casa 89",
+   "kind": "home",
+   "x": 65,
+   "y": 324,
+   "sprite": 0,
+   "bounds": [
+    100,
+    327,
+    108,
+    334
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 8,
+    "area": 72
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-90",
+   "name": "U'munazen",
+   "kind": "restaurant",
+   "x": 289,
+   "y": 471,
+   "sprite": 2,
+   "bounds": [
+    284,
+    466,
+    318,
+    489
+   ],
+   "floors": 1,
+   "facadeWidth": 544,
+   "variant": 3,
+   "meters": {
+    "width": 35,
+    "depth": 24,
+    "area": 584
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-91",
+   "name": "Casa 91",
+   "kind": "home",
+   "x": 348,
+   "y": 241,
+   "sprite": 0,
+   "bounds": [
+    339,
+    240,
+    343,
+    243
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 5,
+    "depth": 4,
+    "area": 11
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-92",
+   "name": "Casa 92",
+   "kind": "home",
+   "x": 115,
+   "y": 211,
+   "sprite": 0,
+   "bounds": [
+    108,
+    217,
+    112,
+    221
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 5,
+    "depth": 5,
+    "area": 17
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-93",
+   "name": "Casa 93",
+   "kind": "home",
+   "x": 268,
+   "y": 615,
+   "sprite": 0,
+   "bounds": [
+    271,
+    612,
+    277,
+    621
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 2,
+   "meters": {
+    "width": 7,
+    "depth": 10,
+    "area": 38
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-94",
+   "name": "Casa 94",
+   "kind": "home",
+   "x": 257,
+   "y": 448,
+   "sprite": 0,
+   "bounds": [
+    245,
+    449,
+    259,
+    475
+   ],
+   "floors": 2,
+   "facadeWidth": 240,
+   "variant": 3,
+   "meters": {
+    "width": 15,
+    "depth": 27,
+    "area": 314
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-95",
+   "name": "Casa 95",
+   "kind": "home",
+   "x": 350,
+   "y": 289,
+   "sprite": 0,
+   "bounds": [
+    318,
+    280,
+    320,
+    283
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 3,
+    "depth": 4,
+    "area": 7
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-96",
+   "name": "Casa 96",
+   "kind": "home",
+   "x": 272,
+   "y": 629,
+   "sprite": 0,
+   "bounds": [
+    276,
+    625,
+    283,
+    636
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 3,
+   "meters": {
+    "width": 8,
+    "depth": 12,
+    "area": 44
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-97",
+   "name": "Casa 97",
+   "kind": "home",
+   "x": 96,
+   "y": 400,
+   "sprite": 0,
+   "bounds": [
+    85,
+    372,
+    95,
+    382
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 3,
+   "meters": {
+    "width": 11,
+    "depth": 11,
+    "area": 106
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-98",
+   "name": "Casa 98",
+   "kind": "home",
+   "x": 212,
+   "y": 461,
+   "sprite": 0,
+   "bounds": [
+    185,
+    425,
+    217,
+    487
+   ],
+   "floors": 1,
+   "facadeWidth": 512,
+   "variant": 1,
+   "meters": {
+    "width": 33,
+    "depth": 63,
+    "area": 897
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-99",
+   "name": "Casa 99",
+   "kind": "home",
+   "x": 157,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    206,
+    183,
+    215,
+    200
+   ],
+   "floors": 3,
+   "facadeWidth": 160,
+   "variant": 3,
+   "meters": {
+    "width": 10,
+    "depth": 18,
+    "area": 99
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-100",
+   "name": "Casa 100",
+   "kind": "home",
+   "x": 347,
+   "y": 232,
+   "sprite": 0,
+   "bounds": [
+    296,
+    234,
+    313,
+    249
+   ],
+   "floors": 3,
+   "facadeWidth": 288,
+   "variant": 1,
+   "meters": {
+    "width": 18,
+    "depth": 16,
+    "area": 152
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-101",
+   "name": "Casa 101",
+   "kind": "home",
+   "x": 306,
+   "y": 155,
+   "sprite": 0,
+   "bounds": [
+    272,
+    159,
+    293,
+    175
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 1,
+   "meters": {
+    "width": 22,
+    "depth": 17,
+    "area": 210
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-102",
+   "name": "Casa 102",
+   "kind": "home",
+   "x": 321,
+   "y": 413,
+   "sprite": 0,
+   "bounds": [
+    324,
+    414,
+    331,
+    417
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 3,
+   "meters": {
+    "width": 8,
+    "depth": 4,
+    "area": 24
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-103",
+   "name": "Casa 103",
+   "kind": "home",
+   "x": 334,
+   "y": 188,
+   "sprite": 0,
+   "bounds": [
+    339,
+    172,
+    353,
+    186
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 2,
+   "meters": {
+    "width": 15,
+    "depth": 15,
+    "area": 119
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-104",
+   "name": "Casa 104",
+   "kind": "home",
+   "x": 113,
+   "y": 204,
+   "sprite": 0,
+   "bounds": [
+    114,
+    197,
+    121,
+    205
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 1,
+   "meters": {
+    "width": 8,
+    "depth": 9,
+    "area": 36
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-105",
+   "name": "Casa 105",
+   "kind": "home",
+   "x": 113,
+   "y": 650,
+   "sprite": 0,
+   "bounds": [
+    75,
+    598,
+    85,
+    608
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 2,
+   "meters": {
+    "width": 11,
+    "depth": 11,
+    "area": 60
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-106",
+   "name": "Casa 106",
+   "kind": "home",
+   "x": 141,
+   "y": 219,
+   "sprite": 0,
+   "bounds": [
+    134,
+    164,
+    151,
+    220
+   ],
+   "floors": 2,
+   "facadeWidth": 288,
+   "variant": 2,
+   "meters": {
+    "width": 18,
+    "depth": 57,
+    "area": 473
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-107",
+   "name": "Casa 107",
+   "kind": "home",
+   "x": 201,
+   "y": 130,
+   "sprite": 0,
+   "bounds": [
+    192,
+    132,
+    197,
+    135
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 4,
+    "area": 16
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-108",
+   "name": "Casa 108",
+   "kind": "home",
+   "x": 327,
+   "y": 185,
+   "sprite": 0,
+   "bounds": [
+    260,
+    228,
+    267,
+    236
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 0,
+   "meters": {
+    "width": 8,
+    "depth": 9,
+    "area": 42
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-109",
+   "name": "Casa 109",
+   "kind": "home",
+   "x": 337,
+   "y": 337,
+   "sprite": 0,
+   "bounds": [
+    322,
+    326,
+    338,
+    343
+   ],
+   "floors": 2,
+   "facadeWidth": 272,
+   "variant": 2,
+   "meters": {
+    "width": 17,
+    "depth": 18,
+    "area": 200
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-110",
+   "name": "Casa 110",
+   "kind": "home",
+   "x": 253,
+   "y": 499,
+   "sprite": 0,
+   "bounds": [
+    259,
+    487,
+    272,
+    504
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 0,
+   "meters": {
+    "width": 14,
+    "depth": 18,
+    "area": 164
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-111",
+   "name": "Casa 111",
+   "kind": "home",
+   "x": 176,
+   "y": 437,
+   "sprite": 0,
+   "bounds": [
+    154,
+    430,
+    167,
+    451
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 3,
+   "meters": {
+    "width": 14,
+    "depth": 22,
+    "area": 105
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-112",
+   "name": "Casa 112",
+   "kind": "home",
+   "x": 318,
+   "y": 405,
+   "sprite": 0,
+   "bounds": [
+    262,
+    393,
+    317,
+    439
+   ],
+   "floors": 1,
+   "facadeWidth": 896,
+   "variant": 2,
+   "meters": {
+    "width": 56,
+    "depth": 47,
+    "area": 1324
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-113",
+   "name": "Casa 113",
+   "kind": "home",
+   "x": 273,
+   "y": 81,
+   "sprite": 0,
+   "bounds": [
+    266,
+    77,
+    298,
+    110
+   ],
+   "floors": 2,
+   "facadeWidth": 512,
+   "variant": 3,
+   "meters": {
+    "width": 33,
+    "depth": 34,
+    "area": 432
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-114",
+   "name": "Casa 114",
+   "kind": "home",
+   "x": 96,
+   "y": 400,
+   "sprite": 0,
+   "bounds": [
+    89,
+    382,
+    94,
+    390
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 6,
+    "depth": 9,
+    "area": 41
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-115",
+   "name": "Casa 115",
+   "kind": "home",
+   "x": 313,
+   "y": 162,
+   "sprite": 0,
+   "bounds": [
+    307,
+    124,
+    342,
+    164
+   ],
+   "floors": 1,
+   "facadeWidth": 576,
+   "variant": 1,
+   "meters": {
+    "width": 36,
+    "depth": 41,
+    "area": 630
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-116",
+   "name": "Casa 116",
+   "kind": "home",
+   "x": 159,
+   "y": 543,
+   "sprite": 0,
+   "bounds": [
+    92,
+    514,
+    107,
+    530
+   ],
+   "floors": 3,
+   "facadeWidth": 256,
+   "variant": 1,
+   "meters": {
+    "width": 16,
+    "depth": 17,
+    "area": 140
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-117",
+   "name": "Casa 117",
+   "kind": "home",
+   "x": 205,
+   "y": 132,
+   "sprite": 0,
+   "bounds": [
+    216,
+    141,
+    226,
+    153
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 1,
+   "meters": {
+    "width": 11,
+    "depth": 13,
+    "area": 67
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-118",
+   "name": "Casa 118",
+   "kind": "home",
+   "x": 103,
+   "y": 656,
+   "sprite": 0,
+   "bounds": [
+    77,
+    611,
+    83,
+    614
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 1,
+   "meters": {
+    "width": 7,
+    "depth": 4,
+    "area": 19
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-119",
+   "name": "Casa 119",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    367,
+    174,
+    389,
+    192
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 3,
+   "meters": {
+    "width": 23,
+    "depth": 19,
+    "area": 283
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-120",
+   "name": "Casa 120",
+   "kind": "home",
+   "x": 127,
+   "y": 217,
+   "sprite": 0,
+   "bounds": [
+    121,
+    217,
+    129,
+    228
+   ],
+   "floors": 3,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 12,
+    "area": 103
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-121",
+   "name": "Casa 121",
+   "kind": "home",
+   "x": 152,
+   "y": 296,
+   "sprite": 0,
+   "bounds": [
+    120,
+    294,
+    126,
+    299
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 0,
+   "meters": {
+    "width": 7,
+    "depth": 6,
+    "area": 42
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-122",
+   "name": "Casa 122",
+   "kind": "home",
+   "x": 107,
+   "y": 654,
+   "sprite": 0,
+   "bounds": [
+    99,
+    640,
+    100,
+    641
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 2,
+    "depth": 2,
+    "area": 4
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-123",
+   "name": "Casa 123",
+   "kind": "home",
+   "x": 311,
+   "y": 164,
+   "sprite": 0,
+   "bounds": [
+    297,
+    164,
+    312,
+    178
+   ],
+   "floors": 3,
+   "facadeWidth": 256,
+   "variant": 0,
+   "meters": {
+    "width": 16,
+    "depth": 15,
+    "area": 100
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-124",
+   "name": "Casa 124",
+   "kind": "home",
+   "x": 347,
+   "y": 309,
+   "sprite": 0,
+   "bounds": [
+    346,
+    306,
+    366,
+    325
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 2,
+   "meters": {
+    "width": 21,
+    "depth": 20,
+    "area": 198
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-125",
+   "name": "Casa 125",
+   "kind": "home",
+   "x": 155,
+   "y": 609,
+   "sprite": 0,
+   "bounds": [
+    135,
+    581,
+    154,
+    598
+   ],
+   "floors": 3,
+   "facadeWidth": 320,
+   "variant": 0,
+   "meters": {
+    "width": 20,
+    "depth": 18,
+    "area": 179
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-126",
+   "name": "Casa 126",
+   "kind": "home",
+   "x": 355,
+   "y": 288,
+   "sprite": 0,
+   "bounds": [
+    350,
+    281,
+    361,
+    307
+   ],
+   "floors": 3,
+   "facadeWidth": 192,
+   "variant": 3,
+   "meters": {
+    "width": 12,
+    "depth": 27,
+    "area": 90
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-127",
+   "name": "Casa 127",
+   "kind": "home",
+   "x": 310,
+   "y": 510,
+   "sprite": 0,
+   "bounds": [
+    291,
+    510,
+    307,
+    525
+   ],
+   "floors": 2,
+   "facadeWidth": 272,
+   "variant": 3,
+   "meters": {
+    "width": 17,
+    "depth": 16,
+    "area": 198
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-128",
+   "name": "Casa 128",
+   "kind": "home",
+   "x": 85,
+   "y": 230,
+   "sprite": 0,
+   "bounds": [
+    103,
+    234,
+    106,
+    238
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 4,
+    "depth": 5,
+    "area": 13
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-129",
+   "name": "Casa 129",
+   "kind": "home",
+   "x": 152,
+   "y": 262,
+   "sprite": 0,
+   "bounds": [
+    119,
+    258,
+    132,
+    269
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 2,
+   "meters": {
+    "width": 14,
+    "depth": 12,
+    "area": 101
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-130",
+   "name": "Casa 130",
+   "kind": "home",
+   "x": 184,
+   "y": 458,
+   "sprite": 0,
+   "bounds": [
+    131,
+    479,
+    135,
+    483
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 5,
+    "depth": 5,
+    "area": 13
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-131",
+   "name": "Casa 131",
+   "kind": "home",
+   "x": 143,
+   "y": 617,
+   "sprite": 0,
+   "bounds": [
+    122,
+    596,
+    130,
+    603
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 8,
+    "area": 33
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-132",
+   "name": "Casa 132",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    400,
+    148,
+    417,
+    174
+   ],
+   "floors": 2,
+   "facadeWidth": 288,
+   "variant": 2,
+   "meters": {
+    "width": 18,
+    "depth": 27,
+    "area": 250
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-133",
+   "name": "Casa 133",
+   "kind": "home",
+   "x": 156,
+   "y": 279,
+   "sprite": 0,
+   "bounds": [
+    173,
+    275,
+    181,
+    284
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 2,
+   "meters": {
+    "width": 9,
+    "depth": 10,
+    "area": 73
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-134",
+   "name": "Casa 134",
+   "kind": "home",
+   "x": 164,
+   "y": 529,
+   "sprite": 0,
+   "bounds": [
+    113,
+    501,
+    119,
+    507
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 1,
+   "meters": {
+    "width": 7,
+    "depth": 7,
+    "area": 29
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-135",
+   "name": "Casa 135",
+   "kind": "home",
+   "x": 332,
+   "y": 614,
+   "sprite": 0,
+   "bounds": [
+    310,
+    606,
+    329,
+    620
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 0,
+   "meters": {
+    "width": 20,
+    "depth": 15,
+    "area": 221
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-136",
+   "name": "Casa 136",
+   "kind": "home",
+   "x": 153,
+   "y": 187,
+   "sprite": 0,
+   "bounds": [
+    134,
+    185,
+    144,
+    191
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 1,
+   "meters": {
+    "width": 11,
+    "depth": 7,
+    "area": 59
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-137",
+   "name": "Casa 137",
+   "kind": "home",
+   "x": 105,
+   "y": 141,
+   "sprite": 0,
+   "bounds": [
+    105,
+    142,
+    116,
+    149
+   ],
+   "floors": 2,
+   "facadeWidth": 192,
+   "variant": 2,
+   "meters": {
+    "width": 12,
+    "depth": 8,
+    "area": 63
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-138",
+   "name": "Casa 138",
+   "kind": "home",
+   "x": 358,
+   "y": 266,
+   "sprite": 0,
+   "bounds": [
+    359,
+    261,
+    365,
+    268
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 1,
+   "meters": {
+    "width": 7,
+    "depth": 8,
+    "area": 31
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-139",
+   "name": "Casa 139",
+   "kind": "home",
+   "x": 330,
+   "y": 362,
+   "sprite": 0,
+   "bounds": [
+    309,
+    355,
+    317,
+    362
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 0,
+   "meters": {
+    "width": 9,
+    "depth": 8,
+    "area": 45
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-140",
+   "name": "Casa 140",
+   "kind": "home",
+   "x": 164,
+   "y": 529,
+   "sprite": 0,
+   "bounds": [
+    92,
+    484,
+    115,
+    508
+   ],
+   "floors": 2,
+   "facadeWidth": 384,
+   "variant": 3,
+   "meters": {
+    "width": 24,
+    "depth": 25,
+    "area": 269
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-141",
+   "name": "Casa 141",
+   "kind": "home",
+   "x": 226,
+   "y": 375,
+   "sprite": 0,
+   "bounds": [
+    218,
+    312,
+    226,
+    322
+   ],
+   "floors": 3,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 11,
+    "area": 89
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-142",
+   "name": "Casa 142",
+   "kind": "home",
+   "x": 328,
+   "y": 181,
+   "sprite": 0,
+   "bounds": [
+    327,
+    172,
+    337,
+    182
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 3,
+   "meters": {
+    "width": 11,
+    "depth": 11,
+    "area": 74
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-143",
+   "name": "Casa 143",
+   "kind": "home",
+   "x": 289,
+   "y": 122,
+   "sprite": 0,
+   "bounds": [
+    254,
+    129,
+    272,
+    144
+   ],
+   "floors": 3,
+   "facadeWidth": 304,
+   "variant": 0,
+   "meters": {
+    "width": 19,
+    "depth": 16,
+    "area": 159
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-144",
+   "name": "Casa 144",
+   "kind": "home",
+   "x": 151,
+   "y": 331,
+   "sprite": 0,
+   "bounds": [
+    128,
+    327,
+    131,
+    332
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 4,
+    "depth": 6,
+    "area": 20
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-145",
+   "name": "Casa 145",
+   "kind": "home",
+   "x": 104,
+   "y": 153,
+   "sprite": 0,
+   "bounds": [
+    114,
+    146,
+    135,
+    164
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 0,
+   "meters": {
+    "width": 22,
+    "depth": 19,
+    "area": 319
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-146",
+   "name": "Casa 146",
+   "kind": "home",
+   "x": 29,
+   "y": 486,
+   "sprite": 0,
+   "bounds": [
+    80,
+    490,
+    88,
+    500
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 2,
+   "meters": {
+    "width": 9,
+    "depth": 11,
+    "area": 44
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-147",
+   "name": "Casa 147",
+   "kind": "home",
+   "x": 349,
+   "y": 229,
+   "sprite": 0,
+   "bounds": [
+    349,
+    214,
+    376,
+    242
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 1,
+   "meters": {
+    "width": 28,
+    "depth": 29,
+    "area": 373
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-148",
+   "name": "Casa 148",
+   "kind": "home",
+   "x": 285,
+   "y": 109,
+   "sprite": 0,
+   "bounds": [
+    313,
+    71,
+    333,
+    91
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 2,
+   "meters": {
+    "width": 21,
+    "depth": 21,
+    "area": 233
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-149",
+   "name": "Casa 149",
+   "kind": "home",
+   "x": 264,
+   "y": 457,
+   "sprite": 0,
+   "bounds": [
+    267,
+    447,
+    279,
+    464
+   ],
+   "floors": 2,
+   "facadeWidth": 208,
+   "variant": 3,
+   "meters": {
+    "width": 13,
+    "depth": 18,
+    "area": 184
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-150",
+   "name": "Casa 150",
+   "kind": "home",
+   "x": 142,
+   "y": 618,
+   "sprite": 0,
+   "bounds": [
+    82,
+    578,
+    90,
+    585
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 3,
+   "meters": {
+    "width": 9,
+    "depth": 8,
+    "area": 29
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-151",
+   "name": "Chiesa di San Gioacchino",
+   "kind": "home",
+   "x": 156,
+   "y": 322,
+   "sprite": 0,
+   "bounds": [
+    178,
+    306,
+    219,
+    338
+   ],
+   "floors": 1,
+   "facadeWidth": 672,
+   "variant": 1,
+   "meters": {
+    "width": 42,
+    "depth": 33,
+    "area": 1111
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-152",
+   "name": "Casa 152",
+   "kind": "home",
+   "x": 127,
+   "y": 396,
+   "sprite": 0,
+   "bounds": [
+    122,
+    409,
+    147,
+    427
+   ],
+   "floors": 2,
+   "facadeWidth": 416,
+   "variant": 1,
+   "meters": {
+    "width": 26,
+    "depth": 19,
+    "area": 296
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-153",
+   "name": "Casa 153",
+   "kind": "home",
+   "x": 153,
+   "y": 196,
+   "sprite": 0,
+   "bounds": [
+    132,
+    192,
+    143,
+    201
+   ],
+   "floors": 2,
+   "facadeWidth": 192,
+   "variant": 0,
+   "meters": {
+    "width": 12,
+    "depth": 10,
+    "area": 62
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-154",
+   "name": "Casa 154",
+   "kind": "home",
+   "x": 266,
+   "y": 551,
+   "sprite": 0,
+   "bounds": [
+    267,
+    548,
+    274,
+    561
+   ],
+   "floors": 3,
+   "facadeWidth": 128,
+   "variant": 1,
+   "meters": {
+    "width": 8,
+    "depth": 14,
+    "area": 81
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-155",
+   "name": "Casa 155",
+   "kind": "home",
+   "x": 68,
+   "y": 310,
+   "sprite": 0,
+   "bounds": [
+    90,
+    312,
+    92,
+    316
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 3,
+    "depth": 5,
+    "area": 15
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-156",
+   "name": "Living",
+   "kind": "restaurant",
+   "x": 303,
+   "y": 460,
+   "sprite": 2,
+   "bounds": [
+    290,
+    438,
+    307,
+    463
+   ],
+   "floors": 2,
+   "facadeWidth": 288,
+   "variant": 3,
+   "meters": {
+    "width": 18,
+    "depth": 26,
+    "area": 372
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-157",
+   "name": "Casa 157",
+   "kind": "home",
+   "x": 258,
+   "y": 518,
+   "sprite": 0,
+   "bounds": [
+    274,
+    512,
+    278,
+    517
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 5,
+    "depth": 6,
+    "area": 21
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-158",
+   "name": "Casa 158",
+   "kind": "home",
+   "x": 303,
+   "y": 141,
+   "sprite": 0,
+   "bounds": [
+    368,
+    98,
+    384,
+    112
+   ],
+   "floors": 3,
+   "facadeWidth": 272,
+   "variant": 2,
+   "meters": {
+    "width": 17,
+    "depth": 15,
+    "area": 124
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-159",
+   "name": "Casa 159",
+   "kind": "home",
+   "x": 43,
+   "y": 455,
+   "sprite": 0,
+   "bounds": [
+    90,
+    482,
+    103,
+    494
+   ],
+   "floors": 2,
+   "facadeWidth": 224,
+   "variant": 2,
+   "meters": {
+    "width": 14,
+    "depth": 13,
+    "area": 50
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-160",
+   "name": "Casa 160",
+   "kind": "home",
+   "x": 180,
+   "y": 604,
+   "sprite": 0,
+   "bounds": [
+    193,
+    596,
+    215,
+    629
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 2,
+   "meters": {
+    "width": 23,
+    "depth": 34,
+    "area": 590
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-161",
+   "name": "Casa 161",
+   "kind": "home",
+   "x": 157,
+   "y": 214,
+   "sprite": 0,
+   "bounds": [
+    210,
+    213,
+    213,
+    217
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 4,
+    "depth": 5,
+    "area": 13
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-162",
+   "name": "Casa 162",
+   "kind": "home",
+   "x": 232,
+   "y": 375,
+   "sprite": 0,
+   "bounds": [
+    228,
+    314,
+    238,
+    324
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 2,
+   "meters": {
+    "width": 11,
+    "depth": 11,
+    "area": 75
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-163",
+   "name": "Casa 163",
+   "kind": "home",
+   "x": 317,
+   "y": 172,
+   "sprite": 0,
+   "bounds": [
+    289,
+    185,
+    297,
+    194
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 10,
+    "area": 42
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-164",
+   "name": "Casa 164",
+   "kind": "home",
+   "x": 129,
+   "y": 642,
+   "sprite": 0,
+   "bounds": [
+    122,
+    626,
+    138,
+    647
+   ],
+   "floors": 3,
+   "facadeWidth": 272,
+   "variant": 0,
+   "meters": {
+    "width": 17,
+    "depth": 22,
+    "area": 177
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-165",
+   "name": "Casa 165",
+   "kind": "home",
+   "x": 296,
+   "y": 128,
+   "sprite": 0,
+   "bounds": [
+    338,
+    103,
+    345,
+    110
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 3,
+   "meters": {
+    "width": 8,
+    "depth": 8,
+    "area": 25
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-166",
+   "name": "Casa 166",
+   "kind": "home",
+   "x": 173,
+   "y": 528,
+   "sprite": 0,
+   "bounds": [
+    175,
+    509,
+    185,
+    519
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 3,
+   "meters": {
+    "width": 11,
+    "depth": 11,
+    "area": 74
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-167",
+   "name": "Casa 167",
+   "kind": "home",
+   "x": 202,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    186,
+    147,
+    193,
+    151
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 2,
+   "meters": {
+    "width": 8,
+    "depth": 5,
+    "area": 27
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-168",
+   "name": "Casa 168",
+   "kind": "home",
+   "x": 75,
+   "y": 124,
+   "sprite": 0,
+   "bounds": [
+    75,
+    91,
+    106,
+    132
+   ],
+   "floors": 1,
+   "facadeWidth": 512,
+   "variant": 2,
+   "meters": {
+    "width": 32,
+    "depth": 42,
+    "area": 717
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-169",
+   "name": "Casa 169",
+   "kind": "home",
+   "x": 202,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    200,
+    135,
+    204,
+    140
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 5,
+    "depth": 6,
+    "area": 16
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-170",
+   "name": "Casa 170",
+   "kind": "home",
+   "x": 159,
+   "y": 381,
+   "sprite": 0,
+   "bounds": [
+    161,
+    368,
+    182,
+    387
+   ],
+   "floors": 2,
+   "facadeWidth": 352,
+   "variant": 1,
+   "meters": {
+    "width": 22,
+    "depth": 20,
+    "area": 273
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-171",
+   "name": "Casa 171",
+   "kind": "home",
+   "x": 303,
+   "y": 141,
+   "sprite": 0,
+   "bounds": [
+    289,
+    108,
+    316,
+    145
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 2,
+   "meters": {
+    "width": 28,
+    "depth": 38,
+    "area": 450
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-172",
+   "name": "Casa 172",
+   "kind": "home",
+   "x": 353,
+   "y": 206,
+   "sprite": 0,
+   "bounds": [
+    349,
+    205,
+    361,
+    215
+   ],
+   "floors": 2,
+   "facadeWidth": 208,
+   "variant": 3,
+   "meters": {
+    "width": 13,
+    "depth": 11,
+    "area": 74
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-173",
+   "name": "Casa 173",
+   "kind": "home",
+   "x": 205,
+   "y": 412,
+   "sprite": 0,
+   "bounds": [
+    207,
+    411,
+    219,
+    430
+   ],
+   "floors": 3,
+   "facadeWidth": 208,
+   "variant": 0,
+   "meters": {
+    "width": 13,
+    "depth": 20,
+    "area": 165
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-174",
+   "name": "Casa 174",
+   "kind": "home",
+   "x": 246,
+   "y": 374,
+   "sprite": 0,
+   "bounds": [
+    233,
+    353,
+    260,
+    369
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 2,
+   "meters": {
+    "width": 28,
+    "depth": 17,
+    "area": 407
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-175",
+   "name": "Casa 175",
+   "kind": "home",
+   "x": 224,
+   "y": 484,
+   "sprite": 0,
+   "bounds": [
+    224,
+    480,
+    229,
+    487
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 6,
+    "depth": 8,
+    "area": 26
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-176",
+   "name": "Casa 176",
+   "kind": "home",
+   "x": 204,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    204,
+    141,
+    208,
+    145
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 5,
+    "depth": 5,
+    "area": 18
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-177",
+   "name": "Casa 177",
+   "kind": "home",
+   "x": 118,
+   "y": 647,
+   "sprite": 0,
+   "bounds": [
+    97,
+    611,
+    101,
+    615
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 1,
+   "meters": {
+    "width": 5,
+    "depth": 5,
+    "area": 14
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-178",
+   "name": "Casa 178",
+   "kind": "home",
+   "x": 261,
+   "y": 441,
+   "sprite": 0,
+   "bounds": [
+    264,
+    427,
+    277,
+    441
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 2,
+   "meters": {
+    "width": 14,
+    "depth": 15,
+    "area": 171
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-179",
+   "name": "Casa 179",
+   "kind": "home",
+   "x": 294,
+   "y": 131,
+   "sprite": 0,
+   "bounds": [
+    279,
+    129,
+    292,
+    145
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 0,
+   "meters": {
+    "width": 14,
+    "depth": 17,
+    "area": 146
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-180",
+   "name": "Casa 180",
+   "kind": "home",
+   "x": 260,
+   "y": 528,
+   "sprite": 0,
+   "bounds": [
+    277,
+    514,
+    290,
+    532
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 3,
+   "meters": {
+    "width": 14,
+    "depth": 19,
+    "area": 157
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-181",
+   "name": "Casa 181",
+   "kind": "home",
+   "x": 269,
+   "y": 618,
+   "sprite": 0,
+   "bounds": [
+    280,
+    598,
+    292,
+    630
+   ],
+   "floors": 3,
+   "facadeWidth": 208,
+   "variant": 3,
+   "meters": {
+    "width": 13,
+    "depth": 33,
+    "area": 124
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-182",
+   "name": "Casa 182",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    381,
+    116,
+    404,
+    136
+   ],
+   "floors": 2,
+   "facadeWidth": 384,
+   "variant": 2,
+   "meters": {
+    "width": 24,
+    "depth": 21,
+    "area": 211
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-183",
+   "name": "Casa 183",
+   "kind": "home",
+   "x": 144,
+   "y": 633,
+   "sprite": 0,
+   "bounds": [
+    120,
+    614,
+    150,
+    639
+   ],
+   "floors": 2,
+   "facadeWidth": 480,
+   "variant": 2,
+   "meters": {
+    "width": 31,
+    "depth": 26,
+    "area": 344
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-184",
+   "name": "Casa 184",
+   "kind": "home",
+   "x": 327,
+   "y": 185,
+   "sprite": 0,
+   "bounds": [
+    300,
+    188,
+    322,
+    205
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 3,
+   "meters": {
+    "width": 23,
+    "depth": 18,
+    "area": 213
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-185",
+   "name": "Casa 185",
+   "kind": "home",
+   "x": 303,
+   "y": 149,
+   "sprite": 0,
+   "bounds": [
+    286,
+    145,
+    300,
+    165
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 2,
+   "meters": {
+    "width": 15,
+    "depth": 21,
+    "area": 143
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-186",
+   "name": "Casa 186",
+   "kind": "home",
+   "x": 324,
+   "y": 489,
+   "sprite": 0,
+   "bounds": [
+    325,
+    490,
+    341,
+    498
+   ],
+   "floors": 3,
+   "facadeWidth": 272,
+   "variant": 1,
+   "meters": {
+    "width": 17,
+    "depth": 9,
+    "area": 114
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-187",
+   "name": "Casa 187",
+   "kind": "home",
+   "x": 366,
+   "y": 192,
+   "sprite": 0,
+   "bounds": [
+    366,
+    193,
+    385,
+    207
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 2,
+   "meters": {
+    "width": 20,
+    "depth": 15,
+    "area": 217
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-188",
+   "name": "Casa 188",
+   "kind": "home",
+   "x": 69,
+   "y": 305,
+   "sprite": 0,
+   "bounds": [
+    74,
+    299,
+    86,
+    312
+   ],
+   "floors": 3,
+   "facadeWidth": 208,
+   "variant": 3,
+   "meters": {
+    "width": 13,
+    "depth": 14,
+    "area": 166
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-189",
+   "name": "Casa 189",
+   "kind": "home",
+   "x": 253,
+   "y": 423,
+   "sprite": 0,
+   "bounds": [
+    238,
+    409,
+    253,
+    427
+   ],
+   "floors": 2,
+   "facadeWidth": 256,
+   "variant": 2,
+   "meters": {
+    "width": 16,
+    "depth": 19,
+    "area": 228
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-190",
+   "name": "Casa 190",
+   "kind": "home",
+   "x": 279,
+   "y": 107,
+   "sprite": 0,
+   "bounds": [
+    268,
+    110,
+    282,
+    126
+   ],
+   "floors": 3,
+   "facadeWidth": 240,
+   "variant": 0,
+   "meters": {
+    "width": 15,
+    "depth": 17,
+    "area": 143
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-191",
+   "name": "Casa 191",
+   "kind": "home",
+   "x": 88,
+   "y": 218,
+   "sprite": 0,
+   "bounds": [
+    100,
+    222,
+    105,
+    227
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 3,
+   "meters": {
+    "width": 6,
+    "depth": 6,
+    "area": 31
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-192",
+   "name": "Via Ortensio 1",
+   "kind": "home",
+   "x": 327,
+   "y": 184,
+   "sprite": 0,
+   "bounds": [
+    321,
+    182,
+    329,
+    188
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 7,
+    "area": 35
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-193",
+   "name": "Casa 193",
+   "kind": "home",
+   "x": 315,
+   "y": 545,
+   "sprite": 0,
+   "bounds": [
+    298,
+    528,
+    321,
+    597
+   ],
+   "floors": 2,
+   "facadeWidth": 384,
+   "variant": 3,
+   "meters": {
+    "width": 24,
+    "depth": 70,
+    "area": 538
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-194",
+   "name": "Via Ortensio 2",
+   "kind": "home",
+   "x": 356,
+   "y": 263,
+   "sprite": 0,
+   "bounds": [
+    355,
+    261,
+    359,
+    265
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 0,
+   "meters": {
+    "width": 5,
+    "depth": 5,
+    "area": 11
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-195",
+   "name": "Casa 195",
+   "kind": "home",
+   "x": 317,
+   "y": 490,
+   "sprite": 0,
+   "bounds": [
+    307,
+    483,
+    317,
+    491
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 2,
+   "meters": {
+    "width": 11,
+    "depth": 9,
+    "area": 85
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-196",
+   "name": "Casa 196",
+   "kind": "home",
+   "x": 152,
+   "y": 280,
+   "sprite": 0,
+   "bounds": [
+    114,
+    278,
+    118,
+    283
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 5,
+    "depth": 6,
+    "area": 25
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-197",
+   "name": "Casa 197",
+   "kind": "home",
+   "x": 108,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    121,
+    128,
+    135,
+    144
+   ],
+   "floors": 2,
+   "facadeWidth": 240,
+   "variant": 2,
+   "meters": {
+    "width": 15,
+    "depth": 17,
+    "area": 190
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-198",
+   "name": "Casa 198",
+   "kind": "home",
+   "x": 336,
+   "y": 631,
+   "sprite": 0,
+   "bounds": [
+    315,
+    622,
+    334,
+    637
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 2,
+   "meters": {
+    "width": 20,
+    "depth": 16,
+    "area": 210
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-199",
+   "name": "Casa 199",
+   "kind": "home",
+   "x": 152,
+   "y": 563,
+   "sprite": 0,
+   "bounds": [
+    97,
+    561,
+    103,
+    567
+   ],
+   "floors": 2,
+   "facadeWidth": 112,
+   "variant": 3,
+   "meters": {
+    "width": 7,
+    "depth": 7,
+    "area": 28
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-200",
+   "name": "Casa 200",
+   "kind": "home",
+   "x": 152,
+   "y": 318,
+   "sprite": 0,
+   "bounds": [
+    112,
+    316,
+    117,
+    321
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 6,
+    "area": 28
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-201",
+   "name": "Casa 201",
+   "kind": "home",
+   "x": 339,
+   "y": 200,
+   "sprite": 0,
+   "bounds": [
+    319,
+    202,
+    335,
+    219
+   ],
+   "floors": 3,
+   "facadeWidth": 272,
+   "variant": 0,
+   "meters": {
+    "width": 17,
+    "depth": 18,
+    "area": 154
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-202",
+   "name": "Casa 202",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    383,
+    147,
+    401,
+    164
+   ],
+   "floors": 2,
+   "facadeWidth": 304,
+   "variant": 2,
+   "meters": {
+    "width": 19,
+    "depth": 18,
+    "area": 244
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-203",
+   "name": "Casa 203",
+   "kind": "home",
+   "x": 366,
+   "y": 190,
+   "sprite": 0,
+   "bounds": [
+    379,
+    167,
+    387,
+    176
+   ],
+   "floors": 2,
+   "facadeWidth": 144,
+   "variant": 1,
+   "meters": {
+    "width": 9,
+    "depth": 10,
+    "area": 69
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-204",
+   "name": "Casa 204",
+   "kind": "home",
+   "x": 73,
+   "y": 184,
+   "sprite": 0,
+   "bounds": [
+    73,
+    184,
+    86,
+    200
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 2,
+   "meters": {
+    "width": 14,
+    "depth": 17,
+    "area": 179
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-205",
+   "name": "Casa 205",
+   "kind": "home",
+   "x": 338,
+   "y": 640,
+   "sprite": 0,
+   "bounds": [
+    325,
+    638,
+    338,
+    650
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 1,
+   "meters": {
+    "width": 14,
+    "depth": 13,
+    "area": 110
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-206",
+   "name": "Casa 206",
+   "kind": "home",
+   "x": 105,
+   "y": 202,
+   "sprite": 0,
+   "bounds": [
+    94,
+    198,
+    107,
+    211
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 3,
+   "meters": {
+    "width": 14,
+    "depth": 14,
+    "area": 98
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-207",
+   "name": "Casa 207",
+   "kind": "home",
+   "x": 171,
+   "y": 424,
+   "sprite": 0,
+   "bounds": [
+    156,
+    423,
+    178,
+    449
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 0,
+   "meters": {
+    "width": 23,
+    "depth": 27,
+    "area": 315
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-208",
+   "name": "Casa 208",
+   "kind": "home",
+   "x": 269,
+   "y": 563,
+   "sprite": 0,
+   "bounds": [
+    279,
+    532,
+    303,
+    588
+   ],
+   "floors": 2,
+   "facadeWidth": 400,
+   "variant": 3,
+   "meters": {
+    "width": 25,
+    "depth": 57,
+    "area": 643
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-209",
+   "name": "Casa 209",
+   "kind": "home",
+   "x": 276,
+   "y": 644,
+   "sprite": 0,
+   "bounds": [
+    279,
+    632,
+    301,
+    668
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 0,
+   "meters": {
+    "width": 23,
+    "depth": 37,
+    "area": 479
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-210",
+   "name": "Casa 210",
+   "kind": "home",
+   "x": 102,
+   "y": 163,
+   "sprite": 0,
+   "bounds": [
+    117,
+    164,
+    128,
+    169
+   ],
+   "floors": 2,
+   "facadeWidth": 192,
+   "variant": 3,
+   "meters": {
+    "width": 12,
+    "depth": 6,
+    "area": 48
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-211",
+   "name": "Casa 211",
+   "kind": "home",
+   "x": 81,
+   "y": 417,
+   "sprite": 0,
+   "bounds": [
+    104,
+    464,
+    126,
+    485
+   ],
+   "floors": 2,
+   "facadeWidth": 368,
+   "variant": 3,
+   "meters": {
+    "width": 23,
+    "depth": 22,
+    "area": 262
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-212",
+   "name": "Casa 212",
+   "kind": "home",
+   "x": 257,
+   "y": 514,
+   "sprite": 0,
+   "bounds": [
+    273,
+    506,
+    278,
+    510
+   ],
+   "floors": 2,
+   "facadeWidth": 96,
+   "variant": 2,
+   "meters": {
+    "width": 6,
+    "depth": 5,
+    "area": 30
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-213",
+   "name": "Casa 213",
+   "kind": "home",
+   "x": 67,
+   "y": 314,
+   "sprite": 0,
+   "bounds": [
+    90,
+    320,
+    99,
+    325
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 0,
+   "meters": {
+    "width": 10,
+    "depth": 6,
+    "area": 57
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-214",
+   "name": "Casa 214",
+   "kind": "home",
+   "x": 204,
+   "y": 133,
+   "sprite": 0,
+   "bounds": [
+    234,
+    167,
+    244,
+    175
+   ],
+   "floors": 2,
+   "facadeWidth": 176,
+   "variant": 1,
+   "meters": {
+    "width": 11,
+    "depth": 9,
+    "area": 52
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-215",
+   "name": "Casa 215",
+   "kind": "home",
+   "x": 353,
+   "y": 278,
+   "sprite": 0,
+   "bounds": [
+    322,
+    270,
+    329,
+    276
+   ],
+   "floors": 2,
+   "facadeWidth": 128,
+   "variant": 3,
+   "meters": {
+    "width": 8,
+    "depth": 7,
+    "area": 29
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-216",
+   "name": "Casa 216",
+   "kind": "home",
+   "x": 205,
+   "y": 129,
+   "sprite": 0,
+   "bounds": [
+    208,
+    124,
+    227,
+    144
+   ],
+   "floors": 2,
+   "facadeWidth": 320,
+   "variant": 1,
+   "meters": {
+    "width": 20,
+    "depth": 21,
+    "area": 217
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-217",
+   "name": "Casa 217",
+   "kind": "home",
+   "x": 120,
+   "y": 398,
+   "sprite": 0,
+   "bounds": [
+    113,
+    400,
+    126,
+    411
+   ],
+   "floors": 3,
+   "facadeWidth": 224,
+   "variant": 3,
+   "meters": {
+    "width": 14,
+    "depth": 12,
+    "area": 97
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-218",
+   "name": "Casa 218",
+   "kind": "home",
+   "x": 156,
+   "y": 277,
+   "sprite": 0,
+   "bounds": [
+    181,
+    275,
+    201,
+    283
+   ],
+   "floors": 2,
+   "facadeWidth": 336,
+   "variant": 2,
+   "meters": {
+    "width": 21,
+    "depth": 9,
+    "area": 78
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-219",
+   "name": "Casa 219",
+   "kind": "home",
+   "x": 319,
+   "y": 169,
+   "sprite": 0,
+   "bounds": [
+    317,
+    160,
+    333,
+    173
+   ],
+   "floors": 3,
+   "facadeWidth": 272,
+   "variant": 3,
+   "meters": {
+    "width": 17,
+    "depth": 14,
+    "area": 128
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-220",
+   "name": "Casa 220",
+   "kind": "home",
+   "x": 165,
+   "y": 528,
+   "sprite": 0,
+   "bounds": [
+    144,
+    487,
+    172,
+    512
+   ],
+   "floors": 2,
+   "facadeWidth": 448,
+   "variant": 1,
+   "meters": {
+    "width": 29,
+    "depth": 26,
+    "area": 486
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-221",
+   "name": "Casa 221",
+   "kind": "home",
+   "x": 102,
+   "y": 160,
+   "sprite": 0,
+   "bounds": [
+    103,
+    158,
+    112,
+    164
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 1,
+   "meters": {
+    "width": 10,
+    "depth": 7,
+    "area": 55
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-222",
+   "name": "Casa 222",
+   "kind": "home",
+   "x": 152,
+   "y": 565,
+   "sprite": 0,
+   "bounds": [
+    100,
+    563,
+    136,
+    595
+   ],
+   "floors": 1,
+   "facadeWidth": 576,
+   "variant": 1,
+   "meters": {
+    "width": 37,
+    "depth": 33,
+    "area": 591
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-223",
+   "name": "Casa 223",
+   "kind": "home",
+   "x": 112,
+   "y": 395,
+   "sprite": 0,
+   "bounds": [
+    102,
+    367,
+    112,
+    380
+   ],
+   "floors": 3,
+   "facadeWidth": 176,
+   "variant": 2,
+   "meters": {
+    "width": 11,
+    "depth": 14,
+    "area": 119
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-224",
+   "name": "Casa 224",
+   "kind": "home",
+   "x": 183,
+   "y": 579,
+   "sprite": 0,
+   "bounds": [
+    179,
+    489,
+    246,
+    720
+   ],
+   "floors": 1,
+   "facadeWidth": 1088,
+   "variant": 2,
+   "meters": {
+    "width": 68,
+    "depth": 232,
+    "area": 3499
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-225",
+   "name": "Casa 225",
+   "kind": "home",
+   "x": 176,
+   "y": 437,
+   "sprite": 0,
+   "bounds": [
+    127,
+    448,
+    136,
+    459
+   ],
+   "floors": 2,
+   "facadeWidth": 160,
+   "variant": 1,
+   "meters": {
+    "width": 10,
+    "depth": 12,
+    "area": 54
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-226",
+   "name": "Casa 226",
+   "kind": "home",
+   "x": 157,
+   "y": 219,
+   "sprite": 0,
+   "bounds": [
+    176,
+    214,
+    187,
+    225
+   ],
+   "floors": 3,
+   "facadeWidth": 192,
+   "variant": 3,
+   "meters": {
+    "width": 12,
+    "depth": 12,
+    "area": 104
+   },
+   "source": "OSM building polygon; piani stimati dall'area (tag building:levels assente)"
+  },
+  {
+   "id": "place-227",
+   "name": "Ewa",
+   "kind": "fuel",
+   "x": 50,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-228",
+   "name": "Cento Camerelle",
+   "kind": "archaeological_site",
+   "x": 462,
+   "y": 721,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-229",
+   "name": "Grotte dell'Acqua - Lago Fusaro",
+   "kind": "archaeological_site",
+   "x": 0,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-230",
+   "name": "Bar Pina",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-231",
+   "name": "Baya Club",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-232",
+   "name": "Cucina di Ruggiero",
+   "kind": "restaurant",
+   "x": 99,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-233",
+   "name": "Family Nest",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-234",
+   "name": "Ristorante Sapoti in Vista",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 133,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-235",
+   "name": "Biblioteca Comunale",
+   "kind": "office",
+   "x": 0,
+   "y": 721,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-236",
+   "name": "Sala Matrimoni",
+   "kind": "shop",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-237",
+   "name": "Sala Riunioni",
+   "kind": "shop",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-238",
+   "name": "Sala del Sindaco",
+   "kind": "shop",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-239",
+   "name": "Postamat",
+   "kind": "bank",
+   "x": 0,
+   "y": 667,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-240",
+   "name": "Poste Italiane",
+   "kind": "post_office",
+   "x": 0,
+   "y": 0,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-241",
+   "name": "Banco di Napoli",
+   "kind": "bank",
+   "x": 0,
+   "y": 0,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-242",
+   "name": "Poste Italiane",
+   "kind": "post_office",
+   "x": 0,
+   "y": 0,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-243",
+   "name": "Ninfeo",
+   "kind": "archaeological_site",
+   "x": 0,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-244",
+   "name": "Villa Protiro",
+   "kind": "archaeological_site",
+   "x": 0,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-245",
+   "name": "Villa dei Pisoni",
+   "kind": "archaeological_site",
+   "x": 105,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-246",
+   "name": "Secca Fumosa",
+   "kind": "archaeological_site",
+   "x": 462,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-247",
+   "name": "Portus Julius",
+   "kind": "archaeological_site",
+   "x": 462,
+   "y": 0,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-248",
+   "name": "La Taverna dei Sapori",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 661,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-249",
+   "name": "Da Fefè",
+   "kind": "restaurant",
+   "x": 151,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-250",
+   "name": "Murphy's Law Bacoli",
+   "kind": "restaurant",
+   "x": 158,
+   "y": 638,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-251",
+   "name": "Esso",
+   "kind": "fuel",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-252",
+   "name": "IP",
+   "kind": "fuel",
+   "x": 175,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-253",
+   "name": "Farmacia Guardascione",
+   "kind": "pharmacy",
+   "x": 127,
+   "y": 666,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-254",
+   "name": "Talent Caffè",
+   "kind": "cafe",
+   "x": 174,
+   "y": 68,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-255",
+   "name": "Farmacia Sant'Anna",
+   "kind": "pharmacy",
+   "x": 37,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-256",
+   "name": "Bar De Rosa",
+   "kind": "bar",
+   "x": 62,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-257",
+   "name": "La Catagna",
+   "kind": "restaurant",
+   "x": 462,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-258",
+   "name": "Stella Marina Ristopescheria",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-259",
+   "name": "Crazy Pizza",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-260",
+   "name": "Bisciù",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-261",
+   "name": "Farmacia dell'Arco",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-262",
+   "name": "Pizzeria Napul è",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-263",
+   "name": "Almi Macelleria e Gastronomia",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-264",
+   "name": "Farmacia Comunale",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-265",
+   "name": "Punto Pizza",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-266",
+   "name": "Pizzeria L'isolotto",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 6,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-267",
+   "name": "China Town",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 8,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-268",
+   "name": "Mose A Ridosso",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 168,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-269",
+   "name": "Trattoria Pizzeria Song e Napule",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-270",
+   "name": "La Biste",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-271",
+   "name": "Bacoli VET",
+   "kind": "office",
+   "x": 0,
+   "y": 0,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-272",
+   "name": "Forti Emozioni",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-273",
+   "name": "Azimut",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-274",
+   "name": "Riccio",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-275",
+   "name": "Bahia 69",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-276",
+   "name": "Pizza Village",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-277",
+   "name": "Lucullo",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-278",
+   "name": "Nudibranko Ristorante e Pizzeria",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-279",
+   "name": "Aret O'Puort Trattoria",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-280",
+   "name": "BBC Bay Beach Club",
+   "kind": "bar",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-281",
+   "name": "La Fattoria Girarrosto & Pizzeria",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-282",
+   "name": "Crudo Bar Baia",
+   "kind": "bar",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-283",
+   "name": "Farmacia del Porto",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-284",
+   "name": "La Tortuga",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-285",
+   "name": "Il Paolanto Ristorante",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-286",
+   "name": "Nereis",
+   "kind": "bar",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-287",
+   "name": "Molo Sud",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-288",
+   "name": "Villa Chiara",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-289",
+   "name": "Ideal Bar",
+   "kind": "bar",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-290",
+   "name": "Locanda  dei Re",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-291",
+   "name": "La Locanda del Testardo",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-292",
+   "name": "Scuola Sommozzatori & Diving",
+   "kind": "shop",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-293",
+   "name": "La Cucina di Venere",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-294",
+   "name": "Old Friends",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-295",
+   "name": "Cycas",
+   "kind": "bar",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-296",
+   "name": "Bar Roma",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-297",
+   "name": "Nariz cafe",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-298",
+   "name": "Piazza 27",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-299",
+   "name": "Bar Coloniali",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-300",
+   "name": "Sun Bar",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-301",
+   "name": "Lo Sfizio",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-302",
+   "name": "Chiesa Parrocchiale di Santa Maria del Riposo",
+   "kind": "house",
+   "x": 0,
+   "y": 0,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-303",
+   "name": "Velò",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-304",
+   "name": "Vineria del Porto",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-305",
+   "name": "Madame Butterfly",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-306",
+   "name": "La Locanda degli Amori e Sapori",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-307",
+   "name": "Sub Evolution",
+   "kind": "shop",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-308",
+   "name": "El Sueno",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-309",
+   "name": "Il Sestante",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-310",
+   "name": "La Brace Secondo Me",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-311",
+   "name": "Espo Pizza & Cucina",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-312",
+   "name": "Miglio Zero",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-313",
+   "name": "Bella 'mbriana",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-314",
+   "name": "Frudisi",
+   "kind": "gelateria",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-315",
+   "name": "Travelers Cafe",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-316",
+   "name": "Arte Pizza",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-317",
+   "name": "Il Giardino Cafe",
+   "kind": "cafe",
+   "x": 0,
+   "y": 635,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-318",
+   "name": "Ristorantino Cycas",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-319",
+   "name": "Vision",
+   "kind": "shop",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-320",
+   "name": "La Dimora di Gea",
+   "kind": "shop",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-321",
+   "name": "Osteria Il Garum",
+   "kind": "restaurant",
+   "x": 114,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-322",
+   "name": "Osteria Nerone",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-323",
+   "name": "Rusticotto",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-324",
+   "name": "Brivido",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-325",
+   "name": "Trattoria Mare",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-326",
+   "name": "Box Burger",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-327",
+   "name": "Pallin Bisciu",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-328",
+   "name": "Pilato",
+   "kind": "shop",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-329",
+   "name": "Meseta",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-330",
+   "name": "Sibilla",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-331",
+   "name": "eFarma Group S.r.l.",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-332",
+   "name": "Tetris Cafe",
+   "kind": "bar",
+   "x": 26,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-333",
+   "name": "Spazio Lucrino",
+   "kind": "cafe",
+   "x": 462,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-334",
+   "name": "Mario Ristorante",
+   "kind": "restaurant",
+   "x": 462,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-335",
+   "name": "Sea Bar",
+   "kind": "restaurant",
+   "x": 462,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-336",
+   "name": "Villa Scalera",
+   "kind": "shop",
+   "x": 258,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-337",
+   "name": "Farmacia Peccerella",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-338",
+   "name": "Zanzibar",
+   "kind": "cafe",
+   "x": 0,
+   "y": 646,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-339",
+   "name": "Sleepy Pub - Cornetteria",
+   "kind": "cafe",
+   "x": 0,
+   "y": 688,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-340",
+   "name": "Forno Flegreo",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 313,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-341",
+   "name": "Down Up Coffee di Achile Cappola",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-342",
+   "name": "Acquamagica",
+   "kind": "garage",
+   "x": 0,
+   "y": 98,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-343",
+   "name": "Bar Victoria",
+   "kind": "cafe",
+   "x": 0,
+   "y": 429,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-344",
+   "name": "Ozia! Pizzeria Slow Eat",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 403,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-345",
+   "name": "Ristorante Garibaldi",
+   "kind": "restaurant",
+   "x": 309,
+   "y": 473,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-346",
+   "name": "Ristorante Villa Molpe",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-347",
+   "name": "Villa Baia dei Cesari",
+   "kind": "shop",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-348",
+   "name": "Stazione Carabinieri di Monte di Procida",
+   "kind": "office",
+   "x": 0,
+   "y": 721,
+   "sprite": 1,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-349",
+   "name": "Parcheggio Punta Pennadio Lido",
+   "kind": "parking",
+   "x": 462,
+   "y": 721,
+   "sprite": 5,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-350",
+   "name": "Villa Mirabilis",
+   "kind": "shop",
+   "x": 462,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-351",
+   "name": "Bolliera",
+   "kind": "restaurant",
+   "x": 462,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-352",
+   "name": "Farmacia Sichenze",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 721,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-353",
+   "name": "Farmacia Dott. Colesanti",
+   "kind": "pharmacy",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-354",
+   "name": "Toastime",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-355",
+   "name": "Madcap Public House",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-356",
+   "name": "Kuma 65",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-357",
+   "name": "Scirocco",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-358",
+   "name": "Marabà",
+   "kind": "cafe",
+   "x": 0,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-359",
+   "name": "Colombario Via Miliscola",
+   "kind": "archaeological_site",
+   "x": 0,
+   "y": 721,
+   "sprite": 3,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-360",
+   "name": "Una fetta di Napoli",
+   "kind": "restaurant",
+   "x": 109,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-361",
+   "name": "Slowly",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-362",
+   "name": "Surprise",
+   "kind": "cafe",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-363",
+   "name": "Il furgone",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-364",
+   "name": "IP",
+   "kind": "fuel",
+   "x": 0,
+   "y": 0,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-365",
+   "name": "Casa Azul",
+   "kind": "bar",
+   "x": 433,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-366",
+   "name": "Casa Azul",
+   "kind": "bar",
+   "x": 462,
+   "y": 0,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-367",
+   "name": "Garage Il Faro",
+   "kind": "parking",
+   "x": 0,
+   "y": 721,
+   "sprite": 5,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-368",
+   "name": "Wolf Rent Boat",
+   "kind": "shop",
+   "x": 394,
+   "y": 508,
+   "sprite": 4,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-369",
+   "name": "Sponda Sud",
+   "kind": "cafe",
+   "x": 125,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-370",
+   "name": "Sazio",
+   "kind": "restaurant",
+   "x": 0,
+   "y": 721,
+   "sprite": 2,
+   "marker": true,
+   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+  },
+  {
+   "id": "place-371",
+   "name": "Piazzetta sul mare",
+   "kind": "beach",
+   "x": 324,
+   "y": 478,
+   "sprite": 5,
+   "marker": true,
+   "source": "coordinate verificate"
+  },
+  {
+   "id": "place-372",
+   "name": "Villa Comunale",
+   "kind": "beach",
+   "x": 169,
+   "y": 267,
+   "sprite": 5,
+   "marker": true,
+   "source": "coordinate verificate"
+  },
+  {
+   "id": "place-373",
+   "name": "Gelateria Piazzetta",
+   "kind": "gelateria",
+   "x": 324,
+   "y": 478,
+   "sprite": 4,
+   "marker": true,
+   "source": "coordinata verificata"
+  },
+  {
+   "id": "place-374",
+   "name": "Centro consegne Bacoli",
+   "kind": "delivery",
+   "x": 262,
+   "y": 556,
+   "sprite": 4,
+   "marker": true,
+   "source": "posizione approssimata nel centro; servizio non georeferenziato"
+  },
+  {
+   "id": "place-375",
+   "name": "Garage comunale",
+   "kind": "garage",
+   "x": 133,
+   "y": 394,
+   "sprite": 1,
+   "marker": true,
+   "source": "posizione approssimata nel centro; servizio non georeferenziato"
+  },
+  {
+   "id": "place-376",
+   "name": "Pescheria del centro",
+   "kind": "pescheria",
+   "x": 330,
+   "y": 362,
+   "sprite": 4,
+   "marker": true,
+   "source": "posizione approssimata nel centro; attività non georeferenziata"
+  }
+ ],
+ "roadTileCount": 30397,
+ "buildingCount": 226,
+ "sources": [
+  "OpenStreetMap via Overpass: edifici, strade e POI del centro storico",
+  "https://www.openstreetmap.org/search?query=Bacoli",
+  "https://overpass-turbo.eu/",
+  "https://geoportale.urba.cloud/maps/Stradario%20-%20Comune%20di%20Bacoli/viewer/",
+  "https://commons.wikimedia.org/wiki/Category:Bacoli",
+  "https://comune.bacoli.na.it/vivere-il-comune/galleria-fotografica/",
+  "OSM coastline già verificata nel progetto (EAST_COAST)",
+  "docs/NEW_ASSETS_ANALYSIS.json per i materiali fotografici forniti"
+ ],
+ "approximations": [
+  "building:levels e height assenti negli edifici OSM dell'area: piani stimati dall'area dell'impronta",
+  "nuova query coastline Overpass in timeout (HTTP 504): usata la sagoma già verificata",
+  "garage, consegne e pescheria centrali sono segnaposto approssimati, dichiarati per place"
+ ]
+}

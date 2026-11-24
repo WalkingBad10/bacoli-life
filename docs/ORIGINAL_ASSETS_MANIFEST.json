@@ -1,0 +1,1611 @@
+{
+  "scale": "1 metro = 16 pixel",
+  "gridReading": "docs/SHEET_GRID_READ.json",
+  "assets": [
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 0,
+        "row": 0,
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_1_1",
+      "kind": "sprite",
+      "coverage": 0.6189,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_1_1.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 1,
+        "row": 0,
+        "x": 384,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_1_2",
+      "kind": "sprite",
+      "coverage": 0.3846,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_1_2.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 2,
+        "row": 0,
+        "x": 768,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_1_3",
+      "kind": "sprite",
+      "coverage": 0.4203,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_1_3.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 3,
+        "row": 0,
+        "x": 1152,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_1_4",
+      "kind": "sprite",
+      "coverage": 0.5017,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_1_4.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 0,
+        "row": 1,
+        "x": 0,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_2_1",
+      "kind": "sprite",
+      "coverage": 0.5135,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_2_1.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 1,
+        "row": 1,
+        "x": 384,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_2_2",
+      "kind": "sprite",
+      "coverage": 0.5901,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_2_2.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 2,
+        "row": 1,
+        "x": 768,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_2_3",
+      "kind": "sprite",
+      "coverage": 0.3285,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_2_3.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 3,
+        "row": 1,
+        "x": 1152,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_2_4",
+      "kind": "sprite",
+      "coverage": 0.3751,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_2_4.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 0,
+        "row": 2,
+        "x": 0,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_3_1",
+      "kind": "sprite",
+      "coverage": 0.6798,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_3_1.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 1,
+        "row": 2,
+        "x": 384,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_3_2",
+      "kind": "sprite",
+      "coverage": 0.1786,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_3_2.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 2,
+        "row": 2,
+        "x": 768,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_3_3",
+      "kind": "sprite",
+      "coverage": 0.3747,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_3_3.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 3,
+        "row": 2,
+        "x": 1152,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "facade_3_4",
+      "kind": "sprite",
+      "coverage": 0.475,
+      "target": [
+        208,
+        160
+      ],
+      "path": "public\\assets\\original\\Buildings\\facade_3_4.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 0,
+        "row": 3,
+        "x": 0,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "church",
+      "kind": "sprite",
+      "coverage": 0.6608,
+      "target": [
+        208,
+        212
+      ],
+      "path": "public\\assets\\original\\Buildings\\church.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 1,
+        "row": 3,
+        "x": 384,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "church",
+      "kind": "sprite",
+      "coverage": 0.5918,
+      "target": [
+        208,
+        212
+      ],
+      "path": "public\\assets\\original\\Buildings\\church.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 2,
+        "row": 3,
+        "x": 768,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "church",
+      "kind": "sprite",
+      "coverage": 0.1545,
+      "target": [
+        208,
+        212
+      ],
+      "path": "public\\assets\\original\\Buildings\\church.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+      "cell": {
+        "col": 3,
+        "row": 3,
+        "x": 1152,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "category": "Buildings",
+      "name": "church",
+      "kind": "sprite",
+      "coverage": 0.6163,
+      "target": [
+        208,
+        212
+      ],
+      "path": "public\\assets\\original\\Buildings\\church.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 0,
+        "row": 0,
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Shops",
+      "name": "shop_cafe",
+      "kind": "sprite",
+      "coverage": 0.7209,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Shops\\shop_cafe.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 1,
+        "row": 0,
+        "x": 512,
+        "y": 0,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Shops",
+      "name": "shop_restaurant",
+      "kind": "sprite",
+      "coverage": 0.8018,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Shops\\shop_restaurant.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 2,
+        "row": 0,
+        "x": 1024,
+        "y": 0,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Shops",
+      "name": "shop_trattoria",
+      "kind": "sprite",
+      "coverage": 0.7916,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Shops\\shop_trattoria.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 0,
+        "row": 1,
+        "x": 0,
+        "y": 341,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Shops",
+      "name": "shop_bar",
+      "kind": "sprite",
+      "coverage": 0.6183,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Shops\\shop_bar.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 1,
+        "row": 1,
+        "x": 512,
+        "y": 341,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Interiors",
+      "name": "kitchen_1",
+      "kind": "sprite",
+      "coverage": 0.4117,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Interiors\\kitchen_1.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 2,
+        "row": 1,
+        "x": 1024,
+        "y": 341,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Interiors",
+      "name": "kitchen_2",
+      "kind": "sprite",
+      "coverage": 0.6868,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Interiors\\kitchen_2.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 0,
+        "row": 2,
+        "x": 0,
+        "y": 682,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Interiors",
+      "name": "kitchen_3",
+      "kind": "sprite",
+      "coverage": 0.2898,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Interiors\\kitchen_3.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 1,
+        "row": 2,
+        "x": 512,
+        "y": 682,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Interiors",
+      "name": "bedroom",
+      "kind": "sprite",
+      "coverage": 0.489,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Interiors\\bedroom.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+      "cell": {
+        "col": 2,
+        "row": 2,
+        "x": 1024,
+        "y": 682,
+        "w": 512,
+        "h": 341
+      },
+      "category": "Interiors",
+      "name": "bathroom",
+      "kind": "sprite",
+      "coverage": 0.3797,
+      "target": [
+        256,
+        192
+      ],
+      "path": "public\\assets\\original\\Interiors\\bathroom.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 0,
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Roads",
+      "name": "road_stone_a",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        64,
+        64
+      ],
+      "path": "public\\assets\\original\\Roads\\road_stone_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 0,
+        "x": 384,
+        "y": 0,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Roads",
+      "name": "road_stone_b",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        64,
+        64
+      ],
+      "path": "public\\assets\\original\\Roads\\road_stone_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 0,
+        "x": 768,
+        "y": 0,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Roads",
+      "name": "stairs_flowers_a",
+      "kind": "sprite",
+      "coverage": 0.1855,
+      "target": [
+        64,
+        80
+      ],
+      "path": "public\\assets\\original\\Roads\\stairs_flowers_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 0,
+        "x": 1152,
+        "y": 0,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "arch_flowers_a",
+      "kind": "sprite",
+      "coverage": 0.3723,
+      "target": [
+        64,
+        96
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\arch_flowers_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 1,
+        "x": 0,
+        "y": 102,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_a",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 1,
+        "x": 384,
+        "y": 102,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_b",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 1,
+        "x": 768,
+        "y": 102,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Roads",
+      "name": "stairs_flowers_b",
+      "kind": "sprite",
+      "coverage": 0.2209,
+      "target": [
+        64,
+        80
+      ],
+      "path": "public\\assets\\original\\Roads\\stairs_flowers_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 1,
+        "x": 1152,
+        "y": 102,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "arch_flowers_b",
+      "kind": "sprite",
+      "coverage": 0.063,
+      "target": [
+        64,
+        96
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\arch_flowers_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 2,
+        "x": 0,
+        "y": 204,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "door_stone",
+      "kind": "sprite",
+      "coverage": 0.0204,
+      "target": [
+        64,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\door_stone.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 2,
+        "x": 384,
+        "y": 204,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "door_accessible",
+      "kind": "sprite",
+      "coverage": 0.0578,
+      "target": [
+        64,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\door_accessible.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 2,
+        "x": 768,
+        "y": 204,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "planters_flowers",
+      "kind": "sprite",
+      "coverage": 0.3039,
+      "target": [
+        80,
+        64
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\planters_flowers.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 2,
+        "x": 1152,
+        "y": 204,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_c",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_c.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 3,
+        "x": 0,
+        "y": 306,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Roads",
+      "name": "mosaic_a",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        64,
+        64
+      ],
+      "path": "public\\assets\\original\\Roads\\mosaic_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 3,
+        "x": 384,
+        "y": 306,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "drain",
+      "kind": "sprite",
+      "coverage": 0.117,
+      "target": [
+        48,
+        48
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\drain.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 3,
+        "x": 768,
+        "y": 306,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "fence_metal_a",
+      "kind": "sprite",
+      "coverage": 0.3299,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\fence_metal_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 3,
+        "x": 1152,
+        "y": 306,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "fence_metal_b",
+      "kind": "sprite",
+      "coverage": 0.4593,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\fence_metal_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 4,
+        "x": 0,
+        "y": 408,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_d",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_d.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 4,
+        "x": 384,
+        "y": 408,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_e",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_e.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 4,
+        "x": 768,
+        "y": 408,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "fence_metal_c",
+      "kind": "sprite",
+      "coverage": 0.2957,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\fence_metal_c.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 4,
+        "x": 1152,
+        "y": 408,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "fence_metal_d",
+      "kind": "sprite",
+      "coverage": 0.3745,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\fence_metal_d.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 5,
+        "x": 0,
+        "y": 510,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "lamp",
+      "kind": "sprite",
+      "coverage": 0.1663,
+      "target": [
+        48,
+        160
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\lamp.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 5,
+        "x": 384,
+        "y": 510,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "bench",
+      "kind": "sprite",
+      "coverage": 0.3932,
+      "target": [
+        64,
+        32
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\bench.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 5,
+        "x": 768,
+        "y": 510,
+        "w": 384,
+        "h": 102
+      },
+      "category": "UrbanProps",
+      "name": "fountain",
+      "kind": "sprite",
+      "coverage": 0.3469,
+      "target": [
+        80,
+        96
+      ],
+      "path": "public\\assets\\original\\UrbanProps\\fountain.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 5,
+        "x": 1152,
+        "y": 510,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "cactus",
+      "kind": "sprite",
+      "coverage": 0.3406,
+      "target": [
+        48,
+        80
+      ],
+      "path": "public\\assets\\original\\Vegetation\\cactus.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 6,
+        "x": 0,
+        "y": 612,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vehicles",
+      "name": "car_a",
+      "kind": "sprite",
+      "coverage": 0.2972,
+      "target": [
+        72,
+        40
+      ],
+      "path": "public\\assets\\original\\Vehicles\\car_a.png",
+      "runtimeOverride": "car_white.png"
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 6,
+        "x": 384,
+        "y": 612,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vehicles",
+      "name": "car_b",
+      "kind": "sprite",
+      "coverage": 0.4225,
+      "target": [
+        72,
+        40
+      ],
+      "path": "public\\assets\\original\\Vehicles\\car_b.png",
+      "runtimeOverride": "car_blue.png"
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 6,
+        "x": 768,
+        "y": 612,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vehicles",
+      "name": "scooter",
+      "kind": "sprite",
+      "coverage": 0.2961,
+      "target": [
+        40,
+        20
+      ],
+      "path": "public\\assets\\original\\Vehicles\\scooter.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 6,
+        "x": 1152,
+        "y": 612,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vehicles",
+      "name": "bicycle",
+      "kind": "sprite",
+      "coverage": 0.4915,
+      "target": [
+        48,
+        32
+      ],
+      "path": "public\\assets\\original\\Vehicles\\bicycle.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 7,
+        "x": 0,
+        "y": 714,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "tree_a",
+      "kind": "sprite",
+      "coverage": 0.5488,
+      "target": [
+        80,
+        112
+      ],
+      "path": "public\\assets\\original\\Vegetation\\tree_a.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 7,
+        "x": 384,
+        "y": 714,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "palm",
+      "kind": "sprite",
+      "coverage": 0.2062,
+      "target": [
+        96,
+        160
+      ],
+      "path": "public\\assets\\original\\Vegetation\\palm.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 7,
+        "x": 768,
+        "y": 714,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "pergola",
+      "kind": "sprite",
+      "coverage": 0.3391,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\Vegetation\\pergola.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 7,
+        "x": 1152,
+        "y": 714,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "tree_b",
+      "kind": "sprite",
+      "coverage": 0.1433,
+      "target": [
+        80,
+        112
+      ],
+      "path": "public\\assets\\original\\Vegetation\\tree_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 8,
+        "x": 0,
+        "y": 816,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_f",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_f.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 8,
+        "x": 384,
+        "y": 816,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Buildings",
+      "name": "stone_wall_g",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        128,
+        96
+      ],
+      "path": "public\\assets\\original\\Buildings\\stone_wall_g.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 8,
+        "x": 768,
+        "y": 816,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "pergola_b",
+      "kind": "sprite",
+      "coverage": 0.2858,
+      "target": [
+        96,
+        64
+      ],
+      "path": "public\\assets\\original\\Vegetation\\pergola_b.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 8,
+        "x": 1152,
+        "y": 816,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Vegetation",
+      "name": "tree_c",
+      "kind": "sprite",
+      "coverage": 0.5472,
+      "target": [
+        80,
+        112
+      ],
+      "path": "public\\assets\\original\\Vegetation\\tree_c.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 0,
+        "row": 9,
+        "x": 0,
+        "y": 918,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Beach",
+      "name": "rock",
+      "kind": "sprite",
+      "coverage": 0.3635,
+      "target": [
+        64,
+        48
+      ],
+      "path": "public\\assets\\original\\Beach\\rock.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 1,
+        "row": 9,
+        "x": 384,
+        "y": 918,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Beach",
+      "name": "water_texture",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        64,
+        64
+      ],
+      "path": "public\\assets\\original\\Beach\\water_texture.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 2,
+        "row": 9,
+        "x": 768,
+        "y": 918,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Beach",
+      "name": "sand_texture",
+      "kind": "texture",
+      "coverage": 1.0,
+      "target": [
+        64,
+        64
+      ],
+      "path": "public\\assets\\original\\Beach\\sand_texture.png",
+      "runtimeOverride": null
+    },
+    {
+      "sourceSheet": "f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+      "cell": {
+        "col": 3,
+        "row": 9,
+        "x": 1152,
+        "y": 918,
+        "w": 384,
+        "h": 102
+      },
+      "category": "Harbor",
+      "name": "boat",
+      "kind": "sprite",
+      "coverage": 0.2535,
+      "target": [
+        128,
+        48
+      ],
+      "path": "public\\assets\\original\\Harbor\\boat.png",
+      "runtimeOverride": "boat.png"
+    },
+    {
+      "category": "Characters",
+      "name": "player.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\player.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_1.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_1.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_2.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_2.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_3.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_3.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_4.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_4.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_5.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_5.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_6.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_6.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_7.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_7.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_8.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_8.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_9.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_9.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_10.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_10.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_11.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_11.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_12.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_12.png",
+      "fallback": true
+    },
+    {
+      "category": "Characters",
+      "name": "npc_fisher.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\npc_fisher.png",
+      "fallback": true
+    },
+    {
+      "category": "Animals",
+      "name": "pet_dog.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\pet_dog.png",
+      "fallback": true
+    },
+    {
+      "category": "Animals",
+      "name": "pet_cat.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\pet_cat.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_bed.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_bed.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_sofa.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_sofa.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_table.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_table.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_chair.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_chair.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_fridge.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_fridge.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_stove.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_stove.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_shelf.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_shelf.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_tv.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_tv.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_espresso.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_espresso.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_register.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_register.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_bathtub.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_bathtub.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_toilet.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_toilet.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_plant.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_plant.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_washing_machine.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_washing_machine.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_microwave.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_microwave.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_desk.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_desk.png",
+      "fallback": true
+    },
+    {
+      "category": "Furniture",
+      "name": "f_crib.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\f_crib.png",
+      "fallback": true
+    },
+    {
+      "category": "Trains",
+      "name": "train.png",
+      "source": "C:\\Users\\rocka\\Documents\\Progetto predefinito\\bacoli-life\\public\\assets\\sprites\\train.png",
+      "fallback": true
+    },
+    {
+      "category": "Stations",
+      "name": "station_eav.png",
+      "path": "public\\assets\\original\\Stations\\station_eav.png",
+      "sourcePhoto": "docs/source_assets/photos/698ca65f.png",
+      "coverage": 1.0,
+      "target": [
+        192,
+        80
+      ],
+      "runtimeOverride": "station_eav.png"
+    },
+    {
+      "category": "Stations",
+      "name": "platform.png",
+      "path": "public\\assets\\original\\Stations\\platform.png",
+      "sourcePhoto": "docs/source_assets/photos/698ca65f.png",
+      "coverage": 1.0,
+      "target": [
+        192,
+        24
+      ],
+      "runtimeOverride": null
+    },
+    {
+      "category": "Stations",
+      "name": "rail.png",
+      "path": "public\\assets\\original\\Stations\\rail.png",
+      "sourcePhoto": "docs/source_assets/photos/698ca65f.png",
+      "coverage": 1.0,
+      "target": [
+        192,
+        16
+      ],
+      "runtimeOverride": null
+    }
+  ]
+}
