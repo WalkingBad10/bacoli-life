@@ -62,7 +62,7 @@ Aggiornato: milestone 3 (simulazione di vita estesa + viaggi EAV animati) comple
 
 ## Verifiche effettuate (milestone 3)
 - `npm run build`: `tsc --noEmit` + Vite riusciti; bundle
-  `index-ChazjuF0.js` 1.366,83 kB / gzip 377,35 kB (warning chunk noto).
+  `index-CxkSJq6s.js` 1.366,91 kB / gzip 377,38 kB (warning chunk noto).
 - `npm test`: **59/59** test unitari superati (12 file), inclusi migrazione v3,
   relazioni/matrimonio, animali, officina, consumo e posti a sedere.
 - `npm run test:e2e`: **26/26** test superati su Chromium headless desktop e
