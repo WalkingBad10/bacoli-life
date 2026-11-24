@@ -140,8 +140,11 @@ verificavano timeout della HUD e micro-movimenti persi nei test di guida.
 - [x] Backup pre-M5 creato e verificato.
 - [x] Backup aggiuntivo pre-pubblicazione: `bacoli-life-backups/bacoli-life-20261125-003700-m5-verificata-prima-pubblicazione.zip` (80.133.905 byte).
 - [x] Tutte le validazioni, i test e il QA visiva superati.
-- [ ] Commit M5, tag e push su `origin`.
-- [ ] Deploy GitHub Pages e verifica live finale.
+- [x] Commit M5 `09ce93f`, tag `milestone-5-verified`, push su `origin/main`.
+- [x] Deploy GitHub Pages run #11 (`45511536656`) — build 29 s, deploy 9 s, **successo**.
+- [x] Verifica live su `https://walkingbad10.github.io/bacoli-life/` (Chromium desktop + mobile):
+  canvas e HUD visibili, `regions: 9`, `centro` con `places: 376` e
+  `solidTiles: 129975`, switch a `torregaveta` con `places: 457` e
+  `solidTiles: 91224`, `errors: []`.
 
-La pubblicazione avverrà solo dopo che tutti i controlli di questa sezione
-saranno spuntati.
+Milestone 5 pubblicata e verificata.
