@@ -7,7 +7,17 @@ const FOOD_VALUES: Partial<Record<ItemId, { hunger: number; energy: number }>> =
   cornetto: { hunger: 16, energy: 3 },
   gelato: { hunger: 12, energy: 2 },
   spesa: { hunger: 24, energy: 2 },
+  pesce: { hunger: 26, energy: 4 },
+  dolce: { hunger: 14, energy: 3 },
 };
+
+/** Usa un oggetto non commestibile (detersivo, giornale, benzina...). */
+export function useItem(state: GameState, item: ItemId): boolean {
+  if (FOOD_VALUES[item] || (state.inventory[item] ?? 0) <= 0) return false;
+  state.inventory[item]--;
+  if (state.inventory[item] === 0) delete state.inventory[item];
+  return true;
+}
 
 /** Consuma un oggetto posseduto: separazione tra acquisto e uso reale. */
 export function consumeItem(state: GameState, item: ItemId): boolean {

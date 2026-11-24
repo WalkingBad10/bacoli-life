@@ -1,11 +1,15 @@
 import { GAME_KEY } from '../core/config';
 import type {
-  GameState, PetState, SocialState, VehicleState,
+  AttendedEvent, GameState, PetState, SocialState, VehicleState,
 } from '../core/types';
+import { normalizeStoredBusinesses } from './BusinessSystem';
+import { defaultCareer, normalizeCareer } from './CareerSystem';
+import { normalizeDeliveries } from './DeliverySystem';
+import { normalizeHomes, syncHomeMirror } from './HomeSystem';
 
 const STORAGE_KEY = `${GAME_KEY}:save`;
-/** v3 aggiunge relazioni/matrimonio, animali e manutenzione veicoli. */
-export const SAVE_VERSION = 3;
+/** v4 aggiunge carriera, case multiple, attività, consegne ed eventi. */
+export const SAVE_VERSION = 4;
 
 interface Envelope {
   version: number;
@@ -53,6 +57,14 @@ function migrate(payload: GameState, version: number): GameState {
       vehicle.garageId ??= null;
     }
   }
+  if (version < 4) {
+    payload.career ??= defaultCareer();
+    payload.homes ??= normalizeHomes(undefined, payload.home, payload.player?.homeId);
+    payload.activeHomeId ??= payload.player?.homeId ?? 'home-1';
+    payload.businesses ??= [];
+    payload.deliveries ??= [];
+    payload.events ??= [];
+  }
   return normalize(payload);
 }
 
@@ -96,7 +108,19 @@ export function normalize(state: GameState): GameState {
   state.home ??= { owned: false, address: 'Via Ortensio', furniture: [], upgrades: [] };
   state.home.furniture ??= [];
   state.home.upgrades ??= [];
+  state.homes = normalizeHomes(state.homes, state.home, state.player.homeId);
+  state.activeHomeId ??= state.player.homeId ?? 'home-1';
+  syncHomeMirror(state);
   state.family ??= [];
+  state.family = state.family.filter((member): member is NonNullable<typeof member> =>
+    Boolean(member) && typeof member === 'object')
+    .map((member) => ({
+      ...member,
+      age: Number.isFinite(member.age) ? Math.max(0, member.age!) : 0,
+      mood: Number.isFinite(member.mood) ? Math.max(0, Math.min(100, member.mood!)) : 70,
+      child: member.child ?? member.relation === 'figlio',
+      schedule: member.schedule ?? (member.relation === 'figlio' ? 'school' : 'home'),
+    }));
   state.vehicles ??= [];
   state.jobState ??= null;
   state.transport ??= { ticketBus: 0, ticketTrain: 0, monthlyPass: false, lastTrip: null };
@@ -104,6 +128,17 @@ export function normalize(state: GameState): GameState {
   state.stats.distanceWalked ??= 0;
   state.stats.distanceDriven ??= 0;
   state.stats.npcsMet ??= 0;
+  state.career = normalizeCareer(state.career);
+  state.businesses = normalizeStoredBusinesses(state.businesses);
+  state.deliveries = normalizeDeliveries(state.deliveries);
+  if (!Array.isArray(state.events)) state.events = [];
+  state.events = (state.events as AttendedEvent[]).filter((event): event is AttendedEvent =>
+    Boolean(event) && typeof event === 'object' && typeof event.id === 'string')
+    .map((event) => ({ id: event.id, day: Number.isFinite(event.day) ? event.day! : state.day ?? 1 }));
+
+  for (const vehicle of state.vehicles ?? []) {
+    vehicle.garageId ??= null;
+  }
 
   if (!state.social || typeof state.social !== 'object' || Array.isArray(state.social)) {
     state.social = defaultSocial();

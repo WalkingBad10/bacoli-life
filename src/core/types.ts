@@ -3,7 +3,8 @@ export type Direction = 'down' | 'left' | 'right' | 'up';
 export type PlaceKind =
   | 'home' | 'cafe' | 'bar' | 'restaurant' | 'shop' | 'pharmacy'
   | 'fuel' | 'bank' | 'post_office' | 'archaeological_site' | 'beach' | 'railway'
-  | 'dealership' | 'workplace' | 'parking' | 'bus_stop' | 'house';
+  | 'dealership' | 'workplace' | 'parking' | 'bus_stop' | 'house'
+  | 'garage' | 'pescheria' | 'gelateria' | 'office' | 'delivery';
 
 export interface Place {
   id: string;
@@ -40,6 +41,21 @@ export interface HomeState {
   address: string;
   furniture: string[];
   upgrades: string[];
+  /** Collegamento alla casa attiva nei salvataggi v4. */
+  id?: string;
+  street?: string;
+}
+
+/** Una casa acquistabile: Via Ortensio, Via Spiaggia, centro e frazioni. */
+export interface HomeRecord {
+  id: string;
+  address: string;
+  street: string;
+  price: number;
+  owned: boolean;
+  furniture: string[];
+  upgrades: string[];
+  style: 'historic' | 'seafront' | 'villa' | 'apartment';
 }
 
 export interface FamilyMember {
@@ -47,6 +63,9 @@ export interface FamilyMember {
   relation: string;
   age: number;
   mood: number;
+  /** Routine scolastica/lavorativa usata dalla simulazione oraria. */
+  schedule?: 'work' | 'school' | 'home' | 'baby';
+  child?: boolean;
 }
 
 export interface JobState {
@@ -56,6 +75,53 @@ export interface JobState {
   hourlyWage: number;
   hoursWorked: number;
   daysWorked: number;
+  level?: number;
+  xp?: number;
+}
+
+/** Stato di carriera: esperienza, promozioni e busta paga settimanale. */
+export interface CareerState {
+  level: number;
+  xp: number;
+  shifts: number;
+  promotions: number;
+  lastPayDay: number;
+  unpaidWage: number;
+  totalEarned: number;
+}
+
+/** Attività commerciale acquistabile e gestibile. */
+export interface BusinessState {
+  id: string;
+  placeId: string;
+  name: string;
+  kind: PlaceKind;
+  owned: boolean;
+  open: boolean;
+  stock: number;
+  earnings: number;
+  employees: number;
+  level: number;
+  price: number;
+  lastCollectedDay: number;
+}
+
+/** Ordine a domicilio con corriere visibile nel mondo. */
+export interface DeliveryOrder {
+  id: string;
+  item: string;
+  quantity: number;
+  from: string;
+  eta: number;
+  status: 'preparing' | 'onway' | 'delivered';
+  x: number;
+  y: number;
+  destinationId: string;
+}
+
+export interface AttendedEvent {
+  id: string;
+  day: number;
 }
 
 export interface TransportPass {
@@ -117,6 +183,13 @@ export interface GameState {
   transport: TransportPass;
   social: SocialState;
   pets: PetState[];
+  /** Aggiunti nella versione 4 del salvataggio; normalizzati sempre. */
+  homes?: HomeRecord[];
+  activeHomeId?: string;
+  businesses?: BusinessState[];
+  deliveries?: DeliveryOrder[];
+  career?: CareerState;
+  events?: AttendedEvent[];
   stats: { distanceWalked: number; distanceDriven: number; npcsMet: number };
 }
 

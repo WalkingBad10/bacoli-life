@@ -45,6 +45,15 @@ export class CollisionSystem {
     if (solid) { solid.x = x; solid.y = y; }
   }
 
+  /** Rimuove un ostacolo quando un veicolo entra in garage. */
+  removeSolid(id: string): void {
+    const solid = this.solidsById.get(id);
+    if (!solid) return;
+    this.solidsById.delete(id);
+    const index = this.solids.indexOf(solid);
+    if (index >= 0) this.solids.splice(index, 1);
+  }
+
   clearSolids(): void {
     this.solids.length = 0;
     this.solidsById.clear();

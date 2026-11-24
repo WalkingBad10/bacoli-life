@@ -16,6 +16,10 @@ export const ITEM_CATALOG = {
   biglietto_bus: { name: 'Biglietto autobus', price: 1.5, category: 'transport' },
   biglietto_treno: { name: 'Biglietto Cumana', price: 2.2, category: 'transport' },
   souvenir: { name: 'Souvenir', price: 12, category: 'misc' },
+  detersivo: { name: 'Detersivo', price: 6, category: 'household' },
+  giornale: { name: 'Giornale locale', price: 1.5, category: 'misc' },
+  pesce: { name: 'Pesce fresco di Miseno', price: 9, category: 'food' },
+  dolce: { name: 'Dolce della casa', price: 4, category: 'food' },
 } as const;
 
 export type ItemId = keyof typeof ITEM_CATALOG;

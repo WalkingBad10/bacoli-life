@@ -1,0 +1,30 @@
+{
+  "analyzedAt": "2026-11-24T15:17:33.342676+00:00",
+  "scaleReference": "1 metro = 16 pixel; adulto 1,75 m = 28 px",
+  "entries": [
+    {
+      "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\0c5410e2-09cd-4bd6-9677-c17e6366e777\\image.png",
+      "bytes": 415967,
+      "model": "qwen2.5vl:3b",
+      "response": "Soggetto: Una donna che cammina lungo una strada pedonale di Bacoli.\n\nNumero di piani degli edifici visibili: 3-4, altezza approssimativa circa 8 metri.\n\nLarghezza della strada/marciapiede in metri: 5-6, tipo di pavimento: ciottolato o pietra.\n\nMateriali e colori delle facciate, tetti, persiane, balconi, ringhiere:\n- Edifici principali: marrone con finestre bianche.\n- Tetti: tettoia in legno.\n- Persiane: aperte.\n- Balconi: presenti su tutti i piani.\n\nPorte e finestre: numerose sulle facciate degli edifici.\n\nArredo urbano: non visibile, ma ipotizzato come bancarelle o tavoli di piazza.\n\nRapporto visivo tra persone (se presenti), edifici, auto e vegetazione:\n- Una persona in primo piano.\n- Edifici a fianco della strada.\n- Auto parcheggiata lungo la via.\n- Vegetazione: palme sparse lungo il percorso.\n\nDettagli da riprodurre in pixel art con scala 1 metro = 16 pixel:\n- La donna camminante, con un vestito leggero e scarpe casual.\n- Le facciate degli edifici principali, con finestre bianche e balconi aperti.\n- L'auto parcheggiata lungo la via, con una forma semplice ma dettagliata.\n- I palmi che si stagliano sullo sfondo."
+    },
+    {
+      "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\a7f6800e-bebd-4646-9138-26471d268d00\\image.png",
+      "bytes": 4708323,
+      "model": "qwen2.5vl:3b",
+      "response": "Soggetto: Bacoli\n\nNumero di piani degli edifici visibili: circa 3-4 piani \nAltezza approssimativa: non visibile, ma sembra essere un paese costiero\n\nLarghezza della strada/marciapiede: circa 10 metri\nTipo di pavimento: asfalto con tracciato per auto e pedoni\n\nMateriali e colori delle facciate:\n- Bianco (palazzi principali)\n- Giallo, rosso, blu (case private)\n\nTetti e persiane:\n- Tetti rossi o bianchi\n- Persiane chiuse in vari colori\n\nPorte: non visibili \nFinestre: non visibili \nBalconi: presenti su alcuni palazzi principali\nScale: non visibili \n\nRapporto visivo tra persone, edifici, auto e vegetazione:\nNon si vedono molti individui o automobili in primo piano. La vegetazione è abbondante.\n\nDettagli da riprodurre in pixel art con scala 1 metro = 16 pixel: \n- Edifici principali a due piani\n- Case private più basse, circa uno o due piani\n- Strade strette e curve\n- Vegetazione lungo le strade"
+    },
+    {
+      "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\bf48a165-e81a-4219-858b-7b8cb5d3ce1f\\image.png",
+      "bytes": 491821,
+      "model": "qwen2.5vl:3b",
+      "response": "1) Soggetto: Un personaggio maschile con capelli rossi, vestito di camicia grigio e pantaloni blu.\n2) Numero di piani degli edifici visibili: Tre (non visibile il quarto piano).\n3) Larghezza approssimativa della strada/marciapiede in metri: 10-15 metri. Tipo di pavimento: Pietra o ciottoli.\n4) Materiali e colori:\n   - Facciata principale: Legno scuro, con finestre a vetro trasparente.\n   - Tetti: Copertura rossa (non visibile il tetto superiore).\n   - Persiane: Blu chiaro.\n   - Balconi: Non presenti.\n5) Porte e finestre:\n   - Una porta principale di una casa, non visibile l'altro lato della strada.\n6) Rapporto visivo tra persone (se presenti), edifici, auto e vegetazione: Il personaggio è molto piccolo rispetto agli edifici. Non ci sono auto o vegetazione evidenti in questa immagine.\n7) Dettagli da riprodurre:\n   - La casa principale con il negozio di Pierre's.\n   - Le finestre della casa, le persiane e la porta principale.\n   - Il marciapiede in pietra."
+    },
+    {
+      "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\0cc9cf3a-7cbe-4e58-97c6-56e6f8b18f76\\image.png",
+      "bytes": 604037,
+      "model": "qwen2.5vl:3b",
+      "response": "Soggetto: Un personaggio maschile di età compresa tra i 20-30 anni.\n\nLuogo probabile: Bacoli, Italia\n\nNumero di piani degli edifici visibili e altezza approssimativa in metri:\n1 piano (non visibile)\n\nLarghezza approssimativa della strada/marciapiede in metri e tipo di pavimento:\n20-30 metri x 4 metri, marciapiede in pietra\n\nMateriali e colori di facciate, tetti, persiane, balconi, ringhiere:\nFacciata: Legno chiaro\nTetto: Tegole rosse\nPersiane: Bianche\nBalconi: Non visibili\nRinghiera: In legno con rami verdi\n\nPorte e finestre:\n1 porta principale in legno blu con vetro, 2 finestre laterali simili\n\nScale:\nNon visibile\n\nArredo urbano:\nPianta di fiori rosa vicino a una casa\nCancello di legno davanti alla casa blu\n\nRapporto visivo tra persone (se presenti), edifici e vegetazione:\nLe persone sono piccole rispetto agli edifici, la vegetazione è abbondante con alberi e arbusti.\n\nDettagli da riprodurre in pixel art con scala 1 metro = 16 pixel:\n\n- Personaggio maschile di età compresa tra i 20-30 anni\n- Casa blu a tre piani (non visibile)\n- Strada/marciapiede in pietra, larghezza circa 4 metri\n- Pianta di fiori rosa vicino a una casa"
+    }
+  ]
+}

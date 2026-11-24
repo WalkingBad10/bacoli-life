@@ -9,6 +9,11 @@ export interface ShopCallbacks {
   exit: () => void;
 }
 
+export interface PhoneSection {
+  title: string;
+  rows: { label: string; action: () => void }[];
+}
+
 export interface PhoneCallbacks {
   order: (item: ItemId) => void;
   call: (name: string) => void;
@@ -16,6 +21,8 @@ export interface PhoneCallbacks {
   jobs: () => void;
   map: () => void;
   exit: () => void;
+  /** Sezioni extra mostrate in tutti i tab, senza perderle al cambio scheda. */
+  sections?: PhoneSection[];
 }
 
 export class Hud {
@@ -178,7 +185,8 @@ export class Hud {
 
   openShop(title: string, wallet: Wallet, cb: ShopCallbacks): void {
     const items = (Object.keys(ITEM_CATALOG) as ItemId[])
-      .filter((id) => ['caffe', 'pizza', 'cornetto', 'gelato', 'spesa', 'souvenir'].includes(id));
+      .filter((id) => ITEM_CATALOG[id].category === 'food'
+        || ['souvenir', 'detersivo', 'giornale'].includes(id));
     this.panel.innerHTML = `<h2>${title}</h2>
       <p>Saldo: <b>€ ${wallet.money.toFixed(2)}</b></p>
       ${items.map((id) => `<div class="list-item"><span>${ITEM_CATALOG[id].name} · € ${ITEM_CATALOG[id].price.toFixed(2)}</span>
@@ -227,10 +235,15 @@ export class Hud {
           <div class="list-item"><span>Bagnino · Stabilimento</span><span>€ 8/h</span></div>
           <div class="row"><button class="bl" id="phone-jobs">Candidati</button></div>`;
       }
+      const sections = (cb.sections ?? []).map((section, sectionIndex) =>
+        `<div class="panel-title">${section.title}</div>`
+        + section.rows.map((row, rowIndex) =>
+          `<button class="bl" data-section="${sectionIndex}-${rowIndex}">${row.label}</button>`).join(''),
+      ).join('');
       this.panel.innerHTML = `<h2>📱 Smartphone</h2>
         <div class="tabs">${Object.entries(tabs).map(([key, label]) =>
           `<button class="tab ${this.activeTab === key ? 'active' : ''}" data-tab="${key}">${label}</button>`).join('')}</div>
-        <div id="hud-panel-body">${content}</div>
+        <div id="hud-panel-body">${content}${sections}</div>
         <div class="row"><button class="bl primary" id="phone-exit">Chiudi</button></div>`;
       this.panel.classList.add('open');
       this.panel.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((btn) => {
@@ -241,6 +254,12 @@ export class Hud {
       });
       this.panel.querySelectorAll<HTMLButtonElement>('[data-order]').forEach((btn) => {
         btn.onclick = () => cb.order(btn.dataset.order as ItemId);
+      });
+      this.panel.querySelectorAll<HTMLButtonElement>('[data-section]').forEach((btn) => {
+        btn.onclick = () => {
+          const [sectionIndex, rowIndex] = (btn.dataset.section ?? '').split('-').map(Number);
+          cb.sections?.[sectionIndex]?.rows[rowIndex]?.action();
+        };
       });
       const map = this.panel.querySelector('#phone-map') as HTMLButtonElement | null;
       if (map) map.onclick = cb.map;

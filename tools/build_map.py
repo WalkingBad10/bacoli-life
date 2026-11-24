@@ -20,7 +20,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GEO = ROOT / "src" / "data" / "bacoli_geo.json"
-MAP_OUT = ROOT / "public" / "assets" / "maps" / "bacoli.json"
+# Il JSON Tiled resta solo sorgente offline: a runtime si caricano i due
+# buffer binari (367 kB invece di 1,42 MB × 2).
+MAP_OUT = ROOT / "tools" / "generated" / "bacoli.tiled.json"
+GROUND_OUT = ROOT / "public" / "assets" / "maps" / "bacoli-ground.bin"
+COLLISION_OUT = ROOT / "public" / "assets" / "maps" / "bacoli-collision.bin"
+META_OUT = ROOT / "public" / "assets" / "maps" / "bacoli-map.meta.json"
 PLACES_OUT = ROOT / "src" / "data" / "bacoli_places.json"
 
 # Territorio coperto: Capo Miseno a sud, Cuma a nord, Torregaveta a ovest.
@@ -116,6 +121,9 @@ ZONE_KINDS = [
     ("cafe", 4), ("bar", 3), ("restaurant", 3), ("shop", 6),
     ("pharmacy", 2), ("home", 18), ("house", 8), ("workplace", 2),
     ("bank", 1), ("fuel", 1), ("parking", 2), ("dealership", 1),
+    # Milestone 4: attività, garage e servizi reali del territorio.
+    ("garage", 1), ("pescheria", 1), ("gelateria", 1), ("office", 1),
+    ("delivery", 1),
 ]
 
 SPRITE_FOR = {
@@ -123,6 +131,8 @@ SPRITE_FOR = {
     "fuel": 4, "bank": 1, "post_office": 1, "archaeological_site": 3,
     "railway": 5, "bus_stop": 5, "beach": 5, "parking": 5,
     "dealership": 4, "workplace": 1, "home": 0, "house": 1,
+    "garage": 1, "pescheria": 4, "gelateria": 4, "office": 1,
+    "delivery": 4,
 }
 
 
@@ -352,6 +362,9 @@ def main() -> None:
                 "pharmacy": "Farmacia", "bank": "Banca", "fuel": "Distributore",
                 "parking": "Parcheggio", "dealership": "Concessionaria",
                 "workplace": "Attività", "home": "Casa", "house": "Palazzo",
+                "garage": "Garage", "pescheria": "Pescheria",
+                "gelateria": "Gelateria", "office": "Ufficio",
+                "delivery": "Consegne",
             }[kind]
             add_place(places, f"{label} {zone} {n + 1}", kind, tx, ty, tiles)
             for x, y in tiles:
@@ -404,6 +417,30 @@ def main() -> None:
     spawn = {"x": candidates[0][1], "y": candidates[0][2]} if candidates else \
         {"x": spawn_target[0], "y": spawn_target[1]}
 
+    # Servizi M4 ancorati a luoghi reali: ogni punto è sulla strada più vicina,
+    # così non crea ostacoli fuori luogo né elementi grafici sospesi.
+    def nearest_road(lat: float, lon: float) -> tuple[int, int]:
+        tx, ty = to_tile(lat, lon)
+        return min(
+            road_tiles,
+            key=lambda p: (p[0] - tx) ** 2 + (p[1] - ty) ** 2,
+            default=(tx, ty),
+        )
+
+    services = [
+        ("Pescheria del Porto Miseno", "pescheria", 40.79218, 14.07929),
+        ("Gelateria Piazzetta", "gelateria", 40.80170, 14.08134),
+        ("Garage Miseno", "garage", 40.78669, 14.08409),
+        ("Garage Baia", "garage", 40.81889, 14.07075),
+        ("Ufficio servizi Bacoli", "office", 40.79659, 14.07777),
+        ("Centro consegne Bacoli", "delivery", 40.79680, 14.07810),
+        ("Parcheggio Torregaveta", "parking", 40.81150, 14.04487),
+        ("Pescheria Miliscola", "pescheria", 40.78971, 14.06611),
+    ]
+    for name, kind, lat, lon in services:
+        sx, sy = nearest_road(lat, lon)
+        add_place(places, name, kind, sx, sy, [])
+
     # Fiori e macchie verdi per aumentare la densità visiva.
     for i in range(0, TW * TH, 37):
         x = (i * 17) % TW
@@ -433,6 +470,21 @@ def main() -> None:
     }
     MAP_OUT.parent.mkdir(parents=True, exist_ok=True)
     MAP_OUT.write_text(json.dumps(tiled, separators=(",", ":")), encoding="utf-8")
+
+    GROUND_OUT.parent.mkdir(parents=True, exist_ok=True)
+    GROUND_OUT.write_bytes(bytes(cell for row in ground for cell in row))
+    packed = bytearray((TW * TH + 7) // 8)
+    for index, row in enumerate(collision):
+        for x, value in enumerate(row):
+            if value:
+                bit = index * TW + x
+                packed[bit >> 3] |= 1 << (bit & 7)
+    COLLISION_OUT.write_bytes(bytes(packed))
+    META_OUT.write_text(json.dumps({
+        "width": TW, "height": TH, "tileWidth": 16, "tileHeight": 16,
+        "tilesetName": "base", "tilesetKey": "tiles16", "firstGid": 1,
+        "solidTiles": sum(sum(row) for row in collision),
+    }), encoding="utf-8")
 
     PLACES_OUT.write_text(json.dumps({
         "bounds": {"south": S, "north": N, "west": W, "east": E},

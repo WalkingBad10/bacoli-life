@@ -3757,11 +3757,11 @@
   },
   {
    "id": "place-163",
-   "name": "Bar Bacoli centro 33",
-   "kind": "cafe",
+   "name": "Pescheria Bacoli centro 33",
+   "kind": "pescheria",
    "x": 350,
    "y": 476,
-   "sprite": 2,
+   "sprite": 4,
    "footprint": [
     [
      350,
@@ -3783,6 +3783,40 @@
   },
   {
    "id": "place-164",
+   "name": "Palazzo Bacoli centro 35",
+   "kind": "house",
+   "x": 335,
+   "y": 495,
+   "sprite": 1,
+   "footprint": [
+    [
+     335,
+     495
+    ],
+    [
+     335,
+     496
+    ],
+    [
+     335,
+     497
+    ],
+    [
+     336,
+     495
+    ],
+    [
+     336,
+     496
+    ],
+    [
+     336,
+     497
+    ]
+   ]
+  },
+  {
+   "id": "place-165",
    "name": "Banca Bacoli centro 48",
    "kind": "bank",
    "x": 301,
@@ -3828,7 +3862,7 @@
    ]
   },
   {
-   "id": "place-165",
+   "id": "place-166",
    "name": "Casa Bacoli centro 64",
    "kind": "home",
    "x": 293,
@@ -3854,7 +3888,7 @@
    ]
   },
   {
-   "id": "place-166",
+   "id": "place-167",
    "name": "Casa Bacoli centro 70",
    "kind": "home",
    "x": 352,
@@ -3880,7 +3914,7 @@
    ]
   },
   {
-   "id": "place-167",
+   "id": "place-168",
    "name": "Casa Bacoli centro 71",
    "kind": "home",
    "x": 320,
@@ -3914,7 +3948,7 @@
    ]
   },
   {
-   "id": "place-168",
+   "id": "place-169",
    "name": "Palazzo Bacoli centro 82",
    "kind": "house",
    "x": 308,
@@ -3940,7 +3974,7 @@
    ]
   },
   {
-   "id": "place-169",
+   "id": "place-170",
    "name": "Parcheggio Bacoli centro 88",
    "kind": "parking",
    "x": 337,
@@ -3966,7 +4000,7 @@
    ]
   },
   {
-   "id": "place-170",
+   "id": "place-171",
    "name": "Negozio Bacoli mare 3",
    "kind": "shop",
    "x": 349,
@@ -4012,7 +4046,7 @@
    ]
   },
   {
-   "id": "place-171",
+   "id": "place-172",
    "name": "Palazzo Bacoli mare 18",
    "kind": "house",
    "x": 350,
@@ -4038,7 +4072,7 @@
    ]
   },
   {
-   "id": "place-172",
+   "id": "place-173",
    "name": "Casa Bacoli mare 19",
    "kind": "home",
    "x": 333,
@@ -4064,7 +4098,7 @@
    ]
   },
   {
-   "id": "place-173",
+   "id": "place-174",
    "name": "Negozio Bacoli mare 31",
    "kind": "shop",
    "x": 348,
@@ -4090,7 +4124,7 @@
    ]
   },
   {
-   "id": "place-174",
+   "id": "place-175",
    "name": "Casa Bacoli mare 42",
    "kind": "home",
    "x": 339,
@@ -4116,7 +4150,7 @@
    ]
   },
   {
-   "id": "place-175",
+   "id": "place-176",
    "name": "Casa Miseno 4",
    "kind": "home",
    "x": 364,
@@ -4150,7 +4184,7 @@
    ]
   },
   {
-   "id": "place-176",
+   "id": "place-177",
    "name": "Attività Miseno 5",
    "kind": "workplace",
    "x": 364,
@@ -4176,7 +4210,7 @@
    ]
   },
   {
-   "id": "place-177",
+   "id": "place-178",
    "name": "Palazzo Miseno 8",
    "kind": "house",
    "x": 378,
@@ -4210,7 +4244,7 @@
    ]
   },
   {
-   "id": "place-178",
+   "id": "place-179",
    "name": "Attività Miseno 9",
    "kind": "workplace",
    "x": 356,
@@ -4236,7 +4270,7 @@
    ]
   },
   {
-   "id": "place-179",
+   "id": "place-180",
    "name": "Palazzo Miseno 12",
    "kind": "house",
    "x": 365,
@@ -4262,7 +4296,7 @@
    ]
   },
   {
-   "id": "place-180",
+   "id": "place-181",
    "name": "Distributore Miseno 13",
    "kind": "fuel",
    "x": 396,
@@ -4296,7 +4330,7 @@
    ]
   },
   {
-   "id": "place-181",
+   "id": "place-182",
    "name": "Casa Miseno 16",
    "kind": "home",
    "x": 370,
@@ -4330,7 +4364,7 @@
    ]
   },
   {
-   "id": "place-182",
+   "id": "place-183",
    "name": "Pizzeria Miseno 18",
    "kind": "restaurant",
    "x": 375,
@@ -4364,119 +4398,187 @@
    ]
   },
   {
-   "id": "place-183",
-   "name": "Pizzeria Miseno 20",
-   "kind": "restaurant",
+   "id": "place-184",
+   "name": "Garage Miseno 20",
+   "kind": "garage",
    "x": 391,
    "y": 577,
-   "sprite": 2,
-   "footprint": [
-    [
-     391,
-     577
-    ],
-    [
-     391,
-     578
-    ],
-    [
-     392,
-     577
-    ],
-    [
-     392,
-     578
-    ],
-    [
-     393,
-     577
-    ],
-    [
-     393,
-     578
-    ]
-   ]
-  },
-  {
-   "id": "place-184",
-   "name": "Palazzo Miseno 21",
-   "kind": "house",
-   "x": 396,
-   "y": 602,
    "sprite": 1,
    "footprint": [
     [
-     396,
-     602
+     391,
+     577
     ],
     [
-     396,
-     603
+     391,
+     578
     ],
     [
-     397,
-     602
+     392,
+     577
     ],
     [
-     397,
-     603
+     392,
+     578
+    ],
+    [
+     393,
+     577
+    ],
+    [
+     393,
+     578
     ]
    ]
   },
   {
    "id": "place-185",
-   "name": "Casa Miseno 25",
+   "name": "Casa Miseno 21",
    "kind": "home",
-   "x": 360,
-   "y": 606,
+   "x": 362,
+   "y": 601,
    "sprite": 0,
    "footprint": [
     [
-     360,
-     606
+     362,
+     601
     ],
     [
-     360,
-     607
+     362,
+     602
     ],
     [
-     361,
-     606
+     363,
+     601
     ],
     [
-     361,
-     607
+     363,
+     602
     ]
    ]
   },
   {
    "id": "place-186",
-   "name": "Palazzo Miseno 26",
-   "kind": "house",
-   "x": 375,
-   "y": 604,
-   "sprite": 1,
+   "name": "Casa Miseno 22",
+   "kind": "home",
+   "x": 394,
+   "y": 576,
+   "sprite": 0,
    "footprint": [
     [
-     375,
-     604
+     394,
+     576
     ],
     [
-     375,
-     605
+     394,
+     577
     ],
     [
-     376,
-     604
+     395,
+     576
     ],
     [
-     376,
-     605
+     395,
+     577
     ]
    ]
   },
   {
    "id": "place-187",
+   "name": "Concessionaria Miseno 23",
+   "kind": "dealership",
+   "x": 358,
+   "y": 602,
+   "sprite": 4,
+   "footprint": [
+    [
+     358,
+     602
+    ],
+    [
+     358,
+     603
+    ],
+    [
+     359,
+     602
+    ],
+    [
+     359,
+     603
+    ]
+   ]
+  },
+  {
+   "id": "place-188",
+   "name": "Palazzo Miseno 24",
+   "kind": "house",
+   "x": 354,
+   "y": 598,
+   "sprite": 1,
+   "footprint": [
+    [
+     354,
+     598
+    ],
+    [
+     354,
+     599
+    ],
+    [
+     355,
+     598
+    ],
+    [
+     355,
+     599
+    ],
+    [
+     356,
+     598
+    ],
+    [
+     356,
+     599
+    ]
+   ]
+  },
+  {
+   "id": "place-189",
+   "name": "Palazzo Miseno 25",
+   "kind": "house",
+   "x": 395,
+   "y": 580,
+   "sprite": 1,
+   "footprint": [
+    [
+     395,
+     580
+    ],
+    [
+     395,
+     581
+    ],
+    [
+     396,
+     580
+    ],
+    [
+     396,
+     581
+    ],
+    [
+     397,
+     580
+    ],
+    [
+     397,
+     581
+    ]
+   ]
+  },
+  {
+   "id": "place-190",
    "name": "Casa Miseno 28",
    "kind": "home",
    "x": 370,
@@ -4510,12 +4612,12 @@
    ]
   },
   {
-   "id": "place-188",
-   "name": "Casa Miseno 29",
-   "kind": "home",
+   "id": "place-191",
+   "name": "Consegne Miseno 29",
+   "kind": "delivery",
    "x": 380,
    "y": 603,
-   "sprite": 0,
+   "sprite": 4,
    "footprint": [
     [
      380,
@@ -4536,7 +4638,33 @@
    ]
   },
   {
-   "id": "place-189",
+   "id": "place-192",
+   "name": "Consegne Miseno 31",
+   "kind": "delivery",
+   "x": 361,
+   "y": 588,
+   "sprite": 4,
+   "footprint": [
+    [
+     361,
+     588
+    ],
+    [
+     361,
+     589
+    ],
+    [
+     362,
+     588
+    ],
+    [
+     362,
+     589
+    ]
+   ]
+  },
+  {
+   "id": "place-193",
    "name": "Casa Miseno 33",
    "kind": "home",
    "x": 399,
@@ -4562,7 +4690,7 @@
    ]
   },
   {
-   "id": "place-190",
+   "id": "place-194",
    "name": "Bar Miseno 36",
    "kind": "cafe",
    "x": 353,
@@ -4596,7 +4724,7 @@
    ]
   },
   {
-   "id": "place-191",
+   "id": "place-195",
    "name": "Palazzo Miseno 40",
    "kind": "house",
    "x": 369,
@@ -4622,7 +4750,7 @@
    ]
   },
   {
-   "id": "place-192",
+   "id": "place-196",
    "name": "Bar Miseno 44",
    "kind": "bar",
    "x": 373,
@@ -4648,12 +4776,12 @@
    ]
   },
   {
-   "id": "place-193",
-   "name": "Bar Miseno 45",
-   "kind": "bar",
+   "id": "place-197",
+   "name": "Garage Miseno 45",
+   "kind": "garage",
    "x": 391,
    "y": 575,
-   "sprite": 2,
+   "sprite": 1,
    "footprint": [
     [
      391,
@@ -4674,67 +4802,59 @@
    ]
   },
   {
-   "id": "place-194",
-   "name": "Parcheggio Miseno 46",
-   "kind": "parking",
-   "x": 394,
-   "y": 593,
-   "sprite": 5,
+   "id": "place-198",
+   "name": "Ufficio Miseno 46",
+   "kind": "office",
+   "x": 359,
+   "y": 599,
+   "sprite": 1,
    "footprint": [
     [
-     394,
-     593
+     359,
+     599
     ],
     [
-     394,
-     594
+     359,
+     600
     ],
     [
-     395,
-     593
+     360,
+     599
     ],
     [
-     395,
-     594
-    ],
-    [
-     396,
-     593
-    ],
-    [
-     396,
-     594
+     360,
+     600
     ]
    ]
   },
   {
-   "id": "place-195",
-   "name": "Negozio Miseno 48",
-   "kind": "shop",
-   "x": 383,
-   "y": 606,
-   "sprite": 4,
+   "id": "place-199",
+   "name": "Casa Miseno 47",
+   "kind": "home",
+   "x": 361,
+   "y": 605,
+   "sprite": 0,
    "footprint": [
     [
-     383,
+     361,
+     605
+    ],
+    [
+     361,
      606
     ],
     [
-     383,
-     607
+     362,
+     605
     ],
     [
-     384,
+     362,
      606
-    ],
-    [
-     384,
-     607
     ]
    ]
   },
   {
-   "id": "place-196",
+   "id": "place-200",
    "name": "Bar Miseno 52",
    "kind": "bar",
    "x": 400,
@@ -4768,7 +4888,7 @@
    ]
   },
   {
-   "id": "place-197",
+   "id": "place-201",
    "name": "Casa Miseno 58",
    "kind": "home",
    "x": 359,
@@ -4794,7 +4914,7 @@
    ]
   },
   {
-   "id": "place-198",
+   "id": "place-202",
    "name": "Negozio Miliscola 3",
    "kind": "shop",
    "x": 245,
@@ -4820,9 +4940,9 @@
    ]
   },
   {
-   "id": "place-199",
-   "name": "Negozio Miliscola 4",
-   "kind": "shop",
+   "id": "place-203",
+   "name": "Gelateria Miliscola 4",
+   "kind": "gelateria",
    "x": 222,
    "y": 571,
    "sprite": 4,
@@ -4854,7 +4974,33 @@
    ]
   },
   {
-   "id": "place-200",
+   "id": "place-204",
+   "name": "Attività Miliscola 5",
+   "kind": "workplace",
+   "x": 216,
+   "y": 566,
+   "sprite": 1,
+   "footprint": [
+    [
+     216,
+     566
+    ],
+    [
+     216,
+     567
+    ],
+    [
+     217,
+     566
+    ],
+    [
+     217,
+     567
+    ]
+   ]
+  },
+  {
+   "id": "place-205",
    "name": "Attività Miliscola 9",
    "kind": "workplace",
    "x": 222,
@@ -4880,7 +5026,7 @@
    ]
   },
   {
-   "id": "place-201",
+   "id": "place-206",
    "name": "Casa Miliscola 10",
    "kind": "home",
    "x": 243,
@@ -4906,7 +5052,7 @@
    ]
   },
   {
-   "id": "place-202",
+   "id": "place-207",
    "name": "Casa Miliscola 11",
    "kind": "home",
    "x": 211,
@@ -4932,7 +5078,7 @@
    ]
   },
   {
-   "id": "place-203",
+   "id": "place-208",
    "name": "Bar Miliscola 13",
    "kind": "bar",
    "x": 202,
@@ -4958,7 +5104,7 @@
    ]
   },
   {
-   "id": "place-204",
+   "id": "place-209",
    "name": "Bar Miliscola 15",
    "kind": "cafe",
    "x": 241,
@@ -4992,7 +5138,7 @@
    ]
   },
   {
-   "id": "place-205",
+   "id": "place-210",
    "name": "Palazzo Miliscola 16",
    "kind": "house",
    "x": 234,
@@ -5018,7 +5164,7 @@
    ]
   },
   {
-   "id": "place-206",
+   "id": "place-211",
    "name": "Casa Miliscola 17",
    "kind": "home",
    "x": 235,
@@ -5052,94 +5198,42 @@
    ]
   },
   {
-   "id": "place-207",
-   "name": "Casa Miliscola 19",
-   "kind": "home",
+   "id": "place-212",
+   "name": "Pescheria Miliscola 19",
+   "kind": "pescheria",
    "x": 205,
    "y": 559,
-   "sprite": 0,
-   "footprint": [
-    [
-     205,
-     559
-    ],
-    [
-     205,
-     560
-    ],
-    [
-     205,
-     561
-    ],
-    [
-     206,
-     559
-    ],
-    [
-     206,
-     560
-    ],
-    [
-     206,
-     561
-    ]
-   ]
-  },
-  {
-   "id": "place-208",
-   "name": "Negozio Miliscola 21",
-   "kind": "shop",
-   "x": 212,
-   "y": 554,
    "sprite": 4,
    "footprint": [
     [
-     212,
-     554
+     205,
+     559
     ],
     [
-     212,
-     555
+     205,
+     560
     ],
     [
-     213,
-     554
+     205,
+     561
     ],
     [
-     213,
-     555
+     206,
+     559
+    ],
+    [
+     206,
+     560
+    ],
+    [
+     206,
+     561
     ]
    ]
   },
   {
-   "id": "place-209",
-   "name": "Banca Miliscola 22",
-   "kind": "bank",
-   "x": 230,
-   "y": 534,
-   "sprite": 1,
-   "footprint": [
-    [
-     230,
-     534
-    ],
-    [
-     230,
-     535
-    ],
-    [
-     231,
-     534
-    ],
-    [
-     231,
-     535
-    ]
-   ]
-  },
-  {
-   "id": "place-210",
-   "name": "Farmacia Miliscola 26",
+   "id": "place-213",
+   "name": "Farmacia Miliscola 27",
    "kind": "pharmacy",
    "x": 239,
    "y": 573,
@@ -5164,8 +5258,8 @@
    ]
   },
   {
-   "id": "place-211",
-   "name": "Casa Miliscola 27",
+   "id": "place-214",
+   "name": "Casa Miliscola 28",
    "kind": "home",
    "x": 218,
    "y": 557,
@@ -5190,8 +5284,8 @@
    ]
   },
   {
-   "id": "place-212",
-   "name": "Bar Miliscola 29",
+   "id": "place-215",
+   "name": "Bar Miliscola 30",
    "kind": "bar",
    "x": 238,
    "y": 540,
@@ -5224,8 +5318,8 @@
    ]
   },
   {
-   "id": "place-213",
-   "name": "Casa Miliscola 30",
+   "id": "place-216",
+   "name": "Casa Miliscola 31",
    "kind": "home",
    "x": 215,
    "y": 536,
@@ -5250,8 +5344,8 @@
    ]
   },
   {
-   "id": "place-214",
-   "name": "Palazzo Miliscola 34",
+   "id": "place-217",
+   "name": "Palazzo Miliscola 35",
    "kind": "house",
    "x": 211,
    "y": 561,
@@ -5276,8 +5370,8 @@
    ]
   },
   {
-   "id": "place-215",
-   "name": "Palazzo Miliscola 36",
+   "id": "place-218",
+   "name": "Palazzo Miliscola 37",
    "kind": "house",
    "x": 237,
    "y": 562,
@@ -5302,8 +5396,8 @@
    ]
   },
   {
-   "id": "place-216",
-   "name": "Farmacia Miliscola 38",
+   "id": "place-219",
+   "name": "Farmacia Miliscola 39",
    "kind": "pharmacy",
    "x": 205,
    "y": 546,
@@ -5328,8 +5422,8 @@
    ]
   },
   {
-   "id": "place-217",
-   "name": "Attività Miliscola 40",
+   "id": "place-220",
+   "name": "Attività Miliscola 41",
    "kind": "workplace",
    "x": 207,
    "y": 573,
@@ -5354,8 +5448,8 @@
    ]
   },
   {
-   "id": "place-218",
-   "name": "Casa Miliscola 44",
+   "id": "place-221",
+   "name": "Casa Miliscola 45",
    "kind": "home",
    "x": 202,
    "y": 565,
@@ -5380,8 +5474,8 @@
    ]
   },
   {
-   "id": "place-219",
-   "name": "Casa Miliscola 45",
+   "id": "place-222",
+   "name": "Casa Miliscola 46",
    "kind": "home",
    "x": 209,
    "y": 563,
@@ -5406,8 +5500,8 @@
    ]
   },
   {
-   "id": "place-220",
-   "name": "Bar Miliscola 48",
+   "id": "place-223",
+   "name": "Bar Miliscola 49",
    "kind": "bar",
    "x": 228,
    "y": 563,
@@ -5440,8 +5534,8 @@
    ]
   },
   {
-   "id": "place-221",
-   "name": "Parcheggio Miliscola 49",
+   "id": "place-224",
+   "name": "Parcheggio Miliscola 50",
    "kind": "parking",
    "x": 203,
    "y": 539,
@@ -5466,8 +5560,8 @@
    ]
   },
   {
-   "id": "place-222",
-   "name": "Casa Miliscola 51",
+   "id": "place-225",
+   "name": "Casa Miliscola 52",
    "kind": "home",
    "x": 203,
    "y": 530,
@@ -5500,8 +5594,8 @@
    ]
   },
   {
-   "id": "place-223",
-   "name": "Casa Baia 1",
+   "id": "place-226",
+   "name": "Casa Baia 2",
    "kind": "home",
    "x": 274,
    "y": 271,
@@ -5534,8 +5628,8 @@
    ]
   },
   {
-   "id": "place-224",
-   "name": "Farmacia Baia 10",
+   "id": "place-227",
+   "name": "Farmacia Baia 11",
    "kind": "pharmacy",
    "x": 288,
    "y": 272,
@@ -5560,8 +5654,8 @@
    ]
   },
   {
-   "id": "place-225",
-   "name": "Bar Baia 25",
+   "id": "place-228",
+   "name": "Bar Baia 26",
    "kind": "cafe",
    "x": 276,
    "y": 277,
@@ -5586,8 +5680,8 @@
    ]
   },
   {
-   "id": "place-226",
-   "name": "Farmacia Baia 31",
+   "id": "place-229",
+   "name": "Farmacia Baia 32",
    "kind": "pharmacy",
    "x": 247,
    "y": 255,
@@ -5612,8 +5706,8 @@
    ]
   },
   {
-   "id": "place-227",
-   "name": "Casa Baia 44",
+   "id": "place-230",
+   "name": "Casa Baia 45",
    "kind": "home",
    "x": 285,
    "y": 275,
@@ -5638,8 +5732,8 @@
    ]
   },
   {
-   "id": "place-228",
-   "name": "Parcheggio Baia 48",
+   "id": "place-231",
+   "name": "Parcheggio Baia 49",
    "kind": "parking",
    "x": 242,
    "y": 282,
@@ -5672,12 +5766,12 @@
    ]
   },
   {
-   "id": "place-229",
-   "name": "Casa Baia 55",
-   "kind": "home",
+   "id": "place-232",
+   "name": "Gelateria Baia 56",
+   "kind": "gelateria",
    "x": 282,
    "y": 260,
-   "sprite": 0,
+   "sprite": 4,
    "footprint": [
     [
      282,
@@ -5706,8 +5800,8 @@
    ]
   },
   {
-   "id": "place-230",
-   "name": "Casa Baia 60",
+   "id": "place-233",
+   "name": "Casa Baia 61",
    "kind": "home",
    "x": 282,
    "y": 236,
@@ -5752,34 +5846,34 @@
    ]
   },
   {
-   "id": "place-231",
-   "name": "Bar Baia 70",
+   "id": "place-234",
+   "name": "Bar Fusaro 1",
    "kind": "cafe",
-   "x": 285,
+   "x": 217,
    "y": 267,
    "sprite": 2,
    "footprint": [
     [
-     285,
+     217,
      267
     ],
     [
-     285,
+     217,
      268
     ],
     [
-     286,
+     218,
      267
     ],
     [
-     286,
+     218,
      268
     ]
    ]
   },
   {
-   "id": "place-232",
-   "name": "Pizzeria Fusaro 6",
+   "id": "place-235",
+   "name": "Pizzeria Fusaro 7",
    "kind": "restaurant",
    "x": 214,
    "y": 280,
@@ -5804,8 +5898,8 @@
    ]
   },
   {
-   "id": "place-233",
-   "name": "Palazzo Fusaro 9",
+   "id": "place-236",
+   "name": "Palazzo Fusaro 10",
    "kind": "house",
    "x": 170,
    "y": 275,
@@ -5830,8 +5924,8 @@
    ]
   },
   {
-   "id": "place-234",
-   "name": "Farmacia Fusaro 11",
+   "id": "place-237",
+   "name": "Farmacia Fusaro 12",
    "kind": "pharmacy",
    "x": 174,
    "y": 274,
@@ -5856,8 +5950,8 @@
    ]
   },
   {
-   "id": "place-235",
-   "name": "Palazzo Fusaro 20",
+   "id": "place-238",
+   "name": "Palazzo Fusaro 21",
    "kind": "house",
    "x": 207,
    "y": 264,
@@ -5882,8 +5976,8 @@
    ]
   },
   {
-   "id": "place-236",
-   "name": "Palazzo Fusaro 22",
+   "id": "place-239",
+   "name": "Palazzo Fusaro 23",
    "kind": "house",
    "x": 207,
    "y": 266,
@@ -5916,9 +6010,9 @@
    ]
   },
   {
-   "id": "place-237",
-   "name": "Palazzo Fusaro 29",
-   "kind": "house",
+   "id": "place-240",
+   "name": "Ufficio Fusaro 30",
+   "kind": "office",
    "x": 209,
    "y": 268,
    "sprite": 1,
@@ -5950,8 +6044,34 @@
    ]
   },
   {
-   "id": "place-238",
-   "name": "Bar Fusaro 57",
+   "id": "place-241",
+   "name": "Casa Fusaro 31",
+   "kind": "home",
+   "x": 209,
+   "y": 263,
+   "sprite": 0,
+   "footprint": [
+    [
+     209,
+     263
+    ],
+    [
+     209,
+     264
+    ],
+    [
+     210,
+     263
+    ],
+    [
+     210,
+     264
+    ]
+   ]
+  },
+  {
+   "id": "place-242",
+   "name": "Bar Fusaro 58",
    "kind": "cafe",
    "x": 204,
    "y": 267,
@@ -5976,12 +6096,12 @@
    ]
   },
   {
-   "id": "place-239",
-   "name": "Palazzo Torregaveta 1",
-   "kind": "house",
+   "id": "place-243",
+   "name": "Gelateria Torregaveta 2",
+   "kind": "gelateria",
    "x": 59,
    "y": 339,
-   "sprite": 1,
+   "sprite": 4,
    "footprint": [
     [
      59,
@@ -6002,8 +6122,8 @@
    ]
   },
   {
-   "id": "place-240",
-   "name": "Casa Torregaveta 5",
+   "id": "place-244",
+   "name": "Casa Torregaveta 6",
    "kind": "home",
    "x": 37,
    "y": 347,
@@ -6028,9 +6148,9 @@
    ]
   },
   {
-   "id": "place-241",
-   "name": "Distributore Torregaveta 8",
-   "kind": "fuel",
+   "id": "place-245",
+   "name": "Pescheria Torregaveta 9",
+   "kind": "pescheria",
    "x": 58,
    "y": 352,
    "sprite": 4,
@@ -6062,8 +6182,8 @@
    ]
   },
   {
-   "id": "place-242",
-   "name": "Bar Torregaveta 32",
+   "id": "place-246",
+   "name": "Bar Torregaveta 33",
    "kind": "bar",
    "x": 39,
    "y": 348,
@@ -6088,60 +6208,86 @@
    ]
   },
   {
-   "id": "place-243",
-   "name": "Palazzo Cuma 1",
-   "kind": "house",
-   "x": 121,
-   "y": 79,
+   "id": "place-247",
+   "name": "Bar Cuma 1",
+   "kind": "bar",
+   "x": 149,
+   "y": 66,
+   "sprite": 2,
+   "footprint": [
+    [
+     149,
+     66
+    ],
+    [
+     149,
+     67
+    ],
+    [
+     150,
+     66
+    ],
+    [
+     150,
+     67
+    ]
+   ]
+  },
+  {
+   "id": "place-248",
+   "name": "Bar Cuma 2",
+   "kind": "cafe",
+   "x": 146,
+   "y": 64,
+   "sprite": 2,
+   "footprint": [
+    [
+     146,
+     64
+    ],
+    [
+     146,
+     65
+    ],
+    [
+     147,
+     64
+    ],
+    [
+     147,
+     65
+    ]
+   ]
+  },
+  {
+   "id": "place-249",
+   "name": "Attività Cuma 3",
+   "kind": "workplace",
+   "x": 126,
+   "y": 77,
    "sprite": 1,
    "footprint": [
     [
-     121,
-     79
+     126,
+     77
     ],
     [
-     121,
-     80
+     126,
+     78
     ],
     [
-     122,
-     79
+     127,
+     77
     ],
     [
-     122,
-     80
+     127,
+     78
     ]
    ]
   },
   {
-   "id": "place-244",
-   "name": "Casa Cuma 2",
-   "kind": "home",
-   "x": 118,
-   "y": 59,
-   "sprite": 0,
-   "footprint": [
-    [
-     118,
-     59
-    ],
-    [
-     118,
-     60
-    ],
-    [
-     119,
-     59
-    ],
-    [
-     119,
-     60
-    ]
-   ]
-  },
-  {
-   "id": "place-245",
-   "name": "Casa Cuma 5",
+   "id": "place-250",
+   "name": "Casa Cuma 6",
    "kind": "home",
    "x": 155,
    "y": 52,
@@ -6174,8 +6320,8 @@
    ]
   },
   {
-   "id": "place-246",
-   "name": "Concessionaria Cuma 6",
+   "id": "place-251",
+   "name": "Concessionaria Cuma 7",
    "kind": "dealership",
    "x": 126,
    "y": 61,
@@ -6208,8 +6354,8 @@
    ]
   },
   {
-   "id": "place-247",
-   "name": "Bar Cuma 7",
+   "id": "place-252",
+   "name": "Bar Cuma 8",
    "kind": "cafe",
    "x": 117,
    "y": 74,
@@ -6242,8 +6388,8 @@
    ]
   },
   {
-   "id": "place-248",
-   "name": "Casa Cuma 8",
+   "id": "place-253",
+   "name": "Casa Cuma 9",
    "kind": "home",
    "x": 121,
    "y": 81,
@@ -6276,8 +6422,8 @@
    ]
   },
   {
-   "id": "place-249",
-   "name": "Casa Cuma 12",
+   "id": "place-254",
+   "name": "Casa Cuma 13",
    "kind": "home",
    "x": 138,
    "y": 86,
@@ -6302,8 +6448,8 @@
    ]
   },
   {
-   "id": "place-250",
-   "name": "Bar Cuma 13",
+   "id": "place-255",
+   "name": "Bar Cuma 14",
    "kind": "bar",
    "x": 125,
    "y": 57,
@@ -6336,8 +6482,8 @@
    ]
   },
   {
-   "id": "place-251",
-   "name": "Negozio Cuma 14",
+   "id": "place-256",
+   "name": "Negozio Cuma 15",
    "kind": "shop",
    "x": 144,
    "y": 54,
@@ -6362,8 +6508,8 @@
    ]
   },
   {
-   "id": "place-252",
-   "name": "Casa Cuma 15",
+   "id": "place-257",
+   "name": "Casa Cuma 16",
    "kind": "home",
    "x": 154,
    "y": 73,
@@ -6388,8 +6534,8 @@
    ]
   },
   {
-   "id": "place-253",
-   "name": "Attività Cuma 16",
+   "id": "place-258",
+   "name": "Attività Cuma 17",
    "kind": "workplace",
    "x": 155,
    "y": 81,
@@ -6414,12 +6560,12 @@
    ]
   },
   {
-   "id": "place-254",
-   "name": "Casa Cuma 18",
-   "kind": "home",
+   "id": "place-259",
+   "name": "Consegne Cuma 19",
+   "kind": "delivery",
    "x": 148,
    "y": 74,
-   "sprite": 0,
+   "sprite": 4,
    "footprint": [
     [
      148,
@@ -6440,102 +6586,34 @@
    ]
   },
   {
-   "id": "place-255",
-   "name": "Palazzo Cuma 19",
-   "kind": "house",
-   "x": 150,
-   "y": 49,
-   "sprite": 1,
+   "id": "place-260",
+   "name": "Bar Cuma 20",
+   "kind": "bar",
+   "x": 138,
+   "y": 83,
+   "sprite": 2,
    "footprint": [
     [
-     150,
-     49
+     138,
+     83
     ],
     [
-     150,
-     50
+     138,
+     84
     ],
     [
-     150,
-     51
+     139,
+     83
     ],
     [
-     151,
-     49
-    ],
-    [
-     151,
-     50
-    ],
-    [
-     151,
-     51
+     139,
+     84
     ]
    ]
   },
   {
-   "id": "place-256",
-   "name": "Parcheggio Cuma 20",
-   "kind": "parking",
-   "x": 156,
-   "y": 76,
-   "sprite": 5,
-   "footprint": [
-    [
-     156,
-     76
-    ],
-    [
-     156,
-     77
-    ],
-    [
-     156,
-     78
-    ],
-    [
-     157,
-     76
-    ],
-    [
-     157,
-     77
-    ],
-    [
-     157,
-     78
-    ]
-   ]
-  },
-  {
-   "id": "place-257",
-   "name": "Palazzo Cuma 21",
-   "kind": "house",
-   "x": 152,
-   "y": 65,
-   "sprite": 1,
-   "footprint": [
-    [
-     152,
-     65
-    ],
-    [
-     152,
-     66
-    ],
-    [
-     153,
-     65
-    ],
-    [
-     153,
-     66
-    ]
-   ]
-  },
-  {
-   "id": "place-258",
-   "name": "Negozio Cuma 22",
+   "id": "place-261",
+   "name": "Negozio Cuma 23",
    "kind": "shop",
    "x": 145,
    "y": 70,
@@ -6568,8 +6646,8 @@
    ]
   },
   {
-   "id": "place-259",
-   "name": "Bar Cuma 23",
+   "id": "place-262",
+   "name": "Bar Cuma 24",
    "kind": "bar",
    "x": 141,
    "y": 53,
@@ -6602,8 +6680,8 @@
    ]
   },
   {
-   "id": "place-260",
-   "name": "Attività Cuma 24",
+   "id": "place-263",
+   "name": "Attività Cuma 25",
    "kind": "workplace",
    "x": 149,
    "y": 70,
@@ -6628,8 +6706,8 @@
    ]
   },
   {
-   "id": "place-261",
-   "name": "Casa Cuma 26",
+   "id": "place-264",
+   "name": "Casa Cuma 27",
    "kind": "home",
    "x": 118,
    "y": 82,
@@ -6654,8 +6732,8 @@
    ]
   },
   {
-   "id": "place-262",
-   "name": "Casa Cuma 28",
+   "id": "place-265",
+   "name": "Casa Cuma 29",
    "kind": "home",
    "x": 123,
    "y": 76,
@@ -6688,8 +6766,8 @@
    ]
   },
   {
-   "id": "place-263",
-   "name": "Pizzeria Cuma 29",
+   "id": "place-266",
+   "name": "Pizzeria Cuma 30",
    "kind": "restaurant",
    "x": 119,
    "y": 69,
@@ -6714,8 +6792,8 @@
    ]
   },
   {
-   "id": "place-264",
-   "name": "Casa Cuma 30",
+   "id": "place-267",
+   "name": "Casa Cuma 31",
    "kind": "home",
    "x": 139,
    "y": 60,
@@ -6760,8 +6838,8 @@
    ]
   },
   {
-   "id": "place-265",
-   "name": "Casa Cuma 32",
+   "id": "place-268",
+   "name": "Casa Cuma 33",
    "kind": "home",
    "x": 122,
    "y": 66,
@@ -6794,8 +6872,8 @@
    ]
   },
   {
-   "id": "place-266",
-   "name": "Bar Cuma 33",
+   "id": "place-269",
+   "name": "Bar Cuma 34",
    "kind": "cafe",
    "x": 154,
    "y": 55,
@@ -6828,8 +6906,42 @@
    ]
   },
   {
-   "id": "place-267",
-   "name": "Casa Cuma 37",
+   "id": "place-270",
+   "name": "Distributore Cuma 36",
+   "kind": "fuel",
+   "x": 154,
+   "y": 75,
+   "sprite": 4,
+   "footprint": [
+    [
+     154,
+     75
+    ],
+    [
+     154,
+     76
+    ],
+    [
+     155,
+     75
+    ],
+    [
+     155,
+     76
+    ],
+    [
+     156,
+     75
+    ],
+    [
+     156,
+     76
+    ]
+   ]
+  },
+  {
+   "id": "place-271",
+   "name": "Casa Cuma 38",
    "kind": "home",
    "x": 131,
    "y": 51,
@@ -6862,8 +6974,8 @@
    ]
   },
   {
-   "id": "place-268",
-   "name": "Palazzo Cuma 38",
+   "id": "place-272",
+   "name": "Palazzo Cuma 39",
    "kind": "house",
    "x": 145,
    "y": 75,
@@ -6888,8 +7000,8 @@
    ]
   },
   {
-   "id": "place-269",
-   "name": "Parcheggio Cuma 40",
+   "id": "place-273",
+   "name": "Parcheggio Cuma 41",
    "kind": "parking",
    "x": 144,
    "y": 59,
@@ -6914,33 +7026,33 @@
    ]
   },
   {
-   "id": "place-270",
-   "name": "Negozio Cuma 44",
-   "kind": "shop",
-   "x": 135,
-   "y": 51,
-   "sprite": 4,
+   "id": "place-274",
+   "name": "Casa Capo Miseno 5",
+   "kind": "home",
+   "x": 414,
+   "y": 660,
+   "sprite": 0,
    "footprint": [
     [
-     135,
-     51
+     414,
+     660
     ],
     [
-     135,
-     52
+     414,
+     661
     ],
     [
-     136,
-     51
+     415,
+     660
     ],
     [
-     136,
-     52
+     415,
+     661
     ]
    ]
   },
   {
-   "id": "place-271",
+   "id": "place-275",
    "name": "Piscina Mirabilis",
    "kind": "archaeological_site",
    "x": 344,
@@ -6986,7 +7098,7 @@
    ]
   },
   {
-   "id": "place-272",
+   "id": "place-276",
    "name": "Cento Camerelle",
    "kind": "archaeological_site",
    "x": 376,
@@ -7032,7 +7144,7 @@
    ]
   },
   {
-   "id": "place-273",
+   "id": "place-277",
    "name": "Castello Aragonese di Baia",
    "kind": "archaeological_site",
    "x": 344,
@@ -7078,7 +7190,7 @@
    ]
   },
   {
-   "id": "place-274",
+   "id": "place-278",
    "name": "Parco Archeologico Terme di Baia",
    "kind": "archaeological_site",
    "x": 256,
@@ -7124,7 +7236,7 @@
    ]
   },
   {
-   "id": "place-275",
+   "id": "place-279",
    "name": "Tempio di Diana",
    "kind": "archaeological_site",
    "x": 261,
@@ -7170,7 +7282,7 @@
    ]
   },
   {
-   "id": "place-276",
+   "id": "place-280",
    "name": "Casina Vanvitelliana",
    "kind": "archaeological_site",
    "x": 157,
@@ -7216,7 +7328,7 @@
    ]
   },
   {
-   "id": "place-277",
+   "id": "place-281",
    "name": "Punta Epitaffio",
    "kind": "beach",
    "x": 315,
@@ -7225,7 +7337,7 @@
    "footprint": []
   },
   {
-   "id": "place-278",
+   "id": "place-282",
    "name": "Lago Miseno",
    "kind": "beach",
    "x": 282,
@@ -7234,7 +7346,7 @@
    "footprint": []
   },
   {
-   "id": "place-279",
+   "id": "place-283",
    "name": "Lago del Fusaro",
    "kind": "beach",
    "x": 134,
@@ -7243,7 +7355,7 @@
    "footprint": []
   },
   {
-   "id": "place-280",
+   "id": "place-284",
    "name": "Porto Turistico Miseno",
    "kind": "beach",
    "x": 336,
@@ -7252,7 +7364,7 @@
    "footprint": []
   },
   {
-   "id": "place-281",
+   "id": "place-285",
    "name": "Punta Pennata",
    "kind": "beach",
    "x": 353,
@@ -7261,7 +7373,7 @@
    "footprint": []
   },
   {
-   "id": "place-282",
+   "id": "place-286",
    "name": "Capo Miseno",
    "kind": "beach",
    "x": 423,
@@ -7270,7 +7382,7 @@
    "footprint": []
   },
   {
-   "id": "place-283",
+   "id": "place-287",
    "name": "Spiaggia di Miliscola",
    "kind": "beach",
    "x": 223,
@@ -7279,7 +7391,7 @@
    "footprint": []
   },
   {
-   "id": "place-284",
+   "id": "place-288",
    "name": "Baia marina",
    "kind": "beach",
    "x": 276,
@@ -7288,7 +7400,7 @@
    "footprint": []
   },
   {
-   "id": "place-285",
+   "id": "place-289",
    "name": "Piazzetta sul mare",
    "kind": "beach",
    "x": 353,
@@ -7297,7 +7409,7 @@
    "footprint": []
   },
   {
-   "id": "place-286",
+   "id": "place-290",
    "name": "Villa Comunale",
    "kind": "beach",
    "x": 337,
@@ -7306,7 +7418,7 @@
    "footprint": []
   },
   {
-   "id": "place-287",
+   "id": "place-291",
    "name": "Stazione Baia (Cumana)",
    "kind": "railway",
    "x": 267,
@@ -7348,7 +7460,7 @@
    ]
   },
   {
-   "id": "place-288",
+   "id": "place-292",
    "name": "Stazione Fusaro (Cumana)",
    "kind": "railway",
    "x": 185,
@@ -7390,7 +7502,7 @@
    ]
   },
   {
-   "id": "place-289",
+   "id": "place-293",
    "name": "Stazione Torregaveta",
    "kind": "railway",
    "x": 41,
@@ -7432,7 +7544,7 @@
    ]
   },
   {
-   "id": "place-290",
+   "id": "place-294",
    "name": "Stazione Lucrino",
    "kind": "railway",
    "x": 373,
@@ -7474,7 +7586,7 @@
    ]
   },
   {
-   "id": "place-291",
+   "id": "place-295",
    "name": "Stazione Cuma (Circumflegrea)",
    "kind": "railway",
    "x": 79,
@@ -7483,7 +7595,7 @@
    "footprint": []
   },
   {
-   "id": "place-292",
+   "id": "place-296",
    "name": "Stazione Lido Fusaro",
    "kind": "railway",
    "x": 84,
@@ -7525,7 +7637,7 @@
    ]
   },
   {
-   "id": "place-293",
+   "id": "place-297",
    "name": "Bacoli Via Roma",
    "kind": "bus_stop",
    "x": 335,
@@ -7534,7 +7646,7 @@
    "footprint": []
   },
   {
-   "id": "place-294",
+   "id": "place-298",
    "name": "Bacoli Centro",
    "kind": "bus_stop",
    "x": 323,
@@ -7543,7 +7655,7 @@
    "footprint": []
   },
   {
-   "id": "place-295",
+   "id": "place-299",
    "name": "Rotonda Miliscola",
    "kind": "bus_stop",
    "x": 248,
@@ -7552,7 +7664,7 @@
    "footprint": []
   },
   {
-   "id": "place-296",
+   "id": "place-300",
    "name": "Via Mercato di Sabato",
    "kind": "bus_stop",
    "x": 153,
@@ -7561,7 +7673,7 @@
    "footprint": []
   },
   {
-   "id": "place-297",
+   "id": "place-301",
    "name": "Miseno CL",
    "kind": "bus_stop",
    "x": 377,
@@ -7570,7 +7682,7 @@
    "footprint": []
   },
   {
-   "id": "place-298",
+   "id": "place-302",
    "name": "Baia Piazza De Gasperi",
    "kind": "bus_stop",
    "x": 267,
@@ -7579,7 +7691,7 @@
    "footprint": []
   },
   {
-   "id": "place-299",
+   "id": "place-303",
    "name": "Sella di Baia",
    "kind": "bus_stop",
    "x": 295,
@@ -7588,7 +7700,7 @@
    "footprint": []
   },
   {
-   "id": "place-300",
+   "id": "place-304",
    "name": "Fusaro Stazione EAV",
    "kind": "bus_stop",
    "x": 185,
@@ -7597,7 +7709,7 @@
    "footprint": []
   },
   {
-   "id": "place-301",
+   "id": "place-305",
    "name": "Torregaveta EAV",
    "kind": "bus_stop",
    "x": 41,
@@ -7606,7 +7718,7 @@
    "footprint": []
   },
   {
-   "id": "place-302",
+   "id": "place-306",
    "name": "Cuma Scavi",
    "kind": "bus_stop",
    "x": 136,
@@ -7615,17 +7727,89 @@
    "footprint": []
   },
   {
-   "id": "place-303",
+   "id": "place-307",
    "name": "Piazzetta sul mare",
    "kind": "beach",
    "x": 353,
    "y": 432,
    "sprite": 5,
    "footprint": []
+  },
+  {
+   "id": "place-308",
+   "name": "Pescheria del Porto Miseno",
+   "kind": "pescheria",
+   "x": 337,
+   "y": 523,
+   "sprite": 4,
+   "footprint": []
+  },
+  {
+   "id": "place-309",
+   "name": "Gelateria Piazzetta",
+   "kind": "gelateria",
+   "x": 353,
+   "y": 432,
+   "sprite": 4,
+   "footprint": []
+  },
+  {
+   "id": "place-310",
+   "name": "Garage Miseno",
+   "kind": "garage",
+   "x": 377,
+   "y": 582,
+   "sprite": 1,
+   "footprint": []
+  },
+  {
+   "id": "place-311",
+   "name": "Garage Baia",
+   "kind": "garage",
+   "x": 263,
+   "y": 260,
+   "sprite": 1,
+   "footprint": []
+  },
+  {
+   "id": "place-312",
+   "name": "Ufficio servizi Bacoli",
+   "kind": "office",
+   "x": 323,
+   "y": 483,
+   "sprite": 1,
+   "footprint": []
+  },
+  {
+   "id": "place-313",
+   "name": "Centro consegne Bacoli",
+   "kind": "delivery",
+   "x": 325,
+   "y": 481,
+   "sprite": 4,
+   "footprint": []
+  },
+  {
+   "id": "place-314",
+   "name": "Parcheggio Torregaveta",
+   "kind": "parking",
+   "x": 41,
+   "y": 334,
+   "sprite": 5,
+   "footprint": []
+  },
+  {
+   "id": "place-315",
+   "name": "Pescheria Miliscola",
+   "kind": "pescheria",
+   "x": 223,
+   "y": 552,
+   "sprite": 4,
+   "footprint": []
   }
  ],
  "roadTileCount": 61086,
- "buildingCount": 303,
+ "buildingCount": 315,
  "sources": [
   "OpenStreetMap via Overpass (strade/POI centro storico)",
   "OSM/Wikipedia coordinate verificate per frazioni e stazioni",

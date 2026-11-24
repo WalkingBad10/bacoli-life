@@ -3,7 +3,7 @@ import type { GameState, PlaceKind } from '../core/types';
 import type { Hud } from '../ui/Hud';
 import { buy, deposit, sell, withdraw, type Wallet } from '../systems/Economy';
 import type { TimeSystem } from '../systems/TimeSystem';
-import { consumeItem, occupySeat, releaseSeat, type SeatState } from '../systems/ConsumptionSystem';
+import { consumeItem, occupySeat, releaseSeat, useItem, type SeatState } from '../systems/ConsumptionSystem';
 import { ITEM_CATALOG, type ItemId } from '../core/config';
 import {
   FURNITURE_CATALOG, buyFurniture, familyActivity, homeComfort,
@@ -108,7 +108,7 @@ export class InteriorScene extends Phaser.Scene {
       Math.hypot(px - item.sprite.x, py - item.sprite.y) < 5 + item.radius * 0.6);
   }
 
-  update(delta: number): void {
+  update(_time: number, delta: number): void {
     const k = this.keys;
     let dx = (k.D?.isDown || k.RIGHT?.isDown ? 1 : 0) - (k.A?.isDown || k.LEFT?.isDown ? 1 : 0);
     let dy = (k.S?.isDown || k.DOWN?.isDown ? 1 : 0) - (k.W?.isDown || k.UP?.isDown ? 1 : 0);
@@ -143,6 +143,17 @@ export class InteriorScene extends Phaser.Scene {
       this.addFurniture('stove', 7, 11, 'Cucina');
       this.addFurniture('shelf', 20, 10, 'Arreda');
       this.addFurniture('plant', 24, 3, 'Annaffia');
+      // Gli arredi acquistati compaiono davvero nella stanza: la casa è
+      // personalizzabile e non solo una lista di ID nel salvataggio.
+      const extras: [FurnitureId, number, number, string][] = [
+        ['washing_machine', 24, 11, 'Lava i panni'],
+        ['microwave', 7, 4, 'Scalda'],
+        ['desk', 16, 3, 'Scrivi'],
+        ['crib', 24, 6, 'Culla'],
+      ];
+      for (const [id, x, y, action] of extras) {
+        if (this.state.home.furniture.includes(id)) this.addFurniture(id, x, y, action);
+      }
     } else if (kind === 'cafe' || kind === 'bar') {
       this.addFurniture('register', 17, 4, 'Cassa');
       this.addFurniture('espresso', 21, 4, 'Caffè');
@@ -259,6 +270,42 @@ export class InteriorScene extends Phaser.Scene {
         `Hai mangiato: ${item === 'spesa' ? 'una cena preparata in casa' : 'una pizza margherita'}.`,
         this.state.family.length ? `Pranzo insieme: umore +${bonus}.` : '',
       ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Lava i panni') {
+      if (!useItem(this.state, 'detersivo')) {
+        this.hud.toast('Serve del detersivo: lo trovi al negozio');
+        return;
+      }
+      this.advanceTime(30);
+      const bonus = familyActivity(this.state.family, 'walk');
+      this.hud.openInfo('Lavatrice', [
+        'Bucato profumato: hai usato una lavatrice di casa.',
+        this.state.family.length ? `Umore +${bonus} · ${this.timeSystem?.clock ?? ''}` : '',
+      ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Scalda') {
+      if (!consumeItem(this.state, 'pizza')) {
+        this.hud.toast('Non hai nulla da scalare: compra una pizza');
+        return;
+      }
+      this.advanceTime(5);
+      this.state.player.hunger = Math.min(100, this.state.player.hunger + 18);
+      this.hud.openInfo('Microonde', ['Pizza calda e fame +18.'], [
+        { label: 'Ok', action: () => this.hud.closePanel() },
+      ]);
+    } else if (action === 'Scrivi') {
+      this.advanceTime(15);
+      this.state.player.energy = Math.max(0, this.state.player.energy - 3);
+      this.hud.openInfo('Scrivania', [
+        'Hai aggiornato il curriculum e letto le offerte di lavoro locali.',
+        `Lavoro attuale: ${this.state.jobState?.title ?? 'nessuno'} · ${this.timeSystem?.clock ?? ''}`,
+      ], [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Culla') {
+      const baby = this.state.family.find((member) => member.child && member.age < 2);
+      if (!baby) { this.hud.toast('La culla è vuota'); return; }
+      baby.mood = Math.min(100, baby.mood + 12);
+      this.advanceTime(10);
+      this.hud.openInfo('Culla', [`${baby.name} si è addormentato sereno.`], [
+        { label: 'Ok', action: () => this.hud.closePanel() },
+      ]);
     } else if (action === 'Annaffia' || action === 'Piante') {
       const bonus = familyActivity(this.state.family, 'walk');
       this.hud.openInfo('Piante', [

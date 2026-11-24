@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
 
-const CHARACTERS = ['player', 'npc_1', 'npc_2', 'npc_3', 'npc_4', 'npc_5', 'npc_6', 'npc_7', 'npc_8'];
+const CHARACTERS = [
+  'player', 'npc_1', 'npc_2', 'npc_3', 'npc_4', 'npc_5', 'npc_6',
+  'npc_7', 'npc_8', 'npc_9', 'npc_10', 'npc_11', 'npc_12',
+];
 const DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
 
 export class BootScene extends Phaser.Scene {
@@ -9,22 +12,21 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('tileset.png', 'assets/tiles/tileset.png');
+    // Un solo tileset e due buffer binari: niente più JSON Tiled da 1,4 MB
+    // scaricato e parsato due volte.
     this.load.spritesheet('tiles16', 'assets/tiles/tileset.png', {
       frameWidth: 16, frameHeight: 16,
     });
     this.load.image('room_floors.png', 'assets/tiles/room_floors.png');
-    this.load.tilemapTiledJSON('bacoli', 'assets/maps/bacoli.json');
-    this.load.json('mapdata', 'assets/maps/bacoli.json');
+    this.load.binary('groundBin', 'assets/maps/bacoli-ground.bin');
+    this.load.binary('collisionBin', 'assets/maps/bacoli-collision.bin');
+    this.load.json('mapmeta', 'assets/maps/bacoli-map.meta.json');
 
     CHARACTERS.forEach((key) => {
       this.load.spritesheet(key, `assets/sprites/${key}.png`, {
         frameWidth: 16, frameHeight: 32,
       });
     });
-    for (let i = 0; i < 6; i++) {
-      this.load.image(`building_${i}`, `assets/buildings/building_${i}.png`);
-    }
     for (const size of [32, 48, 64, 80]) {
       for (let variant = 0; variant < 12; variant++) {
         this.load.image(
@@ -37,14 +39,15 @@ export class BootScene extends Phaser.Scene {
       'flowerpot', 'trash_bin', 'street_sign', 'parking_sign']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
-    for (const key of ['car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus', 'train']) {
+    for (const key of ['car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
     for (const key of ['pet_dog', 'pet_cat']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
     for (const key of ['bed', 'sofa', 'table', 'chair', 'fridge', 'stove', 'shelf', 'tv',
-      'espresso', 'register', 'bathtub', 'toilet', 'plant']) {
+      'espresso', 'register', 'bathtub', 'toilet', 'plant',
+      'washing_machine', 'microwave', 'desk', 'crib']) {
       this.load.image(`f_${key}`, `assets/sprites/f_${key}.png`);
     }
   }

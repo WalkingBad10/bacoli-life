@@ -106,12 +106,38 @@ describe('Salvataggi', () => {
     };
     const envelope = { version: 2, checksum: checksum(JSON.stringify(payload)), payload };
     const loaded = decodeExport(btoa(JSON.stringify(envelope)));
-    expect(SAVE_VERSION).toBe(3);
+    expect(SAVE_VERSION).toBe(4);
     expect(loaded.social.spouseId).toBeNull();
     expect(loaded.social.bonds.Maria.affinity).toBe(5);
     expect(loaded.pets).toEqual([]);
     expect(loaded.vehicles[0].condition).toBe(100);
     expect(loaded.vehicles[0].lastServiceDay).toBe(4);
+    expect(loaded.career?.level).toBe(1);
+    expect(loaded.homes?.length).toBeGreaterThan(0);
+    expect(loaded.homes?.[0].owned).toBe(true);
+    expect(loaded.businesses).toEqual([]);
+    expect(loaded.deliveries).toEqual([]);
+    expect(loaded.events).toEqual([]);
+  });
+
+  it('migra un salvataggio v3 preservando casa, animali e dati v4', () => {
+    const payload = {
+      ...state,
+      version: undefined,
+      social: { bonds: { Maria: { name: 'Maria', affinity: 42, gifts: 1, stage: 'friend' } }, spouseId: null, marriedOnDay: null },
+      pets: [{ id: 'pet-1', name: 'Nino', species: 'dog', age: 2, hunger: 60, mood: 70, x: 1, y: 2, homeId: 'home-1' }],
+      vehicles: [{ id: 'car-1', kind: 'car', name: '126', x: 0, y: 0, angle: 0, fuel: 10, maxFuel: 40, color: '#fff', owned: true }],
+    };
+    const envelope = {
+      version: 3, checksum: checksum(JSON.stringify(payload)), payload,
+    };
+    const loaded = decodeExport(btoa(JSON.stringify(envelope)));
+    expect(loaded.player.money).toBe(321.5);
+    expect(loaded.home.furniture).toEqual(['bed']);
+    expect(loaded.homes?.find((home) => home.id === 'home-1')?.furniture).toContain('bed');
+    expect(loaded.pets).toHaveLength(1);
+    expect(loaded.career?.shifts).toBe(0);
+    expect(loaded.deliveries).toEqual([]);
   });
 
   it('rifiuta versioni future e ripara campi annidati corrotti', () => {

@@ -1,7 +1,46 @@
 # BACOLI LIFE — registro progressi
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
-Aggiornato: milestone 3 (simulazione di vita estesa + viaggi EAV animati) completata e verificata.
+Aggiornato: checkpoint di revisione grafica/geografica (non pubblicato). Milestone 3 resta l'ultima versione verificata e live.
+
+> **Stato checkpoint — 24 novembre 2026, sospensione per spegnimento PC**
+>
+> **Completato in questa sessione**
+> - Backup completo prima della revisione: `bacoli-life-20261124-160945-prima-revisione-grafica.zip`.
+> - Nuove 4 fotografie di riferimento ricevute e analizzate con Ollama `qwen2.5vl:3b`
+>   (`docs/REFERENCE_IMAGES_M4.json`): edifici 3–4 piani (~8–12 m), strade ~5–10 m,
+>   balconi, persiane, ciottolato/asfalto e palme.
+> - Dati OSM reali riconfermati via Overpass per il centro storico: 756 edifici con
+>   tag geometrici (`tools/generated/osm_focus_buildings.json`); 226 già in `bacoli_geo.json`.
+> - Mappa binaria implementata: `bacoli-ground.bin` (326.400 B),
+>   `bacoli-collision.bin` (40.800 B), `bacoli-map.meta.json`; rimossi i due
+>   caricamenti runtime di `bacoli.json` da 1,42 MB.
+> - Generatore aggiornato: nuovi `kind` reali (garage, pescheria, gelateria,
+>   ufficio, consegne, parcheggio Torregaveta) e 315 luoghi totali.
+> - Nuovi sistemi M4 e 27 test unitari aggiuntivi: **87/87 test verdi**.
+> - Build di checkpoint riuscita: `tsc --noEmit` + Vite, bundle 1.398,70 kB /
+>   gzip 387,27 kB; smoke test E2E di caricamento **1/1 superato**.
+>
+> **Lavoro in corso (interrotto in punto sicuro)**
+> - Revisione obbligatoria proporzioni: scala universale decisa **1 m = 16 px**,
+>   adulto 1,75 m = 28 px, piano edilizio 3,25 m ≈ 52 px.
+> - Il generatore nativo `tools/generate_assets_scale.py` NON è stato creato:
+>   nessun file o cartella `public/assets/scale/` da recuperare.
+>
+> **Rimane da completare**
+> - Ricostruire asset nativi alla nuova scala (personaggi 28 px, edifici 56–212 px,
+>   auto 72×40, bus 192×52, treno 320×56, mobili e vegetazione).
+> - Ricostruire mappa fedele di Via Ortensio, Via Spiaggia e centro storico usando
+>   geometrie OSM, separando footprint, facciate, tetti, ombre e collisioni.
+> - Aggiornare porte, profondità, interazioni e salvataggi alla nuova scala.
+> - Debug mode con griglia/collisioni/impronte, confronti visivi e QA completa.
+>
+> **Punto esatto di ripresa**
+> 1. Partire da `tools/generate_assets.py` (vecchia scala, non toccare in-place) e
+>    creare `tools/generate_assets_scale.py` + `public/assets/scale/`.
+> 2. Poi aggiornare `BootScene.ts`/`WorldScene.ts` per caricare le nuove chiavi.
+> 3. Non pubblicare finché la revisione non è verificata; l'ultima versione live
+>    resta milestone 3.
 
 ## Strumenti installati e utilizzati
 | Strumento | Stato | Uso concreto |
