@@ -1,6 +1,6 @@
 # Revisione grafica e geografica — scala universale
 
-Stato: **revisione completata e verificata, non ancora pubblicata**. L'ultima versione live resta la milestone 3.
+Stato: **pubblicata e verificata live** (commit `e1788fe`, tag `milestone-4-verified`, https://walkingbad10.github.io/bacoli-life/).
 
 ## Scala universale
 
@@ -97,4 +97,5 @@ invariati.
 - [x] QA OpenCV + Ollama sugli screenshot aggiornati.
 - [x] Build e test unitari (94/94).
 - [x] Ciclo E2E finale completo desktop + Android emulato: 30/30 verdi.
-- [ ] Backup finale, commit, push e deploy Pages solo a verifica completata.
+- [x] Backup finale (`bacoli-life-20261124-224000-revisione-m4-verificata.zip`), commit `e1788fe`, push e deploy Pages #9.
+- [x] Smoke test live: canvas, clock, hook, 376 luoghi e zero errori console.

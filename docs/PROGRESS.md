@@ -2,7 +2,7 @@
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
 
-Aggiornato: **24 novembre 2026 — revisione geografica e grafica M4 completata, non ancora pubblicata**. L'ultima versione live resta Milestone 3.
+Aggiornato: **24 novembre 2026 — milestone 4 pubblicata e verificata live** su https://walkingbad10.github.io/bacoli-life/ (commit `e1788fe`, workflow Pages #9 riuscito, bundle live `index-DAQv4rwW.js`).
 
 ## Stato attuale della revisione M4
 
@@ -48,6 +48,7 @@ Aggiornato: **24 novembre 2026 — revisione geografica e grafica M4 completata,
 - `npm test`: **94/94** test unitari verdi (18 file).
 - `npm run test:e2e`: **30/30** verdi (15 desktop + 15 Android emulato), inclusi scala universale, collisioni, interni, guida, viaggi EAV e debug overlay.
 - QA visiva Ollama: **5/5 screenshot** giudicati `OK` (`SCREENSHOT_VISION_REVIEW.md`); OpenCV conferma presenza di dettaglio in desktop/mobile e debug. Il confronto foto ↔ simulatore (`VISION_COMPARISON_M4.md`) mette a confronto l'analisi della fotografia con il giudizio `OK` dello screenshot; resta un controllo indicativo, mentre la verifica decisiva è E2E.
+- Verifica live dopo il deploy: canvas presente, clock `08:02 · G1`, `places: 376`, `solidTiles: 129975`, 40 NPC immessi, hook `__bacoliDebug`/`__bacoliTest` funzionanti, `errors: []`.
 
 ## Storico Milestone 3 (versione live verificata)
 - Mappa estesa 480x680 tile, 303 luoghi, 61.086 tile strada, coste e laghi reali.
