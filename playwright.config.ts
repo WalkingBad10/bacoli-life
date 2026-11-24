@@ -3,6 +3,9 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
+  // Nove regioni metriche e relativi buffer binari rendono il boot più pesante:
+  // un solo worker evita timeout della HUD e micro-movimenti persi nei test di guida.
+  workers: 1,
   expect: { timeout: 10_000 },
   use: {
     baseURL: 'http://127.0.0.1:4173',

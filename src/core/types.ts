@@ -200,6 +200,8 @@ export interface GameState {
   deliveries?: DeliveryOrder[];
   career?: CareerState;
   events?: AttendedEvent[];
+  /** Regione metrica attiva: centro, Miseno, Baia, Fusaro e così via. */
+  regionId?: string;
   stats: { distanceWalked: number; distanceDriven: number; npcsMet: number };
 }
 

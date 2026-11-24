@@ -19,6 +19,8 @@ export interface Station {
   id: string;
   name: string;
   region: RegionId;
+  /** Regione metrica M5 in cui la fermata è effettivamente collocata. */
+  mapRegion?: string;
   lines: LineId[];
   position: Point;
   coordinates: { lat: number; lon: number };
@@ -101,42 +103,42 @@ export const LINES: TransitLine[] = [
  * le coordinate geografiche reali verificate.
  */
 export const STATIONS: Station[] = [
-  { id: 'bacoli_centro', name: 'Bacoli centro · Via Roma', region: 'bacoli',
+  { id: 'bacoli_centro', name: 'Bacoli centro · Via Roma', region: 'bacoli', mapRegion: 'centro',
     lines: ['bus_101', 'bus_102', 'bus_144', 'bus_145', 'bus_146'],
     position: { x: 347, y: 478 }, coordinates: { lat: 40.80550, lon: 14.07920 }, status: 'active' },
-  { id: 'miseno', name: 'Miseno / Capo Miseno', region: 'bacoli',
+  { id: 'miseno', name: 'Miseno / Capo Miseno', region: 'bacoli', mapRegion: 'miseno',
     lines: ['bus_144', 'bus_145', 'bus_150'],
     position: { x: 378, y: 582 }, coordinates: { lat: 40.78669, lon: 14.08409 }, status: 'active' },
-  { id: 'miliscola', name: 'Rotonda Miliscola', region: 'bacoli',
+  { id: 'miliscola', name: 'Rotonda Miliscola', region: 'bacoli', mapRegion: 'miliscola',
     lines: ['bus_102', 'bus_144', 'bus_145', 'bus_146', 'bus_153'],
     position: { x: 224, y: 552 }, coordinates: { lat: 40.78971, lon: 14.06611 }, status: 'active' },
-  { id: 'mercato_sabato', name: 'Via Mercato di Sabato', region: 'bacoli',
+  { id: 'mercato_sabato', name: 'Via Mercato di Sabato', region: 'bacoli', mapRegion: 'miliscola',
     lines: ['bus_144', 'bus_146'],
     position: { x: 154, y: 434 }, coordinates: { lat: 40.80100, lon: 14.05800 }, status: 'active' },
-  { id: 'piazza_de_gasperi', name: 'Baia · Piazza De Gasperi', region: 'bacoli',
+  { id: 'piazza_de_gasperi', name: 'Baia · Piazza De Gasperi', region: 'bacoli', mapRegion: 'baia',
     lines: ['bus_102', 'bus_144', 'bus_145', 'bus_146'],
     position: { x: 268, y: 260 }, coordinates: { lat: 40.81853, lon: 14.07133 }, status: 'active' },
-  { id: 'sella_baia', name: 'Sella di Baia', region: 'bacoli',
+  { id: 'sella_baia', name: 'Sella di Baia', region: 'bacoli', mapRegion: 'baia',
     lines: ['bus_145'],
     position: { x: 303, y: 303 }, coordinates: { lat: 40.81480, lon: 14.07450 }, status: 'active' },
-  { id: 'baia_station', name: 'Baia (Cumana)', region: 'bacoli',
+  { id: 'baia_station', name: 'Baia (Cumana)', region: 'bacoli', mapRegion: 'baia',
     lines: ['cumana', 'bus_101', 'bus_102', 'bus_144', 'bus_145', 'bus_146'],
     position: { x: 268, y: 255 }, coordinates: { lat: 40.82115, lon: 14.07130 }, status: 'active',
     note: 'Riaperto il 6 novembre 2025.' },
-  { id: 'fusaro_station', name: 'Fusaro (Cumana)', region: 'bacoli',
+  { id: 'fusaro_station', name: 'Fusaro (Cumana)', region: 'bacoli', mapRegion: 'fusaro',
     lines: ['cumana', 'bus_101', 'bus_144', 'bus_145', 'bus_146'],
     position: { x: 194, y: 257 }, coordinates: { lat: 40.81857, lon: 14.06173 }, status: 'active' },
-  { id: 'torregaveta', name: 'Torregaveta (Cumana / Circumflegrea)', region: 'bacoli',
+  { id: 'torregaveta', name: 'Torregaveta (Cumana / Circumflegrea)', region: 'bacoli', mapRegion: 'torregaveta',
     lines: ['cumana', 'circumflegrea', 'bus_101', 'bus_102', 'bus_146', 'bus_153'],
     position: { x: 42, y: 335 }, coordinates: { lat: 40.81150, lon: 14.04487 }, status: 'active' },
-  { id: 'lucrino', name: 'Lucrino (Cumana)', region: 'bacoli',
+  { id: 'lucrino', name: 'Lucrino (Cumana)', region: 'bacoli', mapRegion: 'fusaro',
     lines: ['cumana'], position: { x: 373, y: 150 },
     coordinates: { lat: 40.82940, lon: 14.08370 }, status: 'active' },
-  { id: 'cuma_station', name: 'Cuma (Circumflegrea)', region: 'bacoli',
+  { id: 'cuma_station', name: 'Cuma (Circumflegrea)', region: 'bacoli', mapRegion: 'torregaveta',
     lines: ['circumflegrea', 'bus_144', 'bus_145'],
     position: { x: 136, y: 60 }, coordinates: { lat: 40.84915, lon: 14.04929 },
     status: 'suspended', note: 'Servizio sospeso dal 2014; raggiungibile con bus 144/145.' },
-  { id: 'lido_fusaro', name: 'Lido Fusaro (Circumflegrea)', region: 'bacoli',
+  { id: 'lido_fusaro', name: 'Lido Fusaro (Circumflegrea)', region: 'bacoli', mapRegion: 'fusaro',
     lines: ['circumflegrea'], position: { x: 84, y: 160 },
     coordinates: { lat: 40.82888, lon: 14.04984 }, status: 'suspended',
     note: 'Stazione chiusa al servizio regolare.' },

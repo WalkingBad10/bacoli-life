@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import centroData from '../data/bacoli_centro.json';
+import worldData from '../data/bacoli_world.json';
 import { CAMERA_ZOOM, ITEM_CATALOG, PLAYER_SPEED, RUN_MULTIPLIER, type ItemId } from '../core/config';
 import type { Direction, GameState, Place, VehicleState } from '../core/types';
 import { Hud, type PhoneSection } from '../ui/Hud';
@@ -41,7 +41,9 @@ import {
 } from '../systems/DeliverySystem';
 import { attendLocalEvent, eventForDay, eventLabel, nextEvent } from '../systems/EventSystem';
 
-const DATA = centroData as unknown as {
+interface RegionData {
+  id: string;
+  name: string;
   bounds: { south: number; north: number; west: number; east: number };
   scale: {
     metersPerPixel: number;
@@ -51,10 +53,17 @@ const DATA = centroData as unknown as {
   };
   size: { width: number; height: number };
   spawn: { x: number; y: number };
+  stations: Record<string, { x: number; y: number }>;
   places: Place[];
-};
+}
 
-const BUILDING_WIDTHS = [96, 128, 160, 192, 208, 224, 256, 320, 384, 448] as const;
+const WORLD = worldData as unknown as { regions: RegionData[] };
+const DEFAULT_REGION = WORLD.regions.find((region) => region.id === 'centro') ?? WORLD.regions[0];
+
+const BUILDING_WIDTHS = [
+  ...Array.from({ length: 23 }, (_, index) => 96 + index * 16),
+  480, 512, 544, 576, 608, 640, 672, 704, 768, 832, 896, 960, 1024, 1088,
+] as const;
 const ROOF_HEIGHT = 24;
 
 interface NpcData {
@@ -97,8 +106,9 @@ export class WorldScene extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private collision!: CollisionSystem;
   private blocked!: Uint8Array;
-  private width = DATA.size.width;
-  private height = DATA.size.height;
+  private region: RegionData = DEFAULT_REGION;
+  private width = this.region.size.width;
+  private height = this.region.size.height;
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
   private debugOverlay!: DebugOverlay;
   private facing: Direction = 'down';
@@ -119,6 +129,10 @@ export class WorldScene extends Phaser.Scene {
   private eventDecorations: Phaser.GameObjects.Image[] = [];
   private driving: VehicleState | null = null;
   private lastDay: number;
+  /** Regione da cui è partito l'ultimo viaggio, per la compatibilità E2E del gate Baia. */
+  private tripOriginRegion = 'centro';
+  /** Spawn già scelto prima di un restart: il vecchio scene non deve riscriverlo. */
+  private pendingSpawn: { x: number; y: number } | null = null;
   private state: GameState;
 
   constructor() {
@@ -126,7 +140,7 @@ export class WorldScene extends Phaser.Scene {
     const saved = loadGame();
     this.state = saved ?? normalize({
       player: {
-        x: DATA.spawn.x * 16 + 8, y: DATA.spawn.y * 16 + 16,
+        x: this.region.spawn.x * 16 + 8, y: this.region.spawn.y * 16 + 16,
         money: 500, savings: 0, energy: 100, hunger: 100,
         job: null, homeId: 'home-1',
       },
@@ -143,30 +157,71 @@ export class WorldScene extends Phaser.Scene {
       events: [],
       stats: { distanceWalked: 0, distanceDriven: 0, npcsMet: 0 },
     });
+    this.selectRegion();
     this.timeSystem.minutes = this.state.time;
     this.timeSystem.day = this.state.day;
     this.timeSystem.weather = this.state.weather;
     this.lastDay = this.state.day;
   }
 
+  /** Cambia regione e posizione in modo atomico attraverso scene.restart(). */
+  private restartInRegion(target: RegionData, x: number, y: number): void {
+    this.state.regionId = target.id;
+    this.state.player.x = x;
+    this.state.player.y = y;
+    this.pendingSpawn = { x, y };
+    saveGame(this.state);
+    this.scene.restart();
+  }
+
+  /** Rilegge la regione dal salvataggio: serve anche a ogni scene.restart(). */
+  private selectRegion(): void {
+    const requested = this.state.regionId ?? 'centro';
+    const region = WORLD.regions.find((item) => item.id === requested);
+    if (region) {
+      this.region = region;
+      this.width = region.size.width;
+      this.height = region.size.height;
+      this.state.regionId = region.id;
+    }
+  }
+
   create(): void {
+    // Il Scene non viene ricostruito da scene.restart(): gli sprite della
+    // regione precedente sono già stati distrutti e vanno dimenticati.
+    this.selectRegion();
+    this.npcs = [];
+    this.traffic = [];
+    this.driving = null;
+    this.vehicleSprites.clear();
+    this.petSprites.clear();
+    this.courierSprites.clear();
+    this.eventDecorations = [];
+    this.lamps = [];
+    this.boats = [];
+    this.waterTiles = [];
     const uiRoot = document.createElement('div');
     document.body.appendChild(uiRoot);
     this.hud = new Hud(uiRoot);
+    const arrivalToast = this.registry.get('arrivalToast') as string | undefined;
+    if (arrivalToast) {
+      this.registry.remove('arrivalToast');
+      this.hud.toast(arrivalToast);
+    }
     this.registry.set('hud', this.hud);
     this.registry.set('state', this.state);
     this.registry.set('time', this.timeSystem);
     // Le attività commerciali seguono i luoghi reali della mappa; le case e la
     // carriera vengono migrate qui dai salvataggi v1-v3.
-    this.state.businesses = normalizeBusinesses(this.state.businesses, DATA.places);
+    this.state.businesses = normalizeBusinesses(this.state.businesses, this.region.places);
     syncHomeMirror(this.state);
     this.lastDay = this.state.day;
 
-    const meta = this.cache.json.get('centroMeta') as {
+    const meta = this.cache.json.get(`meta_${this.region.id}`) as {
       width: number; height: number; tileWidth: number; tileHeight: number;
       tilesetName: string; firstGid: number;
     };
-    const ground = new Uint8Array(this.cache.binary.get('centroGroundBin'));
+    const ground = new Uint8Array(this.cache.binary.get(`ground_${this.region.id}`));
     if (ground.length !== meta.width * meta.height) {
       throw new Error('Buffer mappa non valido');
     }
@@ -186,9 +241,11 @@ export class WorldScene extends Phaser.Scene {
     if (!layer) throw new Error('Layer ground non creato');
     this.groundLayer = layer;
     this.loadCollision();
+    this.spawnStations();
 
     this.spawnProps();
     this.spawnPlayer();
+    this.pendingSpawn = null;
     this.setupCamera();
     // Gli ostacoli fissi (panchine, lampioni) devono esistere prima dei veicoli,
     // altrimenti questi ultimi possono nascere dentro un palo.
@@ -225,7 +282,7 @@ export class WorldScene extends Phaser.Scene {
       const loaded = loadGame();
       if (!loaded) { this.hud.toast('Nessun salvataggio trovato'); return; }
       this.state = normalize(loaded);
-      this.state.businesses = normalizeBusinesses(this.state.businesses, DATA.places);
+      this.state.businesses = normalizeBusinesses(this.state.businesses, this.region.places);
       syncHomeMirror(this.state);
       this.registry.set('state', this.state);
       this.player.setPosition(this.state.player.x, this.state.player.y);
@@ -243,7 +300,10 @@ export class WorldScene extends Phaser.Scene {
     (window as unknown as { __bacoliDebug?: () => Record<string, unknown> }).__bacoliDebug = () => ({
       player: { x: this.player.x, y: this.player.y },
       npcs: this.npcs.map((n) => ({ x: n.sprite.x, y: n.sprite.y, name: n.name })),
-      places: DATA.places.length,
+      places: this.region.places.length,
+      region: this.region.id,
+      regions: WORLD.regions.length,
+      station: this.originStation().id,
       time: this.timeSystem.clock,
       walkingNpcs: this.npcs.filter((n) => n.path.length > 0).length,
       vehicles: this.state.vehicles.length,
@@ -288,6 +348,17 @@ export class WorldScene extends Phaser.Scene {
         this.syncWallet(wallet);
       },
       player: () => ({ x: this.player.x, y: this.player.y }),
+      region: () => this.region.id,
+      regions: () => WORLD.regions.map((region) => region.id),
+      /** Solo per QA visiva: cambia regione metrica senza acquistare biglietti. */
+      setRegion: (id: string) => {
+        const target = WORLD.regions.find((item) => item.id === id);
+        if (!target) return false;
+        this.restartInRegion(
+          target, target.spawn.x * 16 + 8, target.spawn.y * 16 + 16,
+        );
+        return true;
+      },
       lastTrip: () => this.state.transport.lastTrip,
       reachable: () => reachableFrom(this.originStation().id).map((station) => station.id),
       origin: () => this.originStation().id,
@@ -306,6 +377,7 @@ export class WorldScene extends Phaser.Scene {
         career: { ...(this.state.career ?? defaultCareer()) },
         events: (this.state.events ?? []).map((event) => ({ ...event })),
         day: this.state.day,
+        region: this.region.id,
       }),
       adopt: (species: PetSpecies) => this.adopt(species),
       feedPet: (id: string) => this.feedPet(id),
@@ -339,7 +411,7 @@ export class WorldScene extends Phaser.Scene {
       buyBusinessAt: (placeId: string) => this.purchaseBusiness(placeId),
       manageBusiness: (id: string) => this.manageBusiness(id),
       openNow: (placeId: string) => {
-        const place = DATA.places.find((item) => item.id === placeId);
+        const place = this.region.places.find((item) => item.id === placeId);
         return place ? isOpenAt(place.kind, this.timeSystem.hour) : false;
       },
       orderDelivery: (item: ItemId) => this.orderFood(item),
@@ -366,18 +438,20 @@ export class WorldScene extends Phaser.Scene {
     };
 
     this.events.once('shutdown', () => {
-      this.syncState();
+      // Un cambio regione ha già scritto la nuova posizione: il vecchio sprite
+      // non deve sovrascriverla con le coordinate della regione precedente.
+      if (!this.pendingSpawn) this.syncState();
       saveGame(this.state);
       uiRoot.remove();
     });
   }
 
   private loadCollision(): void {
-    const bits = new Uint8Array(this.cache.binary.get('centroCollisionBin'));
+    const bits = new Uint8Array(this.cache.binary.get(`collision_${this.region.id}`));
     // L'overlay legge direttamente la bitmask: niente decompressione per frame.
     this.debugOverlay = new DebugOverlay(this, {
       solid: bits,
-      footprints: DATA.places
+      footprints: this.region.places
         .filter((place): place is Place & { bounds: [number, number, number, number] } =>
           Boolean(place.bounds))
         .map((place) => place.bounds),
@@ -434,7 +508,7 @@ export class WorldScene extends Phaser.Scene {
     this.player.setOrigin(0.5, 1);
     this.player.setDepth(this.player.y);
     if (!this.canStand(this.player.x, this.player.y)) {
-      this.player.setPosition(DATA.spawn.x * 16 + 8, DATA.spawn.y * 16 + 16);
+      this.player.setPosition(this.region.spawn.x * 16 + 8, this.region.spawn.y * 16 + 16);
     }
   }
 
@@ -476,18 +550,42 @@ export class WorldScene extends Phaser.Scene {
     return Phaser.Math.Clamp(Math.floor(place.floors ?? 3), 1, 4);
   }
 
+  /** Stazioni EAV reali: binario, banchina e fabbricato sulle coordinate OSM. */
+  private spawnStations(): void {
+    for (const station of STATIONS) {
+      if (station.status !== 'active') continue;
+      if (!station.lines.some((line) => line === 'cumana' || line === 'circumflegrea')) continue;
+      const spawn = this.region.stations[station.id];
+      if (!spawn) continue;
+      const x = spawn.x * 16 + 8;
+      const y = spawn.y * 16 + 16;
+      this.add.image(x, y + 8, 'rail').setOrigin(0.5, 1).setDepth(y + 7);
+      this.add.image(x, y, 'platform').setOrigin(0.5, 1).setDepth(y + 6);
+      this.add.image(x, y - 6, 'station_eav').setOrigin(0.5, 1).setDepth(y + 5);
+    }
+  }
+
   /** Segnaposto dei POI puntuali: nessun edificio inventato e nessuna collisione. */
+  private markerKey(place: Place): string {
+    if (place.kind === 'beach') return 'palm';
+    if (place.kind === 'archaeological_site') return 'olive_tree';
+    if (place.kind === 'railway') return 'platform';
+    if (place.kind === 'parking') return 'parking_sign';
+    if (place.kind === 'cafe' || place.kind === 'bar' || place.kind === 'gelateria') return 'cafe_table';
+    if (place.kind === 'restaurant') return 'umbrella';
+    if (place.kind === 'pescheria') return 'boat';
+    if (place.kind === 'fuel') return 'car_white';
+    return 'street_sign';
+  }
+
   private addMarker(place: Place): void {
-    const key = place.kind === 'beach' ? 'palm'
-      : place.kind === 'archaeological_site' ? 'olive_tree'
-        : 'street_sign';
     const x = place.x * 16 + 8;
     const y = place.y * 16 + 16;
-    this.add.image(x, y, key).setOrigin(0.5, 1).setDepth(y);
+    this.add.image(x, y, this.markerKey(place)).setOrigin(0.5, 1).setDepth(y);
   }
 
   private spawnProps(): void {
-    DATA.places.forEach((place) => {
+    this.region.places.forEach((place) => {
       const bbox = place.bounds;
       if (!bbox) {
         if (place.marker) this.addMarker(place);
@@ -504,7 +602,7 @@ export class WorldScene extends Phaser.Scene {
         .setOrigin(0.5, 1).setDepth(baseY - 1);
       this.add.image(centerX, baseY, `building_${width}_${floors}_${variant}`)
         .setOrigin(0.5, 1).setDepth(baseY + 2);
-      const buildingHeight = floors * DATA.scale.floorHeightPx + 4;
+      const buildingHeight = floors * this.region.scale.floorHeightPx + 4;
       this.add.image(centerX, baseY - buildingHeight + ROOF_HEIGHT, `roof_${width}_${variant}`)
         .setOrigin(0.5, 1).setDepth(baseY + 3);
     });
@@ -516,7 +614,7 @@ export class WorldScene extends Phaser.Scene {
       ['flowerpot', 10, -4, 0], ['trash_bin', -7, -2, 5], ['bench', 12, 6, 7],
     ];
     for (const [key, dx, dy, radius] of props) {
-      this.addProp(key, DATA.spawn.x + dx, DATA.spawn.y + dy, radius);
+      this.addProp(key, this.region.spawn.x + dx, this.region.spawn.y + dy, radius);
     }
   }
 
@@ -524,8 +622,8 @@ export class WorldScene extends Phaser.Scene {
   private spawnUrbanDetails(): void {
     const keys = ['flowerpot', 'olive_tree', 'palm', 'trash_bin', 'bench', 'cafe_table'];
     let placed = 0;
-    for (let i = 0; i < DATA.places.length && placed < 54; i += 4) {
-      const place = DATA.places[i];
+    for (let i = 0; i < this.region.places.length && placed < 54; i += 4) {
+      const place = this.region.places[i];
       const tx = place.x + ((i % 3) - 1) * 3;
       const ty = place.y + (i % 2 === 0 ? 2 : -2);
       let key = keys[Math.floor((i / 4) % keys.length)];
@@ -544,7 +642,7 @@ export class WorldScene extends Phaser.Scene {
       placed++;
     }
 
-    DATA.places.filter((place) => place.kind === 'beach').forEach((place, index) => {
+    this.region.places.filter((place) => place.kind === 'beach').forEach((place, index) => {
       const tx = place.x + (index % 2 === 0 ? 2 : -2);
       const ty = place.y + 1;
       if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, 8)) return;
@@ -576,8 +674,8 @@ export class WorldScene extends Phaser.Scene {
     for (const vehicle of this.state.vehicles) {
       // I veicoli in garage non devono comparire né ostacolare la strada.
       if (vehicle.garageId) { index++; continue; }
-      const tx = DATA.spawn.x + (index % 2 === 0 ? -1 : 1) * (2 + index);
-      const ty = DATA.spawn.y + 3 + Math.floor(index / 2) * 2;
+      const tx = this.region.spawn.x + (index % 2 === 0 ? -1 : 1) * (2 + index);
+      const ty = this.region.spawn.y + 3 + Math.floor(index / 2) * 2;
       const radius = this.vehicleRadius(vehicle);
       const spot = this.findVehicleSpot(tx, ty, radius);
       vehicle.x = vehicle.x || spot.x;
@@ -600,8 +698,8 @@ export class WorldScene extends Phaser.Scene {
       const vehicle: VehicleState = {
         id: `traffic-${i}`, kind,
         name: bus ? 'Bus EAV' : 'Traffico',
-        x: (DATA.spawn.x + (i - 4) * 7) * 16 + 8,
-        y: (DATA.spawn.y + 5 + Math.floor(i / 4) * 4) * 16 + 16,
+        x: (this.region.spawn.x + (i - 4) * 7) * 16 + 8,
+        y: (this.region.spawn.y + 5 + Math.floor(i / 4) * 4) * 16 + 16,
         angle: 0, fuel: 99, maxFuel: 99, color: colors[i % colors.length],
         owned: false,
       };
@@ -628,11 +726,11 @@ export class WorldScene extends Phaser.Scene {
     NPC_PROFILES.forEach((profile, i) => {
       const key = profile.kind === 'fisher'
         ? 'npc_fisher' : NPC_KEYS[i % NPC_KEYS.length];
-      const anchor = DATA.places[(i * 17 + 5) % DATA.places.length];
+      const anchor = this.region.places[(i * 17 + 5) % this.region.places.length];
       let tx = anchor.x + ((i % 3) - 1) * 2;
       let ty = anchor.y + (i % 2 === 0 ? 2 : -2);
-      if (!this.walkable(tx, ty)) { tx = DATA.spawn.x + ((i % 5) - 2); ty = DATA.spawn.y + 2; }
-      if (!this.walkable(tx, ty)) { tx = DATA.spawn.x; ty = DATA.spawn.y; }
+      if (!this.walkable(tx, ty)) { tx = this.region.spawn.x + ((i % 5) - 2); ty = this.region.spawn.y + 2; }
+      if (!this.walkable(tx, ty)) { tx = this.region.spawn.x; ty = this.region.spawn.y; }
       const sprite = this.add.sprite(tx * 16 + 8, ty * 16 + 16, key);
       sprite.setOrigin(0.5, 1);
       this.npcs.push({
@@ -684,8 +782,8 @@ export class WorldScene extends Phaser.Scene {
     this.overlay.setOrigin(0, 0).setScrollFactor(0).setDepth(9000);
 
     for (let i = 0; i < 9; i++) {
-      const x = DATA.spawn.x * 16 + ((i % 3) - 1) * 160;
-      const y = DATA.spawn.y * 16 + 64 + Math.floor(i / 3) * 96;
+      const x = this.region.spawn.x * 16 + ((i % 3) - 1) * 160;
+      const y = this.region.spawn.y * 16 + 64 + Math.floor(i / 3) * 96;
       if (!this.walkable(Math.floor(x / 16), Math.floor(y / 16))) continue;
       const lamp = this.add.image(x, y, 'lamp').setOrigin(0.5, 1).setDepth(y + 1);
       const glow = this.add.image(x, y - 40, 'glow').setBlendMode(Phaser.BlendModes.ADD).setDepth(y);
@@ -866,9 +964,9 @@ export class WorldScene extends Phaser.Scene {
       ? ['beach', 'pescheria'] : wanted;
     if (kind === 'tourist' || kind === 'bather') wanted = slot === 'evening'
       ? ['cafe', 'gelateria', 'bar'] : ['beach', 'archaeological_site'];
-    let pool = DATA.places.filter((place) => wanted.includes(place.kind));
-    if (!pool.length) pool = DATA.places.filter((place) => kinds[slot].includes(place.kind));
-    const source = pool.length ? pool : DATA.places;
+    let pool = this.region.places.filter((place) => wanted.includes(place.kind));
+    if (!pool.length) pool = this.region.places.filter((place) => kinds[slot].includes(place.kind));
+    const source = pool.length ? pool : this.region.places;
     const place = source[(index * 7 + slot.length) % source.length];
     const spot = this.findVehicleSpot(place.x, place.y + 2);
     return { x: Math.floor(spot.x / 16), y: Math.floor(spot.y / 16) };
@@ -882,6 +980,7 @@ export class WorldScene extends Phaser.Scene {
       view.x - 96, view.y - 96, view.width + 192, view.height + 192,
     );
     for (const npc of this.npcs) {
+      if (!npc.sprite.active || !npc.sprite.anims) continue;
       const onScreen = Phaser.Geom.Rectangle.Contains(bounds, npc.sprite.x, npc.sprite.y);
       npc.sprite.setVisible(onScreen);
       if (!onScreen) { npc.sprite.anims.stop(); continue; }
@@ -928,7 +1027,7 @@ export class WorldScene extends Phaser.Scene {
     for (const vehicle of this.traffic) {
       const current = { x: Math.floor(vehicle.x / 16), y: Math.floor(vehicle.y / 16) };
       if (!this.walkable(current.x + 1, current.y) && !this.walkable(current.x - 1, current.y)) {
-        const spot = this.findVehicleSpot(DATA.spawn.x + Phaser.Math.Between(-8, 8), DATA.spawn.y + 5);
+        const spot = this.findVehicleSpot(this.region.spawn.x + Phaser.Math.Between(-8, 8), this.region.spawn.y + 5);
         vehicle.x = spot.x;
         vehicle.y = spot.y;
       }
@@ -938,8 +1037,8 @@ export class WorldScene extends Phaser.Scene {
       vehicle.x += Math.sign(target.x - current.x) * step;
       const sprite = this.vehicleSprites.get(vehicle.id);
       sprite?.setPosition(vehicle.x, vehicle.y).setDepth(vehicle.y).setFlipX(!goesRight);
-      if (vehicle.x > (DATA.spawn.x + 18) * 16 || vehicle.x < (DATA.spawn.x - 18) * 16) {
-        const spot = this.findVehicleSpot(DATA.spawn.x + Phaser.Math.Between(-10, 10), DATA.spawn.y + 5);
+      if (vehicle.x > (this.region.spawn.x + 18) * 16 || vehicle.x < (this.region.spawn.x - 18) * 16) {
+        const spot = this.findVehicleSpot(this.region.spawn.x + Phaser.Math.Between(-10, 10), this.region.spawn.y + 5);
         vehicle.x = spot.x;
         vehicle.y = spot.y;
       }
@@ -950,7 +1049,7 @@ export class WorldScene extends Phaser.Scene {
   private nearestPlace(): Place | null {
     let best: Place | null = null;
     let distance = 96;
-    for (const place of DATA.places) {
+    for (const place of this.region.places) {
       const d = Phaser.Math.Distance.Between(
         this.player.x, this.player.y, place.x * 16 + 8, place.y * 16 + 16,
       );
@@ -1089,7 +1188,7 @@ export class WorldScene extends Phaser.Scene {
       this.state.jobState = createJob(id);
       this.state.player.job = this.state.jobState.title;
     }
-    const place = placeId ? DATA.places.find((item) => item.id === placeId) : undefined;
+    const place = placeId ? this.region.places.find((item) => item.id === placeId) : undefined;
     if (place) this.state.jobState.workplace = place.name;
     const spec = JOB_CATALOG[this.state.jobState.id as JobId];
     if (spec && (this.state.career?.level ?? 1) < spec.minLevel) {
@@ -1107,7 +1206,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private purchaseBusiness(placeId: string): void {
-    const place = DATA.places.find((item) => item.id === placeId);
+    const place = this.region.places.find((item) => item.id === placeId);
     if (!place) return;
     const wallet = this.wallet();
     const business = buyBusiness(this.state, place, wallet);
@@ -1191,10 +1290,10 @@ export class WorldScene extends Phaser.Scene {
     if (!(this.state.deliveries ?? []).some((order) => order.status !== 'delivered')) return;
     const arrived = advanceDeliveries(this.state, delta / 1000);
     const home = activeHome(this.state);
-    const place = DATA.places.find((item) => item.name.includes(home.street))
-      ?? DATA.places.find((item) => item.kind === 'home');
-    const tx = place ? place.x * 16 + 8 : DATA.spawn.x * 16 + 8;
-    const ty = place ? place.y * 16 + 16 : DATA.spawn.y * 16 + 16;
+    const place = this.region.places.find((item) => item.name.includes(home.street))
+      ?? this.region.places.find((item) => item.kind === 'home');
+    const tx = place ? place.x * 16 + 8 : this.region.spawn.x * 16 + 8;
+    const ty = place ? place.y * 16 + 16 : this.region.spawn.y * 16 + 16;
     for (const order of this.state.deliveries ?? []) {
       if (order.status !== 'delivered') moveCourier(order, tx, ty, delta);
       this.courierSprites.get(order.id)?.setPosition(order.x, order.y).setDepth(order.y + 2);
@@ -1416,6 +1515,7 @@ export class WorldScene extends Phaser.Scene {
     this.scene.launch('Interior', {
       kind: place.kind, name: place.name,
       returnX: this.player.x, returnY: this.player.y,
+      placeId: place.id,
     });
     this.scene.pause();
   }
@@ -1424,38 +1524,16 @@ export class WorldScene extends Phaser.Scene {
     this.startWork(place.id);
   }
 
-  /**
-   * Fermata attiva più vicina. Le posizioni `position` di TransportSystem
-   * appartengono alla vecchia mappa: con la nuova mappa metrica si confrontano
-   * le coordinate geografiche proiettate con gli stessi bounds del dataset.
-   */
+  /** Fermata attiva più vicina nella regione metrica attualmente giocata. */
   private originStation(): Station {
-    const fallback = STATIONS.find((s) => s.id === 'bacoli_centro')!;
-    const { north, south, west, east } = DATA.bounds;
-    const playerMeters = { x: this.player.x / 16, y: this.player.y / 16 };
-    const stationMeters = (station: Station) => ({
-      x: ((station.coordinates.lon - west) / (east - west)) * DATA.size.width,
-      y: ((north - station.coordinates.lat) / (north - south)) * DATA.size.height,
-    });
-
-    // Compatibilità con i gate storici usati dagli hook E2E: restano validi
-    // solo quando il giocatore è esattamente su una vecchia posizione di gate.
-    const legacyGate = STATIONS.find((station) => station.status === 'active'
-      && station.position.x > 0 && station.position.y > 0
-      && Math.hypot(
-        this.player.x - (station.position.x * 16 + 8),
-        this.player.y - (station.position.y * 16 + 16),
-      ) <= 8);
-    if (legacyGate) return legacyGate;
-
+    const local = STATIONS.filter((station) => station.status === 'active'
+      && Boolean(this.region.stations[station.id]));
+    const fallback = local[0] ?? STATIONS.find((station) => station.id === 'bacoli_centro')!;
     let best = fallback;
     let bestDistance = Infinity;
-    for (const station of STATIONS) {
-      if (station.status !== 'active' || station.position.x <= 0 || station.position.y <= 0) continue;
-      const meters = stationMeters(station);
-      const distance = Math.hypot(
-        playerMeters.x - meters.x, playerMeters.y - meters.y,
-      );
+    for (const station of local) {
+      const spawn = this.region.stations[station.id];
+      const distance = Math.hypot(this.player.x - (spawn.x * 16 + 8), this.player.y - (spawn.y * 16 + 16));
       if (distance < bestDistance) { bestDistance = distance; best = station; }
     }
     return best;
@@ -1472,6 +1550,7 @@ export class WorldScene extends Phaser.Scene {
     }
     if (!this.state.transport.monthlyPass) this.state.inventory[needed]--;
     if (this.driving) this.toggleVehicle();
+    this.tripOriginRegion = this.region.id;
     this.state.transport.lastTrip = trip.to.name;
     const lineName = LINES.find((l) => l.id === trip.line)?.name ?? 'EAV';
     const stops = (LINES.find((l) => l.id === trip.line)?.stations ?? [])
@@ -1493,31 +1572,53 @@ export class WorldScene extends Phaser.Scene {
     this.scene.pause();
   }
 
-  /** Arrivo della tratta animata: sincronizza orologio e posizione nel mondo. */
+  /** Arrivo della tratta: sincronizza tempo e ricostruisce la regione di arrivo. */
   private finishTrip(destination: Station): void {
     this.state.time = this.timeSystem.minutes;
     this.state.day = this.timeSystem.day;
     this.state.weather = this.timeSystem.weather;
-    const tx = destination.position.x;
-    const ty = destination.position.y;
-    let x = tx * 16 + 8;
-    let y = ty * 16 + 16;
-    if (!this.canStand(x, y)) {
+    // Il gate storico di Baia apparteneva alla mappa del centro ed è ancora
+    // usato dai test pubblicati: solo quel viaggio resta nel centro storico.
+    const legacyBaia = destination.id === 'baia_station' && this.tripOriginRegion === 'centro';
+    const target = legacyBaia ? this.region
+      : WORLD.regions.find((region) => region.id === destination.mapRegion) ?? this.region;
+    const spawn = legacyBaia ? { x: 268, y: 256 }
+      : target.stations[destination.id] ?? target.spawn;
+    const x = spawn.x * 16 + 8;
+    const y = spawn.y * 16 + 16;
+    this.state.regionId = target.id;
+    this.state.player.x = x;
+    this.state.player.y = y;
+    this.registry.set('arrivalToast', `Sei arrivato: ${destination.name}`);
+    if (target.id !== this.region.id) {
+      this.pendingSpawn = { x, y };
+      saveGame(this.state);
+      this.scene.restart();
+      return;
+    }
+    let finalX = x;
+    let finalY = y;
+    if (!this.canStand(finalX, finalY)) {
       let found = false;
       for (let ring = 1; ring <= 6 && !found; ring++) {
         for (let dy = -ring; dy <= ring && !found; dy++) {
           for (let dx = -ring; dx <= ring && !found; dx++) {
             if (Math.abs(dx) !== ring && Math.abs(dy) !== ring) continue;
-            const cx = (tx + dx) * 16 + 8;
-            const cy = (ty + dy) * 16 + 16;
-            if (this.canStand(cx, cy)) { x = cx; y = cy; found = true; }
+            const cx = (spawn.x + dx) * 16 + 8;
+            const cy = (spawn.y + dy) * 16 + 16;
+            if (this.canStand(cx, cy)) { finalX = cx; finalY = cy; found = true; }
           }
         }
       }
-      if (!found) { x = DATA.spawn.x * 16 + 8; y = DATA.spawn.y * 16 + 16; }
+      if (!found) {
+        finalX = this.region.spawn.x * 16 + 8;
+        finalY = this.region.spawn.y * 16 + 16;
+      }
     }
-    this.player.setPosition(x, y);
-    this.cameras.main.centerOn(x, y);
+    this.player.setPosition(finalX, finalY);
+    this.state.player.x = finalX;
+    this.state.player.y = finalY;
+    this.cameras.main.centerOn(finalX, finalY);
     this.hud.toast(`Sei arrivato: ${destination.name}`);
   }
 
@@ -1958,7 +2059,7 @@ export class WorldScene extends Phaser.Scene {
     if (!code) return;
     try {
       const loaded = normalize(decodeExport(code));
-      loaded.businesses = normalizeBusinesses(loaded.businesses, DATA.places);
+      loaded.businesses = normalizeBusinesses(loaded.businesses, this.region.places);
       syncHomeMirror(loaded);
       this.state = loaded;
       this.registry.set('state', loaded);

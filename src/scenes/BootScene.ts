@@ -1,5 +1,15 @@
 import Phaser from 'phaser';
-import centroData from '../data/bacoli_centro.json';
+import worldData from '../data/bacoli_world.json';
+
+interface WorldRegionData {
+  id: string;
+  places: Array<{
+    bounds?: [number, number, number, number];
+    facadeWidth?: number;
+    floors?: number;
+    variant?: number;
+  }>;
+}
 
 const CHARACTERS = [
   'player', 'npc_1', 'npc_2', 'npc_3', 'npc_4', 'npc_5', 'npc_6',
@@ -11,19 +21,22 @@ const DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
 const BUILDING_KEYS = new Set<string>();
 const ROOF_KEYS = new Set<string>();
 const SHADOW_KEYS = new Set<string>();
-for (const place of centroData.places) {
-  if (!('bounds' in place) || !place.bounds) continue;
-  const width = 'facadeWidth' in place ? place.facadeWidth ?? 128 : 128;
-  const floors = 'floors' in place ? place.floors ?? 3 : 3;
-  const variant = 'variant' in place ? place.variant ?? 0 : 0;
-  BUILDING_KEYS.add(`building_${width}_${floors}_${variant}`);
-  ROOF_KEYS.add(`roof_${width}_${variant}`);
-  SHADOW_KEYS.add(`shadow_${width}`);
+for (const region of worldData.regions as WorldRegionData[]) {
+  for (const place of region.places) {
+    if (!place.bounds) continue;
+    const width = place.facadeWidth ?? 128;
+    const floors = place.floors ?? 3;
+    const variant = place.variant ?? 0;
+    BUILDING_KEYS.add(`building_${width}_${floors}_${variant}`);
+    ROOF_KEYS.add(`roof_${width}_${variant}`);
+    SHADOW_KEYS.add(`shadow_${width}`);
+  }
 }
 const PROPS = [
   'palm', 'olive_tree', 'bench', 'lamp', 'umbrella', 'boat', 'cafe_table',
   'fisher', 'casina', 'flowerpot', 'trash_bin', 'street_sign', 'parking_sign',
   'car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus', 'train',
+  'station_eav', 'platform', 'rail',
 ];
 const FURNITURE = [
   'bed', 'sofa', 'table', 'chair', 'fridge', 'stove', 'shelf', 'tv',
@@ -37,14 +50,16 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Mappa metrica del centro storico: un solo tileset e due buffer binari.
+    // Tutte le regioni M5 usano lo stesso tileset e la scala universale.
     this.load.spritesheet('tiles16', 'assets/scale/tileset.png', {
       frameWidth: 16, frameHeight: 16,
     });
     this.load.image('room_floors.png', 'assets/scale/room_floors.png');
-    this.load.binary('centroGroundBin', 'assets/maps/centro/ground.bin');
-    this.load.binary('centroCollisionBin', 'assets/maps/centro/collision.bin');
-    this.load.json('centroMeta', 'assets/maps/centro/meta.json');
+    for (const region of worldData.regions as WorldRegionData[]) {
+      this.load.binary(`ground_${region.id}`, `assets/maps/${region.id}/ground.bin`);
+      this.load.binary(`collision_${region.id}`, `assets/maps/${region.id}/collision.bin`);
+      this.load.json(`meta_${region.id}`, `assets/maps/${region.id}/meta.json`);
+    }
 
     // Character sheet nativi alla scala 1 metro = 16 px (adulto 28 px).
     CHARACTERS.forEach((key) => {

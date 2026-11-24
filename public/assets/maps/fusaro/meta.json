@@ -1,0 +1,19 @@
+{
+ "width": 1095,
+ "height": 1100,
+ "tileWidth": 16,
+ "tileHeight": 16,
+ "tilesetName": "base",
+ "tilesetKey": "tiles16",
+ "firstGid": 1,
+ "metersPerPixel": 0.0625,
+ "metersPerTile": 1,
+ "solidTiles": 518490,
+ "bounds": {
+  "south": 40.813,
+  "north": 40.826,
+  "west": 14.055,
+  "east": 14.068
+ },
+ "projection": "equirectangular locale, 1 tile = 1 metro"
+}

@@ -16,7 +16,13 @@ interface InteriorData {
   name: string;
   returnX: number;
   returnY: number;
+  placeId?: string;
 }
+
+type InteriorTemplate =
+  | 'home' | 'bar' | 'pizzeria' | 'fish' | 'supermarket'
+  | 'tobacco' | 'church' | 'workshop' | 'pharmacy'
+  | 'bank' | 'post_office' | 'shop' | 'generic';
 
 interface FurnitureItem {
   sprite: Phaser.GameObjects.Image;
@@ -27,6 +33,24 @@ interface FurnitureItem {
 // Una stanza è misurata in metri: 1 tile = 1 m = 16 px.
 const ROOM_W = 24;
 const ROOM_H = 16;
+
+/** Interni riconoscibili: la tipologia reale del luogo guida arredi e servizi. */
+function templateFor(kind: PlaceKind, name: string): InteriorTemplate {
+  const text = name.toLowerCase();
+  if (kind === 'home' || kind === 'house') return 'home';
+  if (/pizzeri|pizza|pizzeria/.test(text)) return 'pizzeria';
+  if (/pesce|pescheria|ristorante|trattoria|sapori|taverna|cucina|marina/.test(text)) return 'fish';
+  if (/super|mercato|alimentari|conad|coop/.test(text)) return 'supermarket';
+  if (/tabach|tabacc|edicola|farmacia/.test(text) && !/farmacia/.test(text)) return 'tobacco';
+  if (/chies|basil|santuar|duomo|parrocchia/.test(text)) return 'church';
+  if (/officina|garage|meccan|carrozzeria/.test(text)) return 'workshop';
+  if (kind === 'pharmacy') return 'pharmacy';
+  if (kind === 'bank') return 'bank';
+  if (kind === 'post_office') return 'post_office';
+  if (kind === 'bar' || kind === 'cafe' || kind === 'gelateria') return 'bar';
+  if (kind === 'shop' || kind === 'pescheria' || kind === 'delivery') return 'shop';
+  return 'generic';
+}
 
 /** Larghezza reale in pixel degli arredi (1 m = 16 px). */
 const FURNITURE_WIDTH: Record<string, number> = {
@@ -47,6 +71,8 @@ export class InteriorScene extends Phaser.Scene {
   private interactionCount = 0;
   private timeSystem?: TimeSystem;
   private seats: Record<string, SeatState> = {};
+  private template: InteriorTemplate = 'generic';
+  private staff?: Phaser.GameObjects.Sprite;
 
   constructor() {
     super('Interior');
@@ -64,7 +90,10 @@ export class InteriorScene extends Phaser.Scene {
       return;
     }
 
-    const floorIndex = data.kind === 'home' ? 0 : data.kind === 'restaurant' ? 2 : 1;
+    this.template = templateFor(data.kind, data.name);
+    const floorIndex = this.template === 'home' ? 0
+      : this.template === 'fish' || this.template === 'pizzeria' ? 2
+        : this.template === 'church' ? 3 : 1;
     const grid: number[][] = [];
     for (let y = 0; y < ROOM_H; y++) {
       const row: number[] = [];
@@ -91,7 +120,9 @@ export class InteriorScene extends Phaser.Scene {
     this.add.rectangle(doorX - 9, doorY - 1, 2, 14, 0x4e3f2d).setDepth(2);
     this.add.circle(doorX + 8, doorY, 1.6, 0xe6ab2d).setDepth(3);
 
+    this.addWallSign(data.name);
     this.placeFurniture(data.kind);
+    this.addStaff();
     this.player = this.add.sprite(ROOM_W * 8, ROOM_H * 16 - 30, 'player');
     this.player.setOrigin(0.5, 1).setFrame(0).setDepth(500);
 
@@ -111,6 +142,41 @@ export class InteriorScene extends Phaser.Scene {
         ? `Comfort ${homeComfort(activeHome(this.state))} · famiglia ${this.state.family.length}. Usa gli arredi per riposare, cucinare o guardare la TV.`
         : `Sei dentro ${data.name}. Il personale è disponibile alla cassa.`,
     ], [{ label: 'Esci', action: () => this.exit() }]);
+  }
+
+  private addWallSign(name: string): void {
+    const label = name.length > 28 ? `${name.slice(0, 27)}…` : name;
+    this.add.text(ROOM_W * 8, 34, label, {
+      fontFamily: 'monospace', fontSize: '13px', color: '#f2ead8',
+      backgroundColor: '#825834', padding: { x: 8, y: 3 },
+    }).setOrigin(0.5, 0).setDepth(120);
+    // Un secondo pannello rende leggibile la funzione del locale anche senza HUD.
+    const subtitle: Record<InteriorTemplate, string> = {
+      home: 'CASA · VITA QUOTIDIANA', bar: 'CAFFÈ · BAR', pizzeria: 'PIZZERIA',
+      fish: 'RISTORANTE DI PESCE', supermarket: 'SUPERMERCATO',
+      tobacco: 'TABACCHERIA · EDICOLA', church: 'LUOGO DI CULTO',
+      workshop: 'OFFICINA', pharmacy: 'FARMACIA', bank: 'BANCA',
+      post_office: 'POSTE', shop: 'NEGOZIO', generic: 'ESERCIZIO LOCALE',
+    };
+    this.add.text(ROOM_W * 8, 58, subtitle[this.template], {
+      fontFamily: 'monospace', fontSize: '11px', color: '#e6ab2d',
+      backgroundColor: '#0c1823', padding: { x: 6, y: 2 },
+    }).setOrigin(0.5, 0).setDepth(120);
+  }
+
+  /** Personale dietro il banco: parla, vende e descrive il servizio reale. */
+  private addStaff(): void {
+    if (this.template === 'home' || this.template === 'church') return;
+    const keys: Partial<Record<InteriorTemplate, string>> = {
+      bar: 'npc_2', pizzeria: 'npc_4', fish: 'npc_fisher',
+      supermarket: 'npc_6', tobacco: 'npc_8', workshop: 'npc_10',
+      pharmacy: 'npc_5', bank: 'npc_3', post_office: 'npc_7', shop: 'npc_9',
+    };
+    const key = keys[this.template] ?? 'npc_1';
+    const x = this.template === 'bank' || this.template === 'post_office' ? 8 * 16 + 8 : 17 * 16 + 8;
+    const y = 4 * 16 + 16;
+    this.staff = this.add.sprite(x, y, key).setFrame(0)
+      .setOrigin(0.5, 1).setDepth(y);
   }
 
   private addFurniture(key: string, x: number, y: number, action: string): void {
@@ -159,8 +225,8 @@ export class InteriorScene extends Phaser.Scene {
     this.player.setDepth(this.player.y);
   }
 
-  private placeFurniture(kind: PlaceKind): void {
-    if (kind === 'home') {
+  private placeFurniture(_kind: PlaceKind): void {
+    if (this.template === 'home') {
       this.addFurniture('bed', 3, 3, 'Dormi');
       this.addFurniture('sofa', 8, 3, 'Rilassati');
       this.addFurniture('tv', 13, 3, 'Guarda la TV');
@@ -181,40 +247,112 @@ export class InteriorScene extends Phaser.Scene {
       for (const [id, x, y, action] of extras) {
         if (activeHome(this.state).furniture.includes(id)) this.addFurniture(id, x, y, action);
       }
-    } else if (kind === 'cafe' || kind === 'bar') {
+      return;
+    }
+
+    if (this.template === 'bar') {
       this.addFurniture('register', 15, 3, 'Cassa');
       this.addFurniture('espresso', 18, 3, 'Caffè');
       this.addFurniture('shelf', 3, 3, 'Scaffale');
-      // Un tavolino resta a portata di mano dall'ingresso: l'interazione con E
-      // deve funzionare subito, come nel bar reale dove si ordina in piedi.
+      this.addFurniture('fridge', 3, 11, 'Frigo');
       for (const [tx, ty] of [[5, 9], [11, 11], [17, 9]] as const) {
         this.addFurniture('table', tx, ty, 'Siediti');
         this.addFurniture('chair', tx + 2, ty, 'Siediti');
       }
-    } else if (kind === 'restaurant') {
-      this.addFurniture('stove', 3, 3, 'Cucina');
+      this.addFurniture('plant', 21, 11, 'Piante');
+      return;
+    }
+
+    if (this.template === 'pizzeria') {
+      this.addFurniture('stove', 3, 3, 'Forno a legna');
       this.addFurniture('register', 18, 3, 'Cassa');
-      for (const [tx, ty] of [[6, 9], [11, 9], [16, 9]] as const) {
+      this.addFurniture('shelf', 8, 3, 'Scaffale');
+      for (const [tx, ty] of [[5, 9], [10, 9], [15, 9]] as const) {
         this.addFurniture('table', tx, ty, 'Mangia');
         this.addFurniture('chair', tx + 2, ty, 'Siediti');
       }
-    } else if (kind === 'pharmacy') {
+      this.addFurniture('fridge', 3, 11, 'Frigo');
+      this.addFurniture('plant', 21, 11, 'Piante');
+      return;
+    }
+
+    if (this.template === 'fish') {
+      this.addFurniture('fridge', 3, 3, 'Vetrina pesce');
+      this.addFurniture('stove', 7, 3, 'Cucina');
+      this.addFurniture('register', 18, 3, 'Cassa');
+      for (const [tx, ty] of [[5, 10], [11, 10], [17, 10]] as const) {
+        this.addFurniture('table', tx, ty, 'Mangia');
+        this.addFurniture('chair', tx + 2, ty, 'Siediti');
+      }
+      this.addFurniture('plant', 21, 4, 'Piante');
+      return;
+    }
+
+    if (this.template === 'supermarket') {
+      for (const tx of [3, 7, 11, 15]) {
+        this.addFurniture('shelf', tx, 4, 'Scaffale');
+        this.addFurniture('shelf', tx, 8, 'Scaffale');
+      }
+      this.addFurniture('fridge', 3, 12, 'Frigo');
+      this.addFurniture('register', 20, 12, 'Cassa');
+      this.addFurniture('plant', 20, 4, 'Piante');
+      return;
+    }
+
+    if (this.template === 'tobacco') {
+      this.addFurniture('shelf', 3, 3, 'Tabacchi');
+      this.addFurniture('shelf', 8, 3, 'Giornali');
+      this.addFurniture('register', 18, 4, 'Cassa');
+      this.addFurniture('shelf', 3, 11, 'Scaffale');
+      this.addFurniture('desk', 12, 11, 'Ritira');
+      this.addFurniture('plant', 20, 11, 'Piante');
+      return;
+    }
+
+    if (this.template === 'church') {
+      this.addFurniture('shelf', 11, 3, 'Altare');
+      this.addFurniture('register', 18, 3, 'Offerte');
+      for (const tx of [4, 8, 12, 16, 20]) this.addFurniture('sofa', tx, 9, 'Prega');
+      this.addFurniture('plant', 3, 4, 'Annaffia');
+      this.addFurniture('plant', 21, 4, 'Annaffia');
+      return;
+    }
+
+    if (this.template === 'workshop') {
+      this.addFurniture('shelf', 3, 3, 'Ricambi');
+      this.addFurniture('desk', 10, 3, 'Ripara');
+      this.addFurniture('register', 18, 11, 'Cassa');
+      this.addFurniture('table', 5, 10, 'Ripara');
+      this.addFurniture('chair', 8, 10, 'Siediti');
+      this.addFurniture('fridge', 21, 3, 'Frigo');
+      return;
+    }
+
+    if (this.template === 'pharmacy') {
       this.addFurniture('shelf', 3, 3, 'Scaffale');
       this.addFurniture('shelf', 8, 3, 'Scaffale');
+      this.addFurniture('fridge', 14, 3, 'Farmaci');
       this.addFurniture('register', 18, 5, 'Cassa');
       this.addFurniture('plant', 13, 11, 'Piante');
-    } else if (kind === 'bank' || kind === 'post_office') {
+      this.addFurniture('table', 5, 11, 'Attendi');
+      return;
+    }
+
+    if (this.template === 'bank' || this.template === 'post_office') {
       this.addFurniture('register', 6, 4, 'Sportello');
       this.addFurniture('register', 12, 4, 'Sportello');
       this.addFurniture('shelf', 19, 7, 'Modulistica');
       this.addFurniture('table', 8, 10, 'Attendi');
-    } else {
-      this.addFurniture('shelf', 3, 4, 'Scaffale');
-      this.addFurniture('shelf', 9, 4, 'Scaffale');
-      this.addFurniture('shelf', 15, 4, 'Scaffale');
-      this.addFurniture('register', 18, 11, 'Cassa');
-      this.addFurniture('fridge', 3, 11, 'Frigo');
+      this.addFurniture('chair', 11, 10, 'Siediti');
+      return;
     }
+
+    this.addFurniture('shelf', 3, 4, 'Scaffale');
+    this.addFurniture('shelf', 9, 4, 'Scaffale');
+    this.addFurniture('shelf', 15, 4, 'Scaffale');
+    this.addFurniture('register', 18, 11, 'Cassa');
+    this.addFurniture('fridge', 3, 11, 'Frigo');
+    this.addFurniture('plant', 21, 4, 'Piante');
   }
 
   private wallet(): Wallet {
@@ -245,6 +383,12 @@ export class InteriorScene extends Phaser.Scene {
 
   private interact(): void {
     if (this.hud.panelOpen) { this.hud.closePanel(); return; }
+    if (this.staff && Phaser.Math.Distance.Between(
+      this.player.x, this.player.y, this.staff.x, this.staff.y,
+    ) < 64) {
+      this.openStaffDialogue();
+      return;
+    }
     let nearest: FurnitureItem | null = null;
     let distance = 58;
     for (const item of this.furniture) {
@@ -269,16 +413,13 @@ export class InteriorScene extends Phaser.Scene {
     } else if (action === 'Guarda la TV' || action === 'Rilassati' || action === 'Siediti') {
       const seatId = nearest.sprite.getData('seatId') as string | undefined;
       let sat = false;
-      if (seatId && (this.data2.kind === 'cafe' || this.data2.kind === 'bar'
-        || this.data2.kind === 'restaurant')) {
-        sat = occupySeat(this.seats, seatId, this.data2.name);
-      }
-      if (seatId && !sat && (this.data2.kind === 'cafe' || this.data2.kind === 'bar')) {
+      const dining = ['bar', 'pizzeria', 'fish'].includes(this.template);
+      if (seatId && dining) sat = occupySeat(this.seats, seatId, this.data2.name);
+      if (seatId && !sat && dining) {
         this.hud.toast('Quel posto è occupato');
         return;
       }
-      const drank = this.data2.kind === 'cafe' || this.data2.kind === 'bar'
-        ? consumeItem(this.state, 'caffe') : false;
+      const drank = this.template === 'bar' ? consumeItem(this.state, 'caffe') : false;
       if (!drank) this.state.player.energy = Math.min(100, this.state.player.energy + 6);
       const bonus = familyActivity(this.state.family, 'tv');
       this.hud.openInfo(sat ? 'Posto a sedere' : 'TV', [
@@ -287,16 +428,16 @@ export class InteriorScene extends Phaser.Scene {
         this.state.family.length ? `Serate in famiglia: umore +${bonus}.` : '',
       ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
     } else if (action === 'Mangia' || action === 'Cucina') {
-      const item: ItemId = this.data2.kind === 'home' || this.data2.kind === 'house'
-        ? 'spesa' : 'pizza';
+      const item: ItemId = this.template === 'home' ? 'spesa'
+        : this.template === 'fish' ? 'pesce' : 'pizza';
       const ate = consumeItem(this.state, item);
       if (!ate) {
-        this.hud.toast(`Non hai ${item === 'spesa' ? 'spesa' : 'pizze'}: acquistale o ordina dal telefono`);
+        this.hud.toast(`Non hai ${ITEM_CATALOG[item].name.toLowerCase()}: acquistalo o ordina dal telefono`);
         return;
       }
       const bonus = familyActivity(this.state.family, 'meal');
       this.hud.openInfo('Cucina', [
-        `Hai mangiato: ${item === 'spesa' ? 'una cena preparata in casa' : 'una pizza margherita'}.`,
+        `Hai mangiato: ${item === 'spesa' ? 'una cena preparata in casa' : ITEM_CATALOG[item].name}.`,
         this.state.family.length ? `Pranzo insieme: umore +${bonus}.` : '',
       ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
     } else if (action === 'Lava i panni') {
@@ -380,6 +521,38 @@ export class InteriorScene extends Phaser.Scene {
     } else if (action === 'Attendi') {
       this.advanceTime(15);
       this.hud.toast(`Hai atteso il tuo turno · ${this.timeSystem?.clock ?? ''}`);
+    } else if (action === 'Forno a legna') {
+      if (!consumeItem(this.state, 'spesa')) {
+        this.hud.toast('Serve la spesa per preparare la pizza');
+        return;
+      }
+      this.advanceTime(15);
+      this.state.inventory.pizza = (this.state.inventory.pizza ?? 0) + 1;
+      this.hud.openInfo('Forno a legna', [
+        'Hai preparato una pizza margherita con farina, pomodoro e basilico locali.',
+        `Ora sono le ${this.timeSystem?.clock ?? ''}.`,
+      ], [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Vetrina pesce' || action === 'Tabacchi' || action === 'Giornali'
+      || action === 'Ritira' || action === 'Farmaci') {
+      this.openShop(action);
+    } else if (action === 'Prega' || action === 'Altare') {
+      this.advanceTime(10);
+      this.state.player.energy = Math.min(100, this.state.player.energy + 4);
+      const bonus = familyActivity(this.state.family, 'walk');
+      this.hud.openInfo(action === 'Prega' ? 'Preghiera' : 'Altare', [
+        'Un momento di silenzio nella chiesa del paese.',
+        this.state.family.length ? `Umore condiviso +${bonus}.` : '',
+      ].filter(Boolean), [{ label: 'Amen', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Offerte') {
+      const wallet = this.wallet();
+      if (!buy(wallet, 'candela')) { this.hud.toast('Offerta non disponibile'); return; }
+      this.sync(wallet);
+      this.advanceTime(5);
+      this.hud.openInfo('Offerte', ['Hai acceso una candela votiva.'], [
+        { label: 'Ok', action: () => this.hud.closePanel() },
+      ]);
+    } else if (action === 'Ripara' || action === 'Ricambi') {
+      this.repairVehicle();
     } else {
       this.interactionCount++;
       const lines: Record<string, string[]> = {
@@ -397,6 +570,58 @@ export class InteriorScene extends Phaser.Scene {
     this.hud.closePanel();
     this.interactionCount++;
     this.hud.toast(`${action}: operazione completata`);
+  }
+
+  private openShop(title: string): void {
+    const wallet = this.wallet();
+    this.hud.openShop(title === 'Vetrina pesce' ? 'Pescheria' : this.data2.name, wallet, {
+      buy: (item: ItemId) => {
+        const ok = buy(wallet, item);
+        this.sync(wallet);
+        this.hud.toast(ok ? `Acquistato: ${ITEM_CATALOG[item].name}` : 'Denaro insufficiente');
+      },
+      sell: (item: ItemId) => { sell(wallet, item); this.sync(wallet); },
+      exit: () => this.hud.closePanel(),
+    });
+  }
+
+  private repairVehicle(): void {
+    const vehicle = this.state.vehicles.find((item) => (item.condition ?? 100) < 100);
+    if (!vehicle) { this.hud.toast('I veicoli sono già in ordine'); return; }
+    const price = 25;
+    if (this.state.player.money < price) {
+      this.hud.toast(`Serve € ${price} per la riparazione`);
+      return;
+    }
+    this.state.player.money -= price;
+    vehicle.condition = 100;
+    vehicle.lastServiceDay = this.state.day;
+    this.advanceTime(45);
+    this.hud.openInfo('Officina', [
+      `${vehicle.name} riparata: € ${price}.`,
+      `Condition 100 · ${this.timeSystem?.clock ?? ''}`,
+    ], [{ label: 'Grazie', action: () => this.hud.closePanel() }]);
+  }
+
+  private openStaffDialogue(): void {
+    const lines: Partial<Record<InteriorTemplate, string[]>> = {
+      bar: ['Il barista è napoletano doc: caffè forte e cornetto appena sfornato.', 'Ti consiglia il caffè della mattina.'],
+      pizzeria: ['Il pizzaiolo stende l’impasto davanti al forno a legna.', 'Margherita, marinara o pizza di ricotta: scegli dal banco.'],
+      fish: ['Il pescivendolo ha il pesce di Miseno arrivato stamattina.', 'Ti spiega quale cottura si addice al pesce azzurro.'],
+      supermarket: ['Il commesso riordina gli scaffali e controlla le scadenze.', 'C’è un reparto frutta e verdura locale.'],
+      tobacco: ['Il tabaccaio vende quotidiani, sigarette e francobolli.', 'Puoi ritirare anche le ricette.'],
+      workshop: ['Il meccanico ha il Scanner EAV pronto per la manutenzione.', 'Controlla olio, freni e gomme prima del viaggio.'],
+      pharmacy: ['Il farmacista consiglia protezione solare per la spiaggia.', 'Puoi acquistare farmaci da banco.'],
+      bank: ['L’operatore ti illustra mutui e risparmio.', 'Lo sportello è operativo negli orari di apertura.'],
+      post_office: ['L’addetto ti consegna moduli e francobolli.', 'Puoi spedire una cartolina dal lungomare.'],
+      shop: ['Il negoziante conosce tutti i prodotti tipici del posto.', 'Chiedi pure consigli sui souvenir.'],
+      generic: ['Il personale è disponibile al banco.', 'Puoi acquistare i prodotti esposti.'],
+    };
+    this.interactionCount++;
+    this.hud.openInfo('Personale', lines[this.template] ?? lines.generic!, [
+      { label: 'Acquista', action: () => { this.hud.closePanel(); this.openShop('Personale'); } },
+      { label: 'Grazie', action: () => this.hud.closePanel() },
+    ]);
   }
 
   private shelfDescription(): string[] {

@@ -1,4 +1,5 @@
 import { GAME_KEY } from '../core/config';
+import worldData from '../data/bacoli_world.json';
 import type {
   AttendedEvent, GameState, PetState, SocialState, VehicleState,
 } from '../core/types';
@@ -8,6 +9,9 @@ import { normalizeDeliveries } from './DeliverySystem';
 import { normalizeHomes, syncHomeMirror } from './HomeSystem';
 
 const STORAGE_KEY = `${GAME_KEY}:save`;
+const REGION_IDS = new Set<string>(
+  (worldData.regions as unknown as Array<{ id: string }>).map((region) => region.id),
+);
 /** v4 aggiunge carriera, case multiple, attività, consegne ed eventi. */
 export const SAVE_VERSION = 4;
 
@@ -135,6 +139,11 @@ export function normalize(state: GameState): GameState {
   state.events = (state.events as AttendedEvent[]).filter((event): event is AttendedEvent =>
     Boolean(event) && typeof event === 'object' && typeof event.id === 'string')
     .map((event) => ({ id: event.id, day: Number.isFinite(event.day) ? event.day! : state.day ?? 1 }));
+  // I salvataggi precedenti M5 non avevano la regione: il centro resta il
+  // punto di ingresso compatibile con tutte le versioni già pubblicate.
+  if (typeof state.regionId !== 'string' || !REGION_IDS.has(state.regionId)) {
+    state.regionId = 'centro';
+  }
 
   for (const vehicle of state.vehicles ?? []) {
     vehicle.garageId ??= null;

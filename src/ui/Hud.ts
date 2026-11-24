@@ -186,7 +186,7 @@ export class Hud {
   openShop(title: string, wallet: Wallet, cb: ShopCallbacks): void {
     const items = (Object.keys(ITEM_CATALOG) as ItemId[])
       .filter((id) => ITEM_CATALOG[id].category === 'food'
-        || ['souvenir', 'detersivo', 'giornale'].includes(id));
+        || ['souvenir', 'detersivo', 'giornale', 'sigarette', 'candela'].includes(id));
     this.panel.innerHTML = `<h2>${title}</h2>
       <p>Saldo: <b>€ ${wallet.money.toFixed(2)}</b></p>
       ${items.map((id) => `<div class="list-item"><span>${ITEM_CATALOG[id].name} · € ${ITEM_CATALOG[id].price.toFixed(2)}</span>

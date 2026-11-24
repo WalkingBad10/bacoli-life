@@ -20,6 +20,8 @@ export const ITEM_CATALOG = {
   giornale: { name: 'Giornale locale', price: 1.5, category: 'misc' },
   pesce: { name: 'Pesce fresco di Miseno', price: 9, category: 'food' },
   dolce: { name: 'Dolce della casa', price: 4, category: 'food' },
+  sigarette: { name: 'Sigarette', price: 6.5, category: 'misc' },
+  candela: { name: 'Candela votiva', price: 2, category: 'misc' },
 } as const;
 
 export type ItemId = keyof typeof ITEM_CATALOG;
