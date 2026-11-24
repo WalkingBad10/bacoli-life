@@ -28,6 +28,11 @@ export interface VehicleState {
   maxFuel: number;
   color: string;
   owned: boolean;
+  /** Campi opzionali per compatibilità con i salvataggi v1/v2. */
+  condition?: number;
+  odometer?: number;
+  lastServiceDay?: number;
+  garageId?: string | null;
 }
 
 export interface HomeState {
@@ -60,6 +65,33 @@ export interface TransportPass {
   lastTrip: string | null;
 }
 
+export type BondStage = 'acquaintance' | 'friend' | 'dating' | 'engaged' | 'spouse';
+
+export interface BondState {
+  name: string;
+  affinity: number;
+  gifts: number;
+  stage: BondStage;
+}
+
+export interface SocialState {
+  bonds: Record<string, BondState>;
+  spouseId: string | null;
+  marriedOnDay: number | null;
+}
+
+export interface PetState {
+  id: string;
+  name: string;
+  species: 'dog' | 'cat';
+  age: number;
+  hunger: number;
+  mood: number;
+  x: number;
+  y: number;
+  homeId: string | null;
+}
+
 export interface PlayerState {
   x: number;
   y: number;
@@ -83,6 +115,8 @@ export interface GameState {
   vehicles: VehicleState[];
   jobState: JobState | null;
   transport: TransportPass;
+  social: SocialState;
+  pets: PetState[];
   stats: { distanceWalked: number; distanceDriven: number; npcsMet: number };
 }
 

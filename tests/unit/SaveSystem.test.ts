@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { checksum, decodeExport, encodeExport, hasSave, loadGame, saveGame } from '../../src/systems/SaveSystem';
+import {
+  checksum, decodeExport, encodeExport, hasSave, loadGame, SAVE_VERSION, saveGame,
+} from '../../src/systems/SaveSystem';
 import type { GameState } from '../../src/core/types';
 
 const state: GameState = {
@@ -17,6 +19,8 @@ const state: GameState = {
   vehicles: [],
   jobState: null,
   transport: { ticketBus: 2, ticketTrain: 1, monthlyPass: false, lastTrip: null },
+  social: { bonds: {}, spouseId: null, marriedOnDay: null },
+  pets: [],
   stats: { distanceWalked: 100, distanceDriven: 0, npcsMet: 2 },
 };
 
@@ -84,5 +88,48 @@ describe('Salvataggi', () => {
     expect(loaded.day).toBe(5);
     expect(loaded.weather).toBe('rain');
     expect(loaded.home.owned).toBe(false);
+  });
+
+  it('migra un salvataggio v2 senza rompere il checksum', () => {
+    const payload = {
+      player: { x: 1, y: 2, money: 900, savings: 0, energy: 90, hunger: 80, job: null, homeId: 'home-1' },
+      inventory: {}, relationships: { Maria: 5 }, time: 600, day: 4, weather: 'sun',
+      home: { owned: true, address: 'Via Ortensio', furniture: [], upgrades: [] },
+      family: [],
+      vehicles: [{
+        id: 'starting-car', kind: 'car', name: '126', x: 0, y: 0, angle: 0,
+        fuel: 20, maxFuel: 40, color: '#fff', owned: true,
+      }],
+      jobState: null,
+      transport: { ticketBus: 0, ticketTrain: 0, monthlyPass: false, lastTrip: null },
+      stats: { distanceWalked: 0, distanceDriven: 0, npcsMet: 0 },
+    };
+    const envelope = { version: 2, checksum: checksum(JSON.stringify(payload)), payload };
+    const loaded = decodeExport(btoa(JSON.stringify(envelope)));
+    expect(SAVE_VERSION).toBe(3);
+    expect(loaded.social.spouseId).toBeNull();
+    expect(loaded.social.bonds.Maria.affinity).toBe(5);
+    expect(loaded.pets).toEqual([]);
+    expect(loaded.vehicles[0].condition).toBe(100);
+    expect(loaded.vehicles[0].lastServiceDay).toBe(4);
+  });
+
+  it('rifiuta versioni future e ripara campi annidati corrotti', () => {
+    const future = { version: SAVE_VERSION + 1, checksum: 'x', payload: { player: { money: 1 } } };
+    expect(() => decodeExport(btoa(JSON.stringify(future)))).toThrow(/versione futura/);
+
+    const payload = {
+      player: { x: 1, y: 2, money: 100, savings: 0, energy: 90, hunger: 80, job: null, homeId: null },
+      inventory: {}, relationships: {}, time: 600, day: 1, weather: 'sun',
+      home: { owned: false, address: 'Via Ortensio', furniture: [], upgrades: [] },
+      family: [], vehicles: [], jobState: null,
+      transport: { ticketBus: 0, ticketTrain: 0, monthlyPass: false, lastTrip: null },
+      social: { bonds: { Ciro: null }, spouseId: null, marriedOnDay: null },
+      pets: {}, stats: { distanceWalked: 0, distanceDriven: 0, npcsMet: 0 },
+    };
+    const envelope = { version: SAVE_VERSION, checksum: checksum(JSON.stringify(payload)), payload };
+    const loaded = decodeExport(btoa(JSON.stringify(envelope)));
+    expect(loaded.social.bonds.Ciro).toBeUndefined();
+    expect(loaded.pets).toEqual([]);
   });
 });

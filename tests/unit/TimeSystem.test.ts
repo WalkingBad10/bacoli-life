@@ -24,4 +24,18 @@ describe('Ciclo giorno/notte', () => {
     time.minutes = 9 * 60 + 5;
     expect(time.clock).toBe('09:05');
   });
+
+  it('avanza di minuti frazionari senza perdere il viaggio', () => {
+    const time = new TimeSystem();
+    time.minutes = 10 * 60;
+    time.advance(1.5);
+    time.advance(2.25);
+    expect(time.minutes).toBeCloseTo(10 * 60 + 3.75);
+
+    time.minutes = 23 * 60 + 59;
+    time.advance(90);
+    expect(time.day).toBe(2);
+    expect(time.hour).toBe(1);
+    expect(time.minute).toBe(29);
+  });
 });

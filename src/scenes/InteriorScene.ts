@@ -2,7 +2,9 @@ import Phaser from 'phaser';
 import type { GameState, PlaceKind } from '../core/types';
 import type { Hud } from '../ui/Hud';
 import { buy, deposit, sell, withdraw, type Wallet } from '../systems/Economy';
-import type { ItemId } from '../core/config';
+import type { TimeSystem } from '../systems/TimeSystem';
+import { consumeItem, occupySeat, releaseSeat, type SeatState } from '../systems/ConsumptionSystem';
+import { ITEM_CATALOG, type ItemId } from '../core/config';
 import {
   FURNITURE_CATALOG, buyFurniture, familyActivity, homeComfort,
   type FurnitureId,
@@ -33,6 +35,8 @@ export class InteriorScene extends Phaser.Scene {
   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
   private facing: 'up' | 'down' | 'left' | 'right' = 'down';
   private interactionCount = 0;
+  private timeSystem?: TimeSystem;
+  private seats: Record<string, SeatState> = {};
 
   constructor() {
     super('Interior');
@@ -42,6 +46,8 @@ export class InteriorScene extends Phaser.Scene {
     this.data2 = data;
     this.hud = this.registry.get('hud') as Hud;
     this.state = this.registry.get('state') as GameState;
+    this.timeSystem = this.registry.get('time') as TimeSystem | undefined;
+    this.seats = {};
     if (!this.hud || !this.state) {
       this.scene.stop();
       this.scene.resume('World');
@@ -53,7 +59,7 @@ export class InteriorScene extends Phaser.Scene {
     for (let y = 0; y < ROOM_H; y++) {
       const row: number[] = [];
       for (let x = 0; x < ROOM_W; x++) {
-        row.push((x + y) % 13 === 0 ? (floorIndex + 1) % 4 : floorIndex);
+        row.push(floorIndex);
       }
       grid.push(row);
     }
@@ -65,8 +71,7 @@ export class InteriorScene extends Phaser.Scene {
     this.add.tileSprite(ROOM_W * 8, 10, ROOM_W * 16, 20, 'tiles16', 13).setDepth(100);
     this.add.tileSprite(10, ROOM_H * 8, 20, ROOM_H * 16, 'tiles16', 13).setDepth(100);
     this.add.tileSprite(ROOM_W * 16 - 10, ROOM_H * 8, 20, ROOM_H * 16, 'tiles16', 13).setDepth(100);
-    this.add.tileSprite(ROOM_W * 8, ROOM_H * 16 - 10, ROOM_W * 16, 20, 'tiles16', 6).setDepth(1);
-    this.add.image(ROOM_W * 8, ROOM_H * 16 - 10, 'tiles16', 6).setScale(2).setDepth(2);
+    this.add.tileSprite(ROOM_W * 8, ROOM_H * 16 - 10, ROOM_W * 16, 20, 'tiles16', 13).setDepth(1);
 
     this.placeFurniture(data.kind);
     this.player = this.add.sprite(ROOM_W * 8, ROOM_H * 16 - 34, 'player');
@@ -93,6 +98,7 @@ export class InteriorScene extends Phaser.Scene {
   private addFurniture(key: string, x: number, y: number, action: string): void {
     const img = this.add.image(x * 16 + 8, y * 16 + 16, `f_${key}`);
     img.setOrigin(0.5, 1).setDepth(img.y);
+    img.setData('seatId', `${key}-${x}-${y}`);
     this.furniture.push({ sprite: img, action, radius: key === 'table' ? 14 : 10 });
   }
 
@@ -179,10 +185,22 @@ export class InteriorScene extends Phaser.Scene {
     };
   }
 
-  private sync(): void {
-    this.state.player.money = this.wallet().money;
-    this.state.player.savings = this.wallet().savings;
-    this.state.inventory = this.wallet().inventory;
+  private sync(wallet: Wallet = this.wallet()): void {
+    this.state.player.money = wallet.money;
+    this.state.player.savings = wallet.savings;
+    this.state.inventory = wallet.inventory;
+  }
+
+  /** Unico proprietario del tempo: il TimeSystem condiviso con il mondo. */
+  private advanceTime(minutes: number): void {
+    if (this.timeSystem) this.timeSystem.advance(minutes);
+    else {
+      this.state.time += minutes;
+      this.state.day = Math.floor(this.state.time / (24 * 60)) + 1;
+    }
+    this.state.time = this.timeSystem?.minutes ?? this.state.time;
+    this.state.day = this.timeSystem?.day ?? this.state.day;
+    this.state.weather = this.timeSystem?.weather ?? this.state.weather;
   }
 
   private interact(): void {
@@ -204,22 +222,41 @@ export class InteriorScene extends Phaser.Scene {
     const action = nearest.action;
     if (action === 'Dormi') {
       this.state.player.energy = 100;
-      this.state.time += 480;
-      this.hud.openInfo('Riposo', ['Hai dormito bene. Energia ripristinata.'], [
+      this.advanceTime(480);
+      this.hud.openInfo('Riposo', ['Hai dormito bene. Energia ripristinata.', `Ora sono le ${this.timeSystem?.clock ?? '08:00'}.`], [
         { label: 'Ok', action: () => this.hud.closePanel() },
       ]);
     } else if (action === 'Guarda la TV' || action === 'Rilassati' || action === 'Siediti') {
-      this.state.player.energy = Math.min(100, this.state.player.energy + 10);
+      const seatId = nearest.sprite.getData('seatId') as string | undefined;
+      let sat = false;
+      if (seatId && (this.data2.kind === 'cafe' || this.data2.kind === 'bar'
+        || this.data2.kind === 'restaurant')) {
+        sat = occupySeat(this.seats, seatId, this.data2.name);
+      }
+      if (seatId && !sat && (this.data2.kind === 'cafe' || this.data2.kind === 'bar')) {
+        this.hud.toast('Quel posto è occupato');
+        return;
+      }
+      const drank = this.data2.kind === 'cafe' || this.data2.kind === 'bar'
+        ? consumeItem(this.state, 'caffe') : false;
+      if (!drank) this.state.player.energy = Math.min(100, this.state.player.energy + 6);
       const bonus = familyActivity(this.state.family, 'tv');
-      this.hud.openInfo('TV', [
-        'Passa un film italiano degli anni ’90 in onda sul canale locale.',
+      this.hud.openInfo(sat ? 'Posto a sedere' : 'TV', [
+        sat ? 'Ti sei seduto al tavolino.' : 'Passa un film italiano degli anni ’90 in onda sul canale locale.',
+        drank ? 'Hai bevuto un caffè: energia +8.' : '',
         this.state.family.length ? `Serate in famiglia: umore +${bonus}.` : '',
       ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
     } else if (action === 'Mangia' || action === 'Cucina') {
-      this.state.player.hunger = Math.min(100, this.state.player.hunger + 25);
+      const item: ItemId = this.data2.kind === 'home' || this.data2.kind === 'house'
+        ? 'spesa' : 'pizza';
+      const ate = consumeItem(this.state, item);
+      if (!ate) {
+        this.hud.toast(`Non hai ${item === 'spesa' ? 'spesa' : 'pizze'}: acquistale o ordina dal telefono`);
+        return;
+      }
       const bonus = familyActivity(this.state.family, 'meal');
       this.hud.openInfo('Cucina', [
-        'Hai preparato qualcosa di buono. Fame +25.',
+        `Hai mangiato: ${item === 'spesa' ? 'una cena preparata in casa' : 'una pizza margherita'}.`,
         this.state.family.length ? `Pranzo insieme: umore +${bonus}.` : '',
       ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
     } else if (action === 'Annaffia' || action === 'Piante') {
@@ -231,13 +268,14 @@ export class InteriorScene extends Phaser.Scene {
     } else if (action === 'Arreda') {
       this.openFurnitureMenu();
     } else if (action === 'Caffè' || action === 'Cassa' || action === 'Frigo') {
-      this.hud.openShop(this.data2.name, this.wallet(), {
+      const wallet = this.wallet();
+      this.hud.openShop(this.data2.name, wallet, {
         buy: (item: ItemId) => {
-          const ok = buy(this.wallet(), item);
-          this.sync();
-          this.hud.toast(ok ? `Acquistato: ${item}` : 'Denaro insufficiente');
+          const ok = buy(wallet, item);
+          this.sync(wallet);
+          this.hud.toast(ok ? `Acquistato: ${ITEM_CATALOG[item].name}` : 'Denaro insufficiente');
         },
-        sell: (item: ItemId) => { sell(this.wallet(), item); this.sync(); },
+        sell: (item: ItemId) => { sell(wallet, item); this.sync(wallet); },
         exit: () => this.hud.closePanel(),
       });
     } else if (action === 'Sportello') {
@@ -245,13 +283,15 @@ export class InteriorScene extends Phaser.Scene {
         `Conto: € ${this.state.player.money.toFixed(2)} · risparmi: € ${this.state.player.savings.toFixed(2)}`,
       ], [
         { label: 'Deposita € 20', action: () => {
-          deposit(this.wallet(), 20);
-          this.sync();
+          const wallet = this.wallet();
+          deposit(wallet, 20);
+          this.sync(wallet);
           this.interactAgain(action);
         } },
         { label: 'Preleva € 20', action: () => {
-          withdraw(this.wallet(), 20);
-          this.sync();
+          const wallet = this.wallet();
+          withdraw(wallet, 20);
+          this.sync(wallet);
           this.interactAgain(action);
         } },
         { label: 'Esci', action: () => this.hud.closePanel() },
@@ -262,8 +302,8 @@ export class InteriorScene extends Phaser.Scene {
         'Il personale ti indirizza allo sportello corretto.',
       ], [{ label: 'Grazie', action: () => this.hud.closePanel() }]);
     } else if (action === 'Attendi') {
-      this.state.time += 15;
-      this.hud.toast('Hai atteso il tuo turno');
+      this.advanceTime(15);
+      this.hud.toast(`Hai atteso il tuo turno · ${this.timeSystem?.clock ?? ''}`);
     } else {
       this.interactionCount++;
       const lines: Record<string, string[]> = {
@@ -305,7 +345,7 @@ export class InteriorScene extends Phaser.Scene {
         const ok = this.state.home.furniture.includes(id)
           ? false
           : buyFurniture(this.state.home, wallet, id);
-        this.sync();
+        this.sync(wallet);
         this.hud.toast(ok ? `${spec.name} aggiunto a casa` : 'Già posseduto o denaro insufficiente');
         this.openFurnitureMenu();
       },
@@ -317,6 +357,10 @@ export class InteriorScene extends Phaser.Scene {
   }
 
   private exit(): void {
+    this.state.time = this.timeSystem?.minutes ?? this.state.time;
+    this.state.day = this.timeSystem?.day ?? this.state.day;
+    this.state.weather = this.timeSystem?.weather ?? this.state.weather;
+    Object.keys(this.seats).forEach((id) => releaseSeat(this.seats, id));
     this.hud.closePanel();
     this.scene.stop();
     this.scene.resume('World');

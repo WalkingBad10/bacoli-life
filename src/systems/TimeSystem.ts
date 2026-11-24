@@ -9,8 +9,13 @@ export class TimeSystem {
   weather: Weather = 'sun';
 
   update(deltaMs: number): void {
-    this.minutes += (deltaMs / 1000) * (24 * 60) / DAY_LENGTH_SECONDS;
-    if (this.minutes >= 24 * 60) {
+    this.advance((deltaMs / 1000) * (24 * 60) / DAY_LENGTH_SECONDS);
+  }
+
+  /** Avanza di minuti di gioco gestendo il cambio giorno e il meteo. */
+  advance(minutes: number): void {
+    this.minutes += minutes;
+    while (this.minutes >= 24 * 60) {
       this.minutes -= 24 * 60;
       this.day += 1;
       this.weather = this.rollWeather();

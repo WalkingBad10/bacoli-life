@@ -9,12 +9,22 @@ import { findPath } from '../systems/Pathfinding';
 import { decodeExport, defaultVehicles, encodeExport, loadGame, normalize, saveGame } from '../systems/SaveSystem';
 import { AudioSystem } from '../systems/AudioSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
-import { buyVehicle, canDrive, consumeFuel, refuel, VEHICLE_CATALOG } from '../systems/VehicleSystem';
-import { LINES, STATIONS, planTrip, reachableFrom } from '../systems/TransportSystem';
+import {
+  buyVehicle, canDrive, consumeFuel, needsService, refuel, serviceVehicle,
+  SERVICE_PRICE, VEHICLE_CATALOG,
+} from '../systems/VehicleSystem';
+import { LINES, STATIONS, planTrip, reachableFrom, type Station } from '../systems/TransportSystem';
+import {
+  NPC_PROFILES, routineLabel, routineSlot,
+  type NpcProfile, type RoutineSlot,
+} from '../systems/NpcRoutineSystem';
 import {
   FURNITURE_CATALOG, advanceFamily, buyFurniture, createJob, familyActivity,
   startFamily, workShift, type FurnitureId,
 } from '../systems/LifeSystem';
+import { advancePets, adoptPet, feedPet, followPet, petLabel, type PetSpecies } from '../systems/PetSystem';
+import { bondOf, canMarry, giveGift, marry, talkTo } from '../systems/RelationshipSystem';
+import { consumeItem } from '../systems/ConsumptionSystem';
 
 const DATA = placesData as unknown as {
   size: { width: number; height: number };
@@ -26,6 +36,9 @@ interface NpcData {
   sprite: Phaser.GameObjects.Sprite;
   key: string;
   name: string;
+  profile: NpcProfile;
+  index: number;
+  slot: RoutineSlot | null;
   path: { x: number; y: number }[];
   speed: number;
   dialogue: string[];
@@ -40,10 +53,6 @@ const DIALOGUES = [
   'Ca’ è tutto più bello quanno c’è ’o sole.',
   'A Fusaro ’o tram passes ogni dieci minute, dice.',
   'Miseno è bello, ma ’a salita te la sente!',
-];
-const NPC_NAMES = [
-  'Maria', 'Pasquale', 'Giuseppina', 'Ciro', 'Alessia', 'Rocco',
-  'Concetta', 'Enzo', 'Assunta', 'Gennaro', 'Nunzia', 'Peppe',
 ];
 const NPC_KEYS = ['npc_1', 'npc_2', 'npc_3', 'npc_4', 'npc_5', 'npc_6', 'npc_7', 'npc_8'];
 
@@ -62,6 +71,7 @@ export class WorldScene extends Phaser.Scene {
   private npcs: NpcData[] = [];
   private overlay!: Phaser.GameObjects.Rectangle;
   private lamps: Phaser.GameObjects.Image[] = [];
+  private boats: Phaser.GameObjects.Image[] = [];
   private rain?: Phaser.GameObjects.Particles.ParticleEmitter;
   private waterTiles: Phaser.Tilemaps.Tile[] = [];
   private waterTimer = 0;
@@ -70,6 +80,7 @@ export class WorldScene extends Phaser.Scene {
   private lastBellHour = -1;
   private traffic: VehicleState[] = [];
   private vehicleSprites = new Map<string, Phaser.GameObjects.Image>();
+  private petSprites = new Map<string, Phaser.GameObjects.Image>();
   private driving: VehicleState | null = null;
   private state: GameState;
 
@@ -86,6 +97,8 @@ export class WorldScene extends Phaser.Scene {
       home: { owned: false, address: 'Via Ortensio 12', furniture: [], upgrades: [] },
       family: [], vehicles: defaultVehicles(), jobState: null,
       transport: { ticketBus: 0, ticketTrain: 0, monthlyPass: false, lastTrip: null },
+      social: { bonds: {}, spouseId: null, marriedOnDay: null },
+      pets: [],
       stats: { distanceWalked: 0, distanceDriven: 0, npcsMet: 0 },
     });
     this.timeSystem.minutes = this.state.time;
@@ -99,6 +112,7 @@ export class WorldScene extends Phaser.Scene {
     this.hud = new Hud(uiRoot);
     this.registry.set('hud', this.hud);
     this.registry.set('state', this.state);
+    this.registry.set('time', this.timeSystem);
 
     this.map = this.make.tilemap({ key: 'bacoli' });
     const tileset = this.map.addTilesetImage('base', 'tileset.png');
@@ -115,6 +129,8 @@ export class WorldScene extends Phaser.Scene {
     this.spawnVehicles();
     this.spawnTraffic();
     this.spawnNpcs();
+    this.spawnUrbanDetails();
+    this.syncPetSprites();
 
     this.keys = this.input.keyboard!.addKeys(
       'W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT,E,T,ESC,I,O,V',
@@ -142,6 +158,7 @@ export class WorldScene extends Phaser.Scene {
       this.timeSystem.day = this.state.day;
       this.timeSystem.weather = this.state.weather;
       this.syncVehicleSprites();
+      this.syncPetSprites();
       this.hud.toast('Partita caricata');
     };
 
@@ -157,6 +174,9 @@ export class WorldScene extends Phaser.Scene {
       fuel: this.driving?.fuel ?? null,
       homeOwned: this.state.home.owned,
       job: this.state.jobState?.title ?? null,
+      pets: this.state.pets.length,
+      spouse: this.state.social.spouseId,
+      bonds: Object.keys(this.state.social.bonds).length,
       solidTiles: this.blocked.reduce((sum, value) => sum + value, 0),
     });
 
@@ -171,11 +191,39 @@ export class WorldScene extends Phaser.Scene {
         this.state.inventory.biglietto_bus = (this.state.inventory.biglietto_bus ?? 0) + 5;
         this.state.inventory.biglietto_treno = (this.state.inventory.biglietto_treno ?? 0) + 5;
       },
-      giveMoney: (amount: number) => { this.state.player.money += amount; this.syncWallet(); },
+      giveMoney: (amount: number) => {
+        const wallet = this.wallet();
+        wallet.money += amount;
+        this.syncWallet(wallet);
+      },
       player: () => ({ x: this.player.x, y: this.player.y }),
       lastTrip: () => this.state.transport.lastTrip,
-      reachable: () => reachableFrom('bacoli_centro').map((station) => station.id),
+      reachable: () => reachableFrom(this.originStation().id).map((station) => station.id),
+      origin: () => this.originStation().id,
+      tripLine: (id: string) => planTrip(this.originStation().id, id)?.line ?? null,
       vehicles: () => this.state.vehicles.map((v) => ({ id: v.id, x: v.x, y: v.y, fuel: v.fuel })),
+      state: () => ({
+        pets: this.state.pets.map((p) => ({ ...p })),
+        spouse: this.state.social.spouseId,
+        family: this.state.family.map((m) => ({ ...m })),
+        condition: this.state.vehicles[0]?.condition ?? null,
+        inventory: { ...this.state.inventory },
+      }),
+      adopt: (species: PetSpecies) => this.adopt(species),
+      feedPet: (id: string) => this.feedPet(id),
+      propose: (name: string) => this.propose(name),
+      service: () => this.serviceVehicle(),
+      buyHome: () => this.buyHome(),
+      setAffinity: (name: string, value: number) => {
+        this.state.relationships[name] = value;
+        bondOf(this.state, name).affinity = value;
+      },
+      damage: () => { if (this.state.vehicles[0]) this.state.vehicles[0].condition = 40; },
+      money: () => this.state.player.money,
+      giveItem: (id: ItemId, count: number) => {
+        this.state.inventory[id] = (this.state.inventory[id] ?? 0) + count;
+      },
+      setTime: (hour: number) => { this.timeSystem.minutes = hour * 60; },
       findWall: () => {
         for (let ty = 2; ty < this.height - 2; ty++) {
           for (let tx = 2; tx < this.width - 2; tx++) {
@@ -256,6 +304,15 @@ export class WorldScene extends Phaser.Scene {
     if (solidRadius) this.collision.addSolid({ x, y: y - 8, radius: solidRadius });
   }
 
+  private facadeVariant(id: string): number {
+    let hash = 2166136261;
+    for (let i = 0; i < id.length; i++) {
+      hash ^= id.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0) % 12;
+  }
+
   private spawnProps(): void {
     for (let i = 0; i < DATA.places.length; i += 3) {
       const place = DATA.places[i];
@@ -270,11 +327,12 @@ export class WorldScene extends Phaser.Scene {
       const minX = Math.min(...bbox.map((p) => p[0]));
       const maxX = Math.max(...bbox.map((p) => p[0]));
       const widthPx = Math.max(32, Math.min(80, (maxX - minX + 1) * 16));
+      const size = widthPx <= 32 ? 32 : widthPx <= 48 ? 48 : widthPx <= 64 ? 64 : 80;
+      const key = `building_fine_${size}_${this.facadeVariant(place.id)}`;
       const img = this.add.image(
-        (minX + maxX + 1) * 8, (maxY + 1) * 16 + 10, `building_${place.sprite}`,
+        (minX + maxX + 1) * 8, (maxY + 1) * 16 + 10, key,
       );
       img.setOrigin(0.5, 1);
-      img.setDisplaySize(widthPx, widthPx * 1.2);
       img.setDepth((maxY + 1) * 16 + 2);
     });
 
@@ -286,6 +344,28 @@ export class WorldScene extends Phaser.Scene {
     ];
     for (const [key, dx, dy, radius] of props) {
       this.addProp(key, DATA.spawn.x + dx, DATA.spawn.y + dy, radius);
+    }
+  }
+
+  /** Verde e arredo urbano distribuiti nelle frazioni, non solo allo spawn. */
+  private spawnUrbanDetails(): void {
+    const keys = ['flowerpot', 'olive_tree', 'palm', 'trash_bin', 'bench', 'flowerpot'];
+    let placed = 0;
+    for (let i = 0; i < DATA.places.length && placed < 54; i += 4) {
+      const place = DATA.places[i];
+      const tx = place.x + ((i % 3) - 1) * 3;
+      const ty = place.y + (i % 2 === 0 ? 2 : -2);
+      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, 6)) continue;
+      const key = keys[Math.floor((i / 4) % keys.length)];
+      const scale = key === 'olive_tree' || key === 'palm' ? 0.4 : 0.55;
+      const x = tx * 16 + 8;
+      const y = ty * 16 + 16;
+      this.add.image(x, y, key)
+        .setOrigin(0.5, 1)
+        .setScale(scale)
+        .setAlpha(0.92)
+        .setDepth(y);
+      placed++;
     }
   }
 
@@ -325,14 +405,16 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private spawnTraffic(): void {
-    for (let i = 0; i < 4; i++) {
-      const bus = i === 0;
+    const colors = ['#F2EAD8', '#3A6EA5', '#B1403B', '#E6AB2D'];
+    for (let i = 0; i < 8; i++) {
+      const bus = i === 0 || i === 4;
+      const kind = bus ? 'bus' : i % 3 === 0 ? 'moto' : 'car';
       const vehicle: VehicleState = {
-        id: `traffic-${i}`, kind: bus ? 'bus' : (i % 2 ? 'car' : 'moto'),
+        id: `traffic-${i}`, kind,
         name: bus ? 'Bus EAV' : 'Traffico',
-        x: (DATA.spawn.x + (i - 2) * 6) * 16 + 8,
-        y: (DATA.spawn.y + 5) * 16 + 16,
-        angle: 0, fuel: 99, maxFuel: 99, color: ['', '#F2EAD8', '#3A6EA5', '#B1403B'][i] ?? '',
+        x: (DATA.spawn.x + (i - 4) * 7) * 16 + 8,
+        y: (DATA.spawn.y + 5 + Math.floor(i / 4) * 4) * 16 + 16,
+        angle: 0, fuel: 99, maxFuel: 99, color: colors[i % colors.length],
         owned: false,
       };
       const spot = this.findVehicleSpot(
@@ -343,6 +425,7 @@ export class WorldScene extends Phaser.Scene {
       vehicle.y = spot.y;
       this.traffic.push(vehicle);
       this.createVehicleSprite(vehicle);
+      this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: 8 });
     }
   }
 
@@ -353,18 +436,47 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private spawnNpcs(): void {
-    for (let i = 0; i < NPC_NAMES.length; i++) {
+    NPC_PROFILES.forEach((profile, i) => {
       const key = NPC_KEYS[i % NPC_KEYS.length];
-      let tx = DATA.spawn.x + ((i % 7) - 3) * 3;
-      let ty = DATA.spawn.y + 2 + Math.floor(i / 7) * 3;
+      const anchor = DATA.places[(i * 17 + 5) % DATA.places.length];
+      let tx = anchor.x + ((i % 3) - 1) * 2;
+      let ty = anchor.y + (i % 2 === 0 ? 2 : -2);
+      if (!this.walkable(tx, ty)) { tx = DATA.spawn.x + ((i % 5) - 2); ty = DATA.spawn.y + 2; }
       if (!this.walkable(tx, ty)) { tx = DATA.spawn.x; ty = DATA.spawn.y; }
       const sprite = this.add.sprite(tx * 16 + 8, ty * 16 + 16, key);
       sprite.setOrigin(0.5, 1).setScale(0.9);
       this.npcs.push({
-        sprite, key, name: NPC_NAMES[i], path: [], speed: 32 + (i % 5) * 5,
-        dialogue: [DIALOGUES[i % DIALOGUES.length], DIALOGUES[(i + 3) % DIALOGUES.length]],
+        sprite, key, name: profile.name, profile, index: i, slot: null, path: [],
+        speed: 30 + (i % 6) * 5,
+        dialogue: [
+          DIALOGUES[i % DIALOGUES.length],
+          DIALOGUES[(i + 3) % DIALOGUES.length],
+          `${profile.role} a Bacoli: ${routineLabel(routineSlot(profile.name, 12))}.`,
+        ],
       });
-    }
+    });
+  }
+
+  /** Barche decorative: galleggiano sull'acqua senza diventare ostacoli. */
+  private spawnBoats(): void {
+    const spots = this.waterTiles.filter((tile, index) => {
+      if (index % 71 !== 0) return false;
+      const right = this.waterTiles.find((other) => other.x === tile.x + 1 && other.y === tile.y);
+      return Boolean(right);
+    });
+    spots.slice(0, 9).forEach((tile, index) => {
+      const x = tile.pixelX + 8;
+      const y = tile.pixelY + 8;
+      const boat = this.add.image(x, y, 'boat')
+        .setOrigin(0.5, 0.6)
+        .setScale(0.62)
+        .setAlpha(0.9)
+        .setDepth(y - 12);
+      boat.setData('baseX', x);
+      boat.setData('baseY', y);
+      boat.setData('phase', index * 1.7);
+      this.boats.push(boat);
+    });
   }
 
   private setupCamera(): void {
@@ -401,6 +513,7 @@ export class WorldScene extends Phaser.Scene {
         }
       });
     }
+    this.spawnBoats();
 
     this.scale.on('resize', (size: Phaser.Structs.Size) => {
       this.overlay.setSize(size.width, size.height);
@@ -438,6 +551,7 @@ export class WorldScene extends Phaser.Scene {
     this.state.weather = this.timeSystem.weather;
     this.state.player.hunger = Math.max(0, this.state.player.hunger - delta * 0.00005);
     advanceFamily(this.state.family, delta / 3_600_000);
+    this.updatePetSprites(delta);
 
     const daylight = this.timeSystem.daylight;
     this.audio.setWeather(this.timeSystem.weather);
@@ -453,12 +567,20 @@ export class WorldScene extends Phaser.Scene {
     });
 
     this.waterTimer += delta;
-    if (this.waterTimer > 280) {
+    if (this.waterTimer > 260) {
       this.waterTimer = 0;
       this.waterTiles.forEach((tile) => {
-        tile.index = 8 + ((tile.index - 7) % 4);
+        const offset = (tile.x + Math.floor(tile.y / 2)) % 5 === 0 ? 2 : 1;
+        tile.index = 8 + ((tile.index - 8 + offset) % 4);
       });
     }
+    this.boats.forEach((boat) => {
+      const phase = boat.getData('phase') as number;
+      const t = this.time.now / 900 + phase;
+      boat.x = (boat.getData('baseX') as number) + Math.sin(t) * 5;
+      boat.y = (boat.getData('baseY') as number) + Math.sin(t * 1.4) * 2;
+      boat.setAngle(Math.sin(t) * 3);
+    });
 
     this.movePlayer(delta);
     this.updateNpcs(delta);
@@ -534,17 +656,40 @@ export class WorldScene extends Phaser.Scene {
     return ({ down: 0, left: 4, right: 8, up: 12 })[this.facing];
   }
 
+  /** Destinazione della routine, scelta in modo deterministico tra i luoghi reali. */
+  private routineTarget(slot: RoutineSlot, index: number): { x: number; y: number } {
+    const kinds: Record<RoutineSlot, string[]> = {
+      home: ['home', 'house'],
+      commute: ['railway', 'bus_stop'],
+      work: ['workplace', 'shop', 'bank', 'post_office'],
+      lunch: ['cafe', 'restaurant', 'bar'],
+      beach: ['beach'],
+      errands: ['shop', 'pharmacy', 'bank', 'post_office'],
+      evening: ['cafe', 'bar', 'restaurant'],
+    };
+    const pool = DATA.places.filter((place) => kinds[slot].includes(place.kind));
+    const source = pool.length ? pool : DATA.places;
+    const place = source[(index * 7 + slot.length) % source.length];
+    const spot = this.findVehicleSpot(place.x, place.y + 2);
+    return { x: Math.floor(spot.x / 16), y: Math.floor(spot.y / 16) };
+  }
+
   private updateNpcs(delta: number): void {
+    let pathBudget = 3;
     for (const npc of this.npcs) {
-      if (!npc.path.length) {
-        const tx = Phaser.Math.Clamp(
-          Math.floor(npc.sprite.x / 16) + Phaser.Math.Between(-14, 14), 2, this.width - 3,
-        );
-        const ty = Phaser.Math.Clamp(
-          Math.floor(npc.sprite.y / 16) + Phaser.Math.Between(-14, 14), 2, this.height - 3,
-        );
+      const slot = routineSlot(npc.name, this.timeSystem.hour);
+      const changed = npc.slot !== slot;
+      if (changed) { npc.slot = slot; npc.path = []; }
+      if (!npc.path.length && pathBudget > 0) {
+        pathBudget--;
         const from = { x: Math.floor(npc.sprite.x / 16), y: Math.floor(npc.sprite.y / 16) };
-        npc.path = findPath(from, { x: tx, y: ty }, (x, y) => this.walkable(x, y));
+        const target = changed
+          ? this.routineTarget(slot, npc.index)
+          : {
+            x: Phaser.Math.Clamp(from.x + Phaser.Math.Between(-4, 4), 2, this.width - 3),
+            y: Phaser.Math.Clamp(from.y + Phaser.Math.Between(-4, 4), 2, this.height - 3),
+          };
+        npc.path = findPath(from, target, (x, y) => this.walkable(x, y));
       }
       const next = npc.path[0];
       if (next) {
@@ -575,20 +720,22 @@ export class WorldScene extends Phaser.Scene {
     for (const vehicle of this.traffic) {
       const current = { x: Math.floor(vehicle.x / 16), y: Math.floor(vehicle.y / 16) };
       if (!this.walkable(current.x + 1, current.y) && !this.walkable(current.x - 1, current.y)) {
-        vehicle.x = (DATA.spawn.x + Phaser.Math.Between(-5, 5)) * 16 + 8;
-        vehicle.y = (DATA.spawn.y + 5) * 16 + 16;
+        const spot = this.findVehicleSpot(DATA.spawn.x + Phaser.Math.Between(-8, 8), DATA.spawn.y + 5);
+        vehicle.x = spot.x;
+        vehicle.y = spot.y;
       }
-      const target = this.walkable(current.x + 2, current.y)
-        ? { x: current.x + 2, y: current.y }
-        : { x: current.x - 2, y: current.y };
-      const step = 26 * (delta / 1000);
+      const goesRight = this.walkable(current.x + 2, current.y);
+      const target = { x: current.x + (goesRight ? 2 : -2), y: current.y };
+      const step = (vehicle.kind === 'bus' ? 20 : 30) * (delta / 1000);
       vehicle.x += Math.sign(target.x - current.x) * step;
       const sprite = this.vehicleSprites.get(vehicle.id);
-      sprite?.setPosition(vehicle.x, vehicle.y).setDepth(vehicle.y);
-      if (vehicle.x > (DATA.spawn.x + 12) * 16 || vehicle.x < (DATA.spawn.x - 12) * 16) {
-        vehicle.x = (DATA.spawn.x + Phaser.Math.Between(-8, 8)) * 16 + 8;
-        vehicle.y = (DATA.spawn.y + 5) * 16 + 16;
+      sprite?.setPosition(vehicle.x, vehicle.y).setDepth(vehicle.y).setFlipX(!goesRight);
+      if (vehicle.x > (DATA.spawn.x + 18) * 16 || vehicle.x < (DATA.spawn.x - 18) * 16) {
+        const spot = this.findVehicleSpot(DATA.spawn.x + Phaser.Math.Between(-10, 10), DATA.spawn.y + 5);
+        vehicle.x = spot.x;
+        vehicle.y = spot.y;
       }
+      this.collision.updateSolid(vehicle.id, vehicle.x, vehicle.y);
     }
   }
 
@@ -624,6 +771,103 @@ export class WorldScene extends Phaser.Scene {
     return best;
   }
 
+  /** Adozione dal telefono o da un negozio: crea subito lo sprite visibile. */
+  private adopt(species: PetSpecies): void {
+    const wallet = this.wallet();
+    const pet = adoptPet(this.state, species, wallet);
+    this.syncWallet(wallet);
+    if (!pet) { this.hud.toast('Denaro insufficiente o limite animali raggiunto'); return; }
+    this.syncPetSprites();
+    this.hud.toast(`${pet.name} è venuto a vivere con te`);
+  }
+
+  private feedPet(id: string): void {
+    const pet = this.state.pets.find((item) => item.id === id);
+    if (!pet || !feedPet(this.state, pet)) {
+      this.hud.toast('Serve della spesa nell’inventario');
+      return;
+    }
+    this.hud.toast(`${pet.name} ha mangiato: fame ${Math.round(pet.hunger)}`);
+  }
+
+  private propose(name: string): void {
+    const check = canMarry(this.state, name);
+    if (!check.ok) { this.hud.toast(check.reason ?? 'Non è possibile'); return; }
+    if (!marry(this.state, name)) { this.hud.toast('Matrimonio non riuscito'); return; }
+    this.hud.toast(`Ti sei sposato con ${name}!`);
+  }
+
+  /** Acquisto casa usato anche dai test E2E: same guard del pannello casa. */
+  private buyHome(): void {
+    if (this.state.home.owned || this.state.player.money < 25_000) return;
+    this.state.player.money -= 25_000;
+    this.state.home.owned = true;
+    this.state.player.homeId = 'home-1';
+    startFamily(this.state.home, this.state.family);
+  }
+
+  private serviceVehicle(): void {
+    const vehicle = this.driving ?? this.state.vehicles[0];
+    if (!vehicle) { this.hud.toast('Serve un veicolo posseduto'); return; }
+    const wallet = this.wallet();
+    const ok = serviceVehicle(vehicle, wallet, this.timeSystem.day);
+    this.syncWallet(wallet);
+    this.hud.toast(ok
+      ? `Tagliando completato (€ ${SERVICE_PRICE})`
+      : 'Tagliando non necessario o denaro insufficiente');
+  }
+
+  /** Mantiene sprite e dati animali allineati dopo adozione, load e import. */
+  private syncPetSprites(): void {
+    for (const [id, sprite] of this.petSprites) {
+      if (this.state.pets.some((pet) => pet.id === id)) continue;
+      sprite.destroy();
+      this.petSprites.delete(id);
+    }
+    this.state.pets.forEach((pet) => {
+      let sprite = this.petSprites.get(pet.id);
+      if (!sprite) {
+        sprite = this.add.image(pet.x, pet.y, `pet_${pet.species}`)
+          .setOrigin(0.5, 1).setDepth(pet.y);
+        this.petSprites.set(pet.id, sprite);
+      }
+      sprite.setPosition(pet.x, pet.y);
+    });
+  }
+
+  private updatePetSprites(delta: number): void {
+    if (!this.state.pets.length) return;
+    advancePets(this.state.pets, delta / 3_600_000);
+    this.state.pets.forEach((pet, index) => {
+      // Segue a lato del giocatore e non attraversa muri o acqua.
+      const side = pet.x >= this.player.x ? 16 : -16;
+      const beforeX = pet.x;
+      const beforeY = pet.y;
+      followPet(pet, this.player.x + side, this.player.y, delta);
+      const valid = (x: number, y: number) => this.canStand(x, y, 4)
+        && this.walkable(Math.floor(x / 16), Math.floor(y / 16));
+      if (!valid(pet.x, pet.y)) {
+        // Scorrimento assiale: evita muri e acqua senza teletrasportare l'animale.
+        const movedX = pet.x;
+        const movedY = pet.y;
+        if (valid(movedX, beforeY)) {
+          pet.x = movedX;
+          pet.y = beforeY;
+        } else if (valid(beforeX, movedY)) {
+          pet.x = beforeX;
+          pet.y = movedY;
+        } else {
+          pet.x = beforeX;
+          pet.y = beforeY;
+        }
+      }
+      const sprite = this.petSprites.get(pet.id);
+      sprite?.setPosition(pet.x, pet.y + Math.sin(this.time.now / 320 + index) * 1.2)
+        .setDepth(pet.y + 1)
+        .setFlipX(pet.x > this.player.x);
+    });
+  }
+
   private toggleVehicle(): void {
     if (this.driving) {
       this.driving = null;
@@ -634,10 +878,14 @@ export class WorldScene extends Phaser.Scene {
     }
     const vehicle = this.nearestVehicle();
     if (!vehicle) { this.hud.toast('Nessun veicolo nelle vicinanze'); return; }
-    if (!canDrive(vehicle)) { this.hud.toast('Il veicolo non è guidabile: controlla il carburante'); return; }
+    if (!canDrive(vehicle)) {
+      this.hud.toast('Il veicolo non è guidabile: carburante o motore da officina');
+      return;
+    }
     this.driving = vehicle;
     this.player.setVisible(false);
-    this.hud.toast(`Stai guidando: ${vehicle.name}`);
+    const warning = (vehicle.condition ?? 100) < 35 ? ' · passa in officina!' : '';
+    this.hud.toast(`Stai guidando: ${vehicle.name}${warning}`);
   }
 
   private interact(): void {
@@ -653,11 +901,26 @@ export class WorldScene extends Phaser.Scene {
       this.player.x, this.player.y, npc.sprite.x, npc.sprite.y,
     ) < 42)) {
       const line = Phaser.Math.RND.pick(npc.dialogue);
-      this.state.relationships[npc.name] = (this.state.relationships[npc.name] ?? 0) + 1;
+      const affinity = talkTo(this.state, npc.name);
       this.state.stats.npcsMet++;
-      this.hud.openInfo(npc.name, [line, `<small>Amicizia: ${this.state.relationships[npc.name]}</small>`], [
+      const bond = bondOf(this.state, npc.name);
+      const actions = [
         { label: 'Ciao!', action: () => this.hud.closePanel() },
-      ]);
+        { label: `Regala un souvenir (€ 15) · affinità ${affinity}`, action: () => {
+          const wallet = this.wallet();
+          const ok = giveGift(this.state, npc.name, wallet);
+          this.syncWallet(wallet);
+          this.hud.toast(ok ? `${npc.name} ha gradito il regalo` : 'Denaro insufficiente');
+          this.interact();
+        } },
+      ];
+      if (canMarry(this.state, npc.name).ok && bond.stage !== 'spouse') {
+        actions.push({ label: 'Proponi matrimonio', action: () => this.propose(npc.name) });
+      }
+      this.hud.openInfo(npc.name, [
+        line,
+        `<small>${npc.profile.role} · affinità ${affinity} · ${bond.stage}</small>`,
+      ], actions);
       return;
     }
     if (!place) {
@@ -675,20 +938,20 @@ export class WorldScene extends Phaser.Scene {
     };
   }
 
-  private syncWallet(): void {
-    this.state.player.money = this.wallet().money;
-    this.state.player.savings = this.wallet().savings;
-    this.state.inventory = this.wallet().inventory;
+  /** Applica un wallet già mutato: passarlo evita di perdere denaro e risparmi. */
+  private syncWallet(wallet: Wallet = this.wallet()): void {
+    this.state.player.money = wallet.money;
+    this.state.player.savings = wallet.savings;
+    this.state.inventory = wallet.inventory;
   }
 
   private buyItem(item: ItemId): void {
-    const ok = buy(this.wallet(), item);
-    this.syncWallet();
-    this.hud.toast(ok ? `Hai comprato: ${ITEM_CATALOG[item].name}` : 'Denaro insufficiente');
-    if (ok && item === 'caffe') this.state.player.energy = Math.min(100, this.state.player.energy + 8);
-    if (ok && ['pizza', 'cornetto', 'gelato', 'spesa'].includes(item)) {
-      this.state.player.hunger = Math.min(100, this.state.player.hunger + 20);
-    }
+    const wallet = this.wallet();
+    const ok = buy(wallet, item);
+    this.syncWallet(wallet);
+    this.hud.toast(ok
+      ? `Hai comprato: ${ITEM_CATALOG[item].name} · consumalo con E o dal telefono`
+      : 'Denaro insufficiente');
   }
 
   private enterInterior(place: Place): void {
@@ -709,14 +972,30 @@ export class WorldScene extends Phaser.Scene {
     const shift = workShift(this.state.jobState, 2);
     this.state.player.money += shift.wage;
     this.state.player.energy = Math.max(0, this.state.player.energy - shift.energyCost);
-    this.timeSystem.minutes += shift.hours * 60;
+    this.timeSystem.advance(shift.hours * 60);
     this.hud.closePanel();
     this.hud.toast(`Turno completato: +€ ${shift.wage.toFixed(2)} · energia -${shift.energyCost}`);
   }
 
+  /** Fermata attiva più vicina: permette di prendere la Cumana presso Baia/Fusaro. */
+  private originStation(): Station {
+    const fallback = STATIONS.find((s) => s.id === 'bacoli_centro')!;
+    let best = fallback;
+    let bestDistance = Infinity;
+    for (const station of STATIONS) {
+      if (station.status !== 'active' || station.position.x <= 0 || station.position.y <= 0) continue;
+      const distance = Phaser.Math.Distance.Between(
+        this.player.x, this.player.y,
+        station.position.x * 16 + 8, station.position.y * 16 + 16,
+      );
+      if (distance < bestDistance) { bestDistance = distance; best = station; }
+    }
+    return best;
+  }
+
   private travel(destinationId: string): void {
-    const current = STATIONS.find((s) => s.id === 'bacoli_centro')!;
-    const trip = planTrip(current.id, destinationId);
+    const current = this.originStation();
+    const trip = planTrip(current.id, destinationId) ?? planTrip('bacoli_centro', destinationId);
     if (!trip) { this.hud.toast('Tratta non disponibile'); return; }
     const needed: ItemId = trip.line.startsWith('bus') ? 'biglietto_bus' : 'biglietto_treno';
     if (!this.state.transport.monthlyPass && !(this.state.inventory[needed] > 0)) {
@@ -724,14 +1003,54 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     if (!this.state.transport.monthlyPass) this.state.inventory[needed]--;
+    if (this.driving) this.toggleVehicle();
     this.state.transport.lastTrip = trip.to.name;
-    this.timeSystem.minutes += trip.minutes;
-    this.player.setPosition(trip.to.position.x * 16 + 8, trip.to.position.y * 16 + 16);
-    if (!this.canStand(this.player.x, this.player.y)) {
-      this.player.setPosition(DATA.spawn.x * 16 + 8, DATA.spawn.y * 16 + 16);
-    }
+    const lineName = LINES.find((l) => l.id === trip.line)?.name ?? 'EAV';
+    const stops = (LINES.find((l) => l.id === trip.line)?.stations ?? [])
+      .map((id) => STATIONS.find((station) => station.id === id))
+      .filter((station): station is Station => Boolean(station) && station!.status === 'active')
+      .map((station) => station.name);
     this.hud.closePanel();
-    this.hud.toast(`${LINES.find((l) => l.id === trip.line)?.name} → ${trip.to.name}`);
+    this.hud.toast(`${lineName} → ${trip.to.name}`);
+    this.scene.launch('Transit', {
+      line: trip.line,
+      lineName,
+      fromName: trip.from.name,
+      toName: trip.to.name,
+      stops: stops.length ? stops : [trip.from.name, trip.to.name],
+      minutes: trip.minutes,
+      timeSystem: this.timeSystem,
+      onArrive: () => this.finishTrip(trip.to),
+    });
+    this.scene.pause();
+  }
+
+  /** Arrivo della tratta animata: sincronizza orologio e posizione nel mondo. */
+  private finishTrip(destination: Station): void {
+    this.state.time = this.timeSystem.minutes;
+    this.state.day = this.timeSystem.day;
+    this.state.weather = this.timeSystem.weather;
+    const tx = destination.position.x;
+    const ty = destination.position.y;
+    let x = tx * 16 + 8;
+    let y = ty * 16 + 16;
+    if (!this.canStand(x, y)) {
+      let found = false;
+      for (let ring = 1; ring <= 6 && !found; ring++) {
+        for (let dy = -ring; dy <= ring && !found; dy++) {
+          for (let dx = -ring; dx <= ring && !found; dx++) {
+            if (Math.abs(dx) !== ring && Math.abs(dy) !== ring) continue;
+            const cx = (tx + dx) * 16 + 8;
+            const cy = (ty + dy) * 16 + 16;
+            if (this.canStand(cx, cy)) { x = cx; y = cy; found = true; }
+          }
+        }
+      }
+      if (!found) { x = DATA.spawn.x * 16 + 8; y = DATA.spawn.y * 16 + 16; }
+    }
+    this.player.setPosition(x, y);
+    this.cameras.main.centerOn(x, y);
+    this.hud.toast(`Sei arrivato: ${destination.name}`);
   }
 
   private openFurnitureShop(place: Place): void {
@@ -743,7 +1062,7 @@ export class WorldScene extends Phaser.Scene {
         const ok = this.state.home.furniture.includes(id)
           ? false
           : buyFurniture(this.state.home, wallet, id);
-        this.syncWallet();
+        this.syncWallet(wallet);
         this.hud.toast(ok ? `${spec.name} aggiunto a casa` : 'Già posseduto o denaro insufficiente');
         if (ok) familyActivity(this.state.family, 'walk');
         this.openFurnitureShop(place);
@@ -757,9 +1076,16 @@ export class WorldScene extends Phaser.Scene {
 
   private openPlace(place: Place): void {
     const shop = () => {
-      this.hud.openShop(place.name, this.wallet(), {
-        buy: (item) => this.buyItem(item),
-        sell: (item) => { sell(this.wallet(), item); this.syncWallet(); },
+      const wallet = this.wallet();
+      this.hud.openShop(place.name, wallet, {
+        buy: (item) => {
+          const ok = buy(wallet, item);
+          this.syncWallet(wallet);
+          this.hud.toast(ok
+            ? `Hai comprato: ${ITEM_CATALOG[item].name} · consumalo con E o dal telefono`
+            : 'Denaro insufficiente');
+        },
+        sell: (item) => { sell(wallet, item); this.syncWallet(wallet); },
         exit: () => this.hud.closePanel(),
       });
     };
@@ -771,7 +1097,7 @@ export class WorldScene extends Phaser.Scene {
         { label: 'Arreda casa', action: () => this.openFurnitureShop(place) },
         { label: 'Dormi (energia 100)', action: () => {
           this.state.player.energy = 100;
-          this.timeSystem.minutes += 480;
+          this.timeSystem.advance(480);
           this.hud.closePanel();
           this.hud.toast('Hai dormito: energia ripristinata');
         } },
@@ -815,20 +1141,40 @@ export class WorldScene extends Phaser.Scene {
       ]);
     } else if (place.kind === 'bank') {
       this.hud.openInfo(place.name, [`Conto: € ${this.state.player.money.toFixed(2)} · Risparmi: € ${this.state.player.savings.toFixed(2)}`], [
-        { label: 'Deposita € 20', action: () => { deposit(this.wallet(), 20); this.syncWallet(); this.openPlace(place); } },
-        { label: 'Preleva € 20', action: () => { withdraw(this.wallet(), 20); this.syncWallet(); this.openPlace(place); } },
+        { label: 'Deposita € 20', action: () => {
+          const wallet = this.wallet();
+          deposit(wallet, 20);
+          this.syncWallet(wallet);
+          this.openPlace(place);
+        } },
+        { label: 'Preleva € 20', action: () => {
+          const wallet = this.wallet();
+          withdraw(wallet, 20);
+          this.syncWallet(wallet);
+          this.openPlace(place);
+        } },
         { label: 'Chiudi', action: () => this.hud.closePanel() },
       ]);
     } else if (place.kind === 'fuel') {
       const vehicle = this.state.vehicles[0];
       this.hud.openInfo(place.name, [
-        vehicle ? `${vehicle.name}: ${vehicle.fuel.toFixed(1)}/${vehicle.maxFuel} litri` : 'Nessun veicolo posseduto.',
+        vehicle
+          ? `${vehicle.name}: ${vehicle.fuel.toFixed(1)}/${vehicle.maxFuel} litri · `
+            + `condizione ${Math.round(vehicle.condition ?? 100)}% · `
+            + `${Math.round(vehicle.odometer ?? 0)} km · `
+            + `${needsService(vehicle, this.timeSystem.day) ? 'tagliando consigliato' : 'motore a posto'}`
+          : 'Nessun veicolo posseduto.',
       ], [
         { label: 'Rifornisci 10 litri', action: () => {
           if (!vehicle) { this.hud.toast('Serve un veicolo'); return; }
-          const ok = refuel(vehicle, this.wallet(), 10);
-          this.syncWallet();
+          const wallet = this.wallet();
+          const ok = refuel(vehicle, wallet, 10);
+          this.syncWallet(wallet);
           this.hud.toast(ok ? 'Serbatoio rifornito' : 'Denaro insufficiente o serbatoio pieno');
+          this.openPlace(place);
+        } },
+        { label: `Tagliando officina (€ ${SERVICE_PRICE})`, action: () => {
+          this.serviceVehicle();
           this.openPlace(place);
         } },
         { label: 'Acquista benzina (1 L)', action: () => { this.buyItem('benzina'); this.openPlace(place); } },
@@ -838,8 +1184,9 @@ export class WorldScene extends Phaser.Scene {
       this.hud.openInfo(place.name, ['Concessionaria: scegli il tuo prossimo veicolo.'], [
         { label: 'Compra utilitaria (€ 4.200)', action: () => {
           const id = `car-${this.state.vehicles.length}`;
-          const vehicle = buyVehicle(this.wallet(), 'car', id);
-          this.syncWallet();
+          const wallet = this.wallet();
+          const vehicle = buyVehicle(wallet, 'car', id);
+          this.syncWallet(wallet);
           if (!vehicle) { this.hud.toast('Denaro insufficiente'); return; }
           vehicle.x = this.player.x + 20;
           vehicle.y = this.player.y;
@@ -851,8 +1198,9 @@ export class WorldScene extends Phaser.Scene {
         } },
         { label: 'Compra Vespa (€ 2.100)', action: () => {
           const id = `moto-${this.state.vehicles.length}`;
-          const vehicle = buyVehicle(this.wallet(), 'moto', id);
-          this.syncWallet();
+          const wallet = this.wallet();
+          const vehicle = buyVehicle(wallet, 'moto', id);
+          this.syncWallet(wallet);
           if (!vehicle) { this.hud.toast('Denaro insufficiente'); return; }
           vehicle.x = this.player.x + 20;
           vehicle.y = this.player.y;
@@ -873,7 +1221,7 @@ export class WorldScene extends Phaser.Scene {
         { label: 'Chiudi', action: () => this.hud.closePanel() },
       ]);
     } else if (place.kind === 'railway' || place.kind === 'bus_stop') {
-      const options = reachableFrom('bacoli_centro').map((station) => ({
+      const options = reachableFrom(this.originStation().id).map((station) => ({
         label: `${station.name} (${station.lines.join(', ')})`,
         action: () => this.travel(station.id),
       }));
@@ -886,8 +1234,9 @@ export class WorldScene extends Phaser.Scene {
         'Un sito archeologico della zona: chi visita porta a casa un piccolo souvenir.',
       ], [
         { label: 'Visita (€ 12)', action: () => {
-          if (buy(this.wallet(), 'souvenir')) {
-            this.syncWallet();
+          const wallet = this.wallet();
+          if (buy(wallet, 'souvenir')) {
+            this.syncWallet(wallet);
             this.hud.toast('Souvenir acquistato');
           } else this.hud.toast('Denaro insufficiente');
           this.hud.closePanel();
@@ -909,8 +1258,8 @@ export class WorldScene extends Phaser.Scene {
 
   private openPhone(): void {
     if (this.hud.panelOpen) { this.hud.closePanel(); return; }
-    const trips = reachableFrom('bacoli_centro').map((station) => {
-      const trip = planTrip('bacoli_centro', station.id);
+    const trips = reachableFrom(this.originStation().id).map((station) => {
+      const trip = planTrip(this.originStation().id, station.id);
       return {
         label: `Viaggia: ${station.name}${trip ? ` · ${trip.lineName}` : ''}`,
         action: () => this.travel(station.id),
@@ -946,11 +1295,12 @@ export class WorldScene extends Phaser.Scene {
       }
       const family = document.createElement('div');
       family.className = 'panel-title';
-      family.textContent = `Famiglia · ${this.state.family.length || 'nessun membro'}`;
+      family.textContent = `Famiglia · ${this.state.family.length || 'nessun membro'}`
+        + (this.state.social.spouseId ? ` · coniuge ${this.state.social.spouseId}` : '');
       panel.appendChild(family);
       if (!this.state.family.length) {
         const hint = document.createElement('p');
-        hint.textContent = 'Acquista una casa per fondare una famiglia.';
+        hint.textContent = 'Acquista una casa e parla con gli abitanti per sposarti.';
         panel.appendChild(hint);
       }
       this.state.family.forEach((member) => {
@@ -960,6 +1310,42 @@ export class WorldScene extends Phaser.Scene {
         button.onclick = () => {
           const bonus = familyActivity(this.state.family, 'walk');
           this.hud.toast(`Passeggiata con ${member.name}: umore +${bonus}`);
+        };
+        panel.appendChild(button);
+      });
+
+      const pets = document.createElement('div');
+      pets.className = 'panel-title';
+      pets.textContent = `Animali · ${this.state.pets.length}/3`;
+      panel.appendChild(pets);
+      ([['dog', 'Adotta cane · € 180'], ['cat', 'Adotta gatto · € 120']] as const)
+        .forEach(([species, label]) => {
+          const button = document.createElement('button');
+          button.className = 'panel-action';
+          button.textContent = label;
+          button.onclick = () => this.adopt(species);
+          panel.appendChild(button);
+        });
+      this.state.pets.forEach((pet) => {
+        const button = document.createElement('button');
+        button.className = 'panel-action';
+        button.textContent = petLabel(pet);
+        button.onclick = () => this.feedPet(pet.id);
+        panel.appendChild(button);
+      });
+
+      const food = document.createElement('div');
+      food.className = 'panel-title';
+      food.textContent = 'Consuma dall’inventario';
+      panel.appendChild(food);
+      (['caffe', 'pizza', 'cornetto', 'gelato'] as ItemId[]).forEach((item) => {
+        const owned = this.state.inventory[item] ?? 0;
+        const button = document.createElement('button');
+        button.className = 'panel-action';
+        button.textContent = `${ITEM_CATALOG[item].name} · ${owned} posseduti`;
+        button.onclick = () => {
+          const ok = consumeItem(this.state, item);
+          this.hud.toast(ok ? `Hai consumato: ${ITEM_CATALOG[item].name}` : 'Non ne possiedi');
         };
         panel.appendChild(button);
       });
@@ -990,6 +1376,7 @@ export class WorldScene extends Phaser.Scene {
       this.registry.set('state', loaded);
       this.player.setPosition(loaded.player.x, loaded.player.y);
       this.syncVehicleSprites();
+      this.syncPetSprites();
       this.hud.toast('Salvataggio importato');
     } catch (error) {
       this.hud.toast(error instanceof Error ? error.message : 'Importazione fallita');

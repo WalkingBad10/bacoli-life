@@ -25,11 +25,22 @@ export class BootScene extends Phaser.Scene {
     for (let i = 0; i < 6; i++) {
       this.load.image(`building_${i}`, `assets/buildings/building_${i}.png`);
     }
+    for (const size of [32, 48, 64, 80]) {
+      for (let variant = 0; variant < 12; variant++) {
+        this.load.image(
+          `building_fine_${size}_${variant}`,
+          `assets/buildings/building_fine_${size}_${variant}.png`,
+        );
+      }
+    }
     for (const key of ['palm', 'olive_tree', 'bench', 'lamp', 'umbrella', 'boat',
       'flowerpot', 'trash_bin', 'street_sign', 'parking_sign']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
     for (const key of ['car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus', 'train']) {
+      this.load.image(key, `assets/sprites/${key}.png`);
+    }
+    for (const key of ['pet_dog', 'pet_cat']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
     for (const key of ['bed', 'sofa', 'table', 'chair', 'fridge', 'stove', 'shelf', 'tv',

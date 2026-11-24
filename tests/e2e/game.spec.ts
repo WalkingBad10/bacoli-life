@@ -157,3 +157,185 @@ test('i viaggi EAV usano i biglietti e le fermate sospese sono escluse', async (
   const lastTrip = await page.evaluate(() => (window as any).__bacoliTest.lastTrip());
   expect(lastTrip).toContain('Baia');
 });
+
+test('i viaggi EAV sono animati con interni, passeggeri e paesaggio mobile', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  await page.evaluate(() => {
+    (window as any).__bacoliTest.teleport(194 * 16 + 8, 257 * 16 + 16);
+    (window as any).__bacoliTest.giveTickets();
+  });
+  const origin = await page.evaluate(() => (window as any).__bacoliTest.origin());
+  const line = await page.evaluate(() => (window as any).__bacoliTest.tripLine('baia_station'));
+  expect(origin).toBe('fusaro_station');
+  expect(line).toBe('cumana');
+  await page.evaluate(() => (window as any).__bacoliTest.travel('baia_station'));
+  await page.waitForFunction(() => typeof (window as any).__bacoliTransit === 'object');
+
+  const first = await page.evaluate(() => ({
+    progress: (window as any).__bacoliTransit.progress(),
+    sceneryX: (window as any).__bacoliTransit.sceneryX(),
+    passengers: (window as any).__bacoliTransit.passengers(),
+    line: (window as any).__bacoliTransit.line(),
+  }));
+  expect(first.line).toBe('cumana');
+  expect(first.passengers).toBeGreaterThanOrEqual(4);
+  await page.waitForTimeout(700);
+  const second = await page.evaluate(() => ({
+    progress: (window as any).__bacoliTransit.progress(),
+    sceneryX: (window as any).__bacoliTransit.sceneryX(),
+    minutes: (window as any).__bacoliTransit.minutes(),
+  }));
+  expect(second.progress).toBeGreaterThan(first.progress);
+  expect(second.sceneryX).toBeGreaterThan(first.sceneryX);
+  expect(second.minutes).toBeGreaterThan(0);
+
+  await page.evaluate(() => (window as any).__bacoliTransit.complete());
+  await page.waitForFunction(() => (window as any).__bacoli.scene.getScene('World').scene.isActive());
+  const destination = await page.evaluate(() => (window as any).__bacoliTest.player());
+  expect(Math.hypot(destination.x - 4296, destination.y - 4096)).toBeLessThan(140);
+  expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
+});
+
+test('adozione di un animale: sprite, follow e persistenza', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  await page.evaluate(() => (window as any).__bacoliTest.adopt('dog'));
+
+  const adopted = await page.evaluate(() => (window as any).__bacoliTest.state());
+  expect(adopted.pets).toHaveLength(1);
+  const pet = adopted.pets[0];
+  expect(pet.species).toBe('dog');
+  // Si sposta il giocatore verso una piazzola libera e con percorso senza muri:
+  // l'animale deve seguirlo senza attraversare ostacoli solidi.
+  const target = await page.evaluate((p) => {
+    const test = (window as any).__bacoliTest;
+    const offsets: [number, number][] = [];
+    for (const axis of ['x', 'y']) {
+      for (const direction of [1, -1]) {
+        for (const distance of [48, 64, 80, 96, 112, 128, 160]) {
+          offsets.push(axis === 'x'
+            ? [direction * distance, 0] : [0, direction * distance]);
+        }
+      }
+    }
+    for (const [dx, dy] of offsets) {
+      const length = Math.max(Math.abs(dx), Math.abs(dy));
+      let clear = true;
+      for (let step = 8; step <= length; step += 8) {
+        const t = step / length;
+        if (!test.canStand(p.x + dx * t, p.y + dy * t, 6)) { clear = false; break; }
+      }
+      if (!clear || !test.canStand(p.x + dx, p.y + dy, 6)) continue;
+      test.teleport(p.x + dx, p.y + dy);
+      return { dx, dy };
+    }
+    return null;
+  }, pet);
+  expect(target, 'Nessun percorso libero per il test del follow').not.toBeNull();
+  await page.waitForTimeout(700);
+  const followed = await page.evaluate(() => (window as any).__bacoliTest.state().pets[0]);
+  const movedX = followed.x - pet.x;
+  const movedY = followed.y - pet.y;
+  expect(Math.hypot(movedX, movedY)).toBeGreaterThan(5);
+  expect(movedX * target!.dx + movedY * target!.dy).toBeGreaterThan(0);
+  expect(await page.evaluate(
+    (p) => (window as any).__bacoliTest.canStand(p.x, p.y, 4), followed,
+  )).toBe(true);
+
+  await page.screenshot({ path: `screenshots/pet-${test.info().project.name}.png` });
+  await page.locator('#hud-save').click();
+  await page.waitForTimeout(300);
+  await page.reload();
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  const reloaded = await page.evaluate(() => (window as any).__bacoliTest.state());
+  expect(reloaded.pets).toHaveLength(1);
+  expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
+});
+
+test('matrimonio con un NPC persiste dopo il reload', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  await page.evaluate(() => {
+    (window as any).__bacoliTest.giveMoney(30_000);
+    (window as any).__bacoliTest.buyHome();
+    (window as any).__bacoliTest.setAffinity('Maria', 30);
+    (window as any).__bacoliTest.propose('Maria');
+  });
+  const married = await page.evaluate(() => (window as any).__bacoliTest.state());
+  expect(married.spouse).toBe('Maria');
+  expect(married.family.some((m: { name: string }) => m.name === 'Maria')).toBe(true);
+  await page.locator('#hud-save').click();
+  await page.waitForTimeout(300);
+  await page.reload();
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  expect(await page.evaluate(() => (window as any).__bacoliTest.state().spouse)).toBe('Maria');
+});
+
+test('tagliando in officina aggiorna condizione e denaro', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliTest === 'object');
+  await page.evaluate(() => (window as any).__bacoliTest.damage());
+  const before = await page.evaluate(() => ({
+    condition: (window as any).__bacoliTest.state().condition,
+    money: (window as any).__bacoliTest.money(),
+  }));
+  expect(before.condition).toBe(40);
+  await page.evaluate(() => (window as any).__bacoliTest.service());
+  const after = await page.evaluate(() => ({
+    condition: (window as any).__bacoliTest.state().condition,
+    money: (window as any).__bacoliTest.money(),
+  }));
+  expect(after.condition).toBe(100);
+  expect(after.money).toBeCloseTo(before.money - 65, 2);
+});
+
+test('nel bar si beve il caffè e si occupa un posto a sedere', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#game canvas')).toBeVisible({ timeout: 20_000 });
+  await page.waitForFunction(() => typeof (window as any).__bacoliDebug === 'function');
+  await page.evaluate(() => {
+    (window as any).__bacoliTest.giveItem('caffe', 2);
+    const world = (window as any).__bacoli.scene.getScene('World');
+    world.scene.launch('Interior', {
+      kind: 'cafe', name: 'Bar Pina', returnX: 1280, returnY: 1296,
+    });
+    world.scene.pause();
+  });
+  await expect(page.locator('#hud-panel')).toHaveClass(/open/);
+  await page.keyboard.press('KeyE');
+  await page.waitForTimeout(120);
+  await page.keyboard.press('KeyE');
+  await page.waitForTimeout(200);
+  const inside = await page.evaluate(() => {
+    const room = (window as any).__bacoli.scene.getScene('Interior');
+    return {
+      caffe: room.state.inventory.caffe ?? 0,
+      occupied: Object.values(room.seats).some((s: any) => s.occupiedBy === 'player'),
+    };
+  });
+  expect(inside.caffe).toBe(1);
+  expect(inside.occupied).toBe(true);
+  await page.screenshot({ path: `screenshots/cafe-${test.info().project.name}.png` });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  const released = await page.evaluate(() => {
+    const room = (window as any).__bacoli.scene.getScene('Interior');
+    return Object.values(room.seats).every((s: any) => s.occupiedBy === null);
+  });
+  expect(released).toBe(true);
+  expect(errors, `Errori: ${errors.join(' | ')}`).toEqual([]);
+});
+

@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
 import { WorldScene } from './scenes/WorldScene';
 import { InteriorScene } from './scenes/InteriorScene';
+import { TransitScene } from './scenes/TransitScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -21,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
     pixelArt: true,
     roundPixels: true,
   },
-  scene: [BootScene, WorldScene, InteriorScene],
+  scene: [BootScene, WorldScene, InteriorScene, TransitScene],
 };
 
 const game = new Phaser.Game(config);

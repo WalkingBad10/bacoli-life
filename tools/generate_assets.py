@@ -402,6 +402,211 @@ def make_building(style: int) -> Image.Image:
 
 
 # ---------------------------------------------------------------------------
+# FACCIATE AD ALTA RISOLUZIONE - 12 varianti x 4 misure native
+# Disegnate in coordinate base 80x96 e scalate a misure intere, così non
+# vengono più deformate a runtime dal setDisplaySize.
+# ---------------------------------------------------------------------------
+
+FACADE_STYLES = (
+    ("plaster_warm", "olive"), ("plaster", "blue"), ("sand_light", "terra_dark"),
+    ("stone_light", "olive"), ("plaster", "sea"), ("white", "olive"),
+    ("sand", "red"), ("plaster_warm", "sea"), ("stone", "ochre"),
+    ("white", "blue"), ("plaster", "terra_dark"), ("sand_light", "olive"),
+)
+
+
+def sbox(d: ImageDraw.ImageDraw, x: float, y: float, w: float, h: float,
+         color: str, sx: float, sy: float) -> None:
+    x0 = int(round(x * sx))
+    y0 = int(round(y * sy))
+    x1 = max(x0, int(round((x + w) * sx)) - 1)
+    y1 = max(y0, int(round((y + h) * sy)) - 1)
+    d.rectangle((x0, y0, x1, y1), fill=P.get(color, color))
+
+
+def sspeckle(d: ImageDraw.ImageDraw, x: int, y: int, w: int, h: int,
+             colors: tuple[str, ...], seed: int, sx: float, sy: float,
+             density: float = 0.08) -> None:
+    rnd = random.Random(seed)
+    for _ in range(int(w * h * density)):
+        px = x + rnd.randrange(w)
+        py = y + rnd.randrange(h)
+        sbox(d, px, py, 1, 1, rnd.choice(colors), sx, sy)
+
+
+def sroof(d: ImageDraw.ImageDraw, variant: int, sx: float, sy: float) -> None:
+    rh = 18 + (variant % 3) * 2
+    sbox(d, 2, 2, 76, rh - 2, "terra_dark", sx, sy)
+    for row in range((rh - 4) // 4):
+        y = 3 + row * 4
+        off = 2 if row % 2 else 0
+        for x in range(0, 80, 4):
+            xx = x + off
+            if 2 <= xx < 78:
+                sbox(d, xx, y, 3, 3, "terra" if (row + x // 4 + variant) % 3 else "terra_light", sx, sy)
+                sbox(d, xx, y, 3, 1, "terra_light", sx, sy)
+    sbox(d, 1, rh - 3, 78, 3, "wood_dark", sx, sy)
+    sbox(d, 3, 1, 74, 2, "terra_light", sx, sy)
+
+
+def swindow(d: ImageDraw.ImageDraw, x: int, y: int, shutters: str,
+            flowerbox: bool, sx: float, sy: float) -> None:
+    sbox(d, x - 1, y - 1, 14, 18, "wood_dark", sx, sy)
+    sbox(d, x, y, 12, 16, "white", sx, sy)
+    sbox(d, x + 1, y + 1, 10, 14, "sea", sx, sy)
+    sbox(d, x + 1, y + 1, 4, 6, "sky", sx, sy)
+    sbox(d, x + 6, y + 8, 5, 7, "sea_mid", sx, sy)
+    sbox(d, x + 6, y, 1, 16, "wood_dark", sx, sy)
+    sbox(d, x, y + 8, 12, 1, "wood_dark", sx, sy)
+    sbox(d, x - 4, y - 1, 3, 18, shutters, sx, sy)
+    sbox(d, x + 13, y - 1, 3, 18, shutters, sx, sy)
+    for i in range(6):
+        sbox(d, x - 4, y + i * 3, 3, 1, "wood_dark", sx, sy)
+        sbox(d, x + 13, y + i * 3, 3, 1, "wood_dark", sx, sy)
+    sbox(d, x - 2, y + 17, 16, 2, "stone_light", sx, sy)
+    if flowerbox:
+        sbox(d, x - 1, y + 19, 14, 4, "terra_dark", sx, sy)
+        for i, c in enumerate(("red", "ochre", "pink", "leaf")):
+            sbox(d, x + i * 3, y + 17, 3, 3, c, sx, sy)
+
+
+def sbalcony(d: ImageDraw.ImageDraw, x: int, y: int, w: int,
+             sx: float, sy: float) -> None:
+    sbox(d, x, y + 12, w, 4, "stone_light", sx, sy)
+    sbox(d, x, y + 15, w, 2, "stone_dark", sx, sy)
+    sbox(d, x + 1, y + 1, w - 2, 2, "wood_dark", sx, sy)
+    for i in range(0, w, 4):
+        sbox(d, x + i, y + 2, 1, 11, "ink", sx, sy)
+    sbox(d, x, y + 11, w, 1, "ink", sx, sy)
+
+
+def sdoor(d: ImageDraw.ImageDraw, x: int, y: int, color: str,
+          sx: float, sy: float) -> None:
+    sbox(d, x - 1, y - 11, 16, 24, "stone_dark", sx, sy)
+    sbox(d, x, y - 10, 14, 22, color, sx, sy)
+    for yy in range(-10, -6):
+        inset = max(0, 4 - abs(yy + 8))
+        sbox(d, x + inset, y + yy, 14 - 2 * inset, 1, "wood", sx, sy)
+    sbox(d, x + 1, y - 8, 5, 8, "wood", sx, sy)
+    sbox(d, x + 8, y - 8, 5, 8, "wood", sx, sy)
+    sbox(d, x + 1, y + 2, 5, 8, "wood", sx, sy)
+    sbox(d, x + 8, y + 2, 5, 8, "wood", sx, sy)
+    sbox(d, x + 11, y + 1, 1, 1, "ochre", sx, sy)
+    sbox(d, x - 3, y + 13, 20, 3, "stone_light", sx, sy)
+
+
+def sawning(d: ImageDraw.ImageDraw, x: int, y: int, w: int,
+            sx: float, sy: float) -> None:
+    for i in range(w):
+        sbox(d, x + i, y, 1, 8, "red" if (i // 5) % 2 == 0 else "white", sx, sy)
+    for i in range(0, w, 5):
+        sbox(d, x + i, y + 8, 5, 2, "red" if (i // 5) % 2 == 0 else "white", sx, sy)
+    sbox(d, x, y - 1, w, 1, "wood_dark", sx, sy)
+
+
+def slaundry(d: ImageDraw.ImageDraw, x: int, y: int, w: int,
+             sx: float, sy: float) -> None:
+    for xx in range(x, x + w):
+        sbox(d, xx, y + int(2 * math.sin(xx * 0.4)), 1, 1, "wood_dark", sx, sy)
+    for dx, c, h in ((2, "white", 5), (10, "sea_light", 6), (20, "ochre", 5)):
+        sbox(d, x + dx, y + 1, 6, h, c, sx, sy)
+        sbox(d, x + dx, y + 1, 6, 1, "ink", sx, sy)
+        sbox(d, x + dx + 5, y + 1, 1, h, "ink", sx, sy)
+
+
+def make_facade(size: int, variant: int) -> Image.Image:
+    w = size
+    h = int(size * 1.25)
+    sx, sy = w / 80, h / 96
+    wall, shutters = FACADE_STYLES[variant % len(FACADE_STYLES)]
+    im, d = canvas(w, h)
+
+    # Ombra proiettata sul lato destro e basamento in pietra.
+    d.rectangle((int(w * 0.9), int(h * 0.2), w - 1, h - 1), fill=(12, 24, 35, 48))
+    sbox(d, 1, 18, 78, 77, wall, sx, sy)
+    sspeckle(d, 1, 18, 78, 77, ("plaster_shade", "white"), 900 + variant, sx, sy)
+    sbox(d, 0, 18, 1, 78, "ink", sx, sy)
+    sbox(d, 79, 18, 1, 78, "ink", sx, sy)
+    sbox(d, 1, 94, 78, 2, "stone_dark", sx, sy)
+    sroof(d, variant, sx, sy)
+    sbox(d, 72, 20, 2, 74, "stone_dark", sx, sy)
+
+    layout = variant % 6
+    if layout == 0:  # casa con balcone e panni
+        sdoor(d, 34, 92, "wood_dark", sx, sy)
+        swindow(d, 8, 42, shutters, True, sx, sy)
+        sbalcony(d, 5, 38, 34, sx, sy)
+        swindow(d, 50, 42, shutters, False, sx, sy)
+        slaundry(d, 6, 30, 34, sx, sy)
+        sbox(d, 4, 84, 9, 10, "terra_dark", sx, sy)
+        sbox(d, 6, 82, 5, 3, "leaf_dark", sx, sy)
+    elif layout == 1:  # palazzo con tre balconi
+        sdoor(d, 34, 92, "wood", sx, sy)
+        for x in (5, 33, 61):
+            swindow(d, x, 38, shutters, False, sx, sy)
+            sbalcony(d, x - 3, 34, 20, sx, sy)
+        swindow(d, 12, 70, shutters, True, sx, sy)
+        swindow(d, 56, 70, shutters, True, sx, sy)
+        sbox(d, 38, 82, 4, 10, "stone_light", sx, sy)
+    elif layout == 2:  # bar/pizzeria con tenda e insegna
+        sawning(d, 4, 40, 72, sx, sy)
+        sdoor(d, 34, 92, "wood", sx, sy)
+        swindow(d, 8, 57, shutters, False, sx, sy)
+        swindow(d, 58, 57, shutters, False, sx, sy)
+        sbox(d, 25, 27, 30, 9, "wood_dark", sx, sy)
+        sbox(d, 27, 29, 26, 5, "ochre", sx, sy)
+        for i in range(6):
+            sbox(d, 30 + i * 4, 30, 2, 3, "ink", sx, sy)
+        sbox(d, 6, 84, 10, 10, "terra_dark", sx, sy)
+        sbox(d, 8, 82, 6, 3, "leaf", sx, sy)
+    elif layout == 3:  # edificio religioso / pietra
+        sbox(d, 1, 20, 78, 75, "stone", sx, sy)
+        sspeckle(d, 1, 22, 78, 71, ("stone_light", "stone_dark"), 77 + variant, sx, sy, 0.12)
+        d.ellipse((int(30 * sx), int(62 * sy), int(50 * sx), int(92 * sy)),
+                  fill=P["wood_dark"], outline=P["ink"], width=1)
+        sbox(d, 34, 74, 12, 18, "wood", sx, sy)
+        swindow(d, 16, 48, shutters, False, sx, sy)
+        swindow(d, 56, 48, shutters, False, sx, sy)
+        sbox(d, 35, 2, 10, 16, "stone_light", sx, sy)
+        sbox(d, 37, 5, 6, 8, "ink", sx, sy)
+        sbox(d, 38, 6, 4, 6, "ochre", sx, sy)
+    elif layout == 4:  # negozio con saracinesche
+        sdoor(d, 36, 92, "sea", sx, sy)
+        for x in (6, 53):
+            sbox(d, x, 52, 22, 30, "wood_dark", sx, sy)
+            for y in range(54, 82, 4):
+                sbox(d, x + 2, y, 18, 1, "wood", sx, sy)
+        sbox(d, 30, 28, 20, 8, "red", sx, sy)
+        for i in range(5):
+            sbox(d, 32 + i * 4, 30, 2, 4, "white", sx, sy)
+    else:  # villa con terrazzo e scale
+        sbox(d, 2, 76, 76, 18, "stone_light", sx, sy)
+        for i in range(0, 76, 8):
+            sbox(d, 2 + i, 76, 1, 18, "plaster_shade", sx, sy)
+        sdoor(d, 34, 74, "wood_dark", sx, sy)
+        swindow(d, 6, 40, shutters, True, sx, sy)
+        swindow(d, 60, 40, shutters, True, sx, sy)
+        swindow(d, 32, 42, shutters, False, sx, sy)
+        slaundry(d, 4, 34, 30, sx, sy)
+        for i in range(5):
+            sbox(d, 30 - i * 2, 88 + i * 2, 20 + i * 4, 2, "stone_light", sx, sy)
+
+    if variant % 4 == 2:  # scala esterna
+        for i in range(4):
+            sbox(d, 2 + i * 4, 88 - i * 3, 5, 3, "stone_light", sx, sy)
+            sbox(d, 3 + i * 4, 90 - i * 3, 3, 1, "stone_dark", sx, sy)
+    if variant % 3 == 1:  # fioriera sul davanzale
+        sbox(d, 12, 86, 12, 4, "terra_dark", sx, sy)
+        sbox(d, 14, 84, 2, 2, "red", sx, sy)
+        sbox(d, 18, 84, 2, 2, "ochre", sx, sy)
+        sbox(d, 22, 84, 2, 2, "leaf", sx, sy)
+
+    d.ellipse((int(4 * sx), int(h - 6), w - int(4 * sx), h), fill=(12, 24, 35, 90))
+    im.save(B / f"building_fine_{size}_{variant}.png")
+    return im
+
+
+# ---------------------------------------------------------------------------
 # PERSONAGGI - 4 direzioni x 4 frame, 16x32
 # ---------------------------------------------------------------------------
 
@@ -643,6 +848,35 @@ def furniture(d: ImageDraw.ImageDraw, w: int, h: int, kind: str) -> None:
     d.ellipse((3, h - 3, w - 3, h), fill=(12, 24, 35, 80))
 
 
+def dog(d: ImageDraw.ImageDraw, w: int, h: int) -> None:
+    d.ellipse((3, h - 5, w - 3, h - 1), fill=(12, 24, 35, 70))
+    d.ellipse((7, 9, 24, 19), fill=P["sand"])
+    d.ellipse((19, 5, 29, 15), fill=P["sand_light"])
+    d.ellipse((26, 4, 31, 8), fill=P["wood_dark"])
+    d.rectangle((25, 9, 29, 10), fill=P["ink"])
+    for x in (9, 13, 18, 22):
+        d.rectangle((x, 18, x + 2, h - 3), fill=P["sand_dark"])
+    d.rectangle((19, 13, 25, 15), fill=P["red"])
+    d.point((24, 8), fill=P["ink"])
+
+
+def cat(d: ImageDraw.ImageDraw, w: int, h: int) -> None:
+    d.ellipse((3, h - 5, w - 3, h - 1), fill=(12, 24, 35, 70))
+    d.ellipse((6, 10, 22, 19), fill=P["stone_light"])
+    d.ellipse((17, 5, 27, 15), fill=P["stone_light"])
+    d.polygon([(18, 6), (19, 1), (22, 5)], fill=P["stone_light"])
+    d.polygon([(24, 5), (26, 1), (27, 6)], fill=P["stone_light"])
+    d.rectangle((22, 9, 26, 10), fill=P["ink"])
+    for x in (8, 12, 17, 20):
+        d.rectangle((x, 18, x + 2, h - 3), fill=P["stone"])
+    d.rectangle((18, 14, 24, 15), fill=P["olive"])
+
+
+def make_pets() -> None:
+    make_prop("pet_dog", 32, 24, dog)
+    make_prop("pet_cat", 28, 24, cat)
+
+
 def make_furniture() -> None:
     kinds = ("bed", "sofa", "table", "chair", "fridge", "stove", "shelf", "tv",
              "espresso", "register", "bathtub", "toilet", "plant")
@@ -658,6 +892,9 @@ def generate_all() -> None:
     make_furniture()
     for style in range(6):
         make_building(style)
+    for size in (32, 48, 64, 80):
+        for variant in range(12):
+            make_facade(size, variant)
     make_character("player", "sea_light", "hair", "skin")
     make_character("npc_1", "red", "hair_light", "skin")
     make_character("npc_2", "olive", "hair", "skin_dark")
@@ -669,6 +906,7 @@ def generate_all() -> None:
     make_prop("lamp", 16, 48, lamp)
     make_prop("umbrella", 32, 32, umbrella)
     make_prop("boat", 48, 32, boat)
+    make_pets()
     print("Asset generati in", A)
 
 

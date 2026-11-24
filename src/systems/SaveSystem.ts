@@ -1,8 +1,11 @@
 import { GAME_KEY } from '../core/config';
-import type { GameState, VehicleState } from '../core/types';
+import type {
+  GameState, PetState, SocialState, VehicleState,
+} from '../core/types';
 
 const STORAGE_KEY = `${GAME_KEY}:save`;
-const SAVE_VERSION = 2;
+/** v3 aggiunge relazioni/matrimonio, animali e manutenzione veicoli. */
+export const SAVE_VERSION = 3;
 
 interface Envelope {
   version: number;
@@ -18,6 +21,39 @@ export function checksum(input: string): string {
     hash = Math.imul(hash, 0x01000193) >>> 0;
   }
   return hash.toString(16).padStart(8, '0');
+}
+
+function defaultSocial(): SocialState {
+  return { bonds: {}, spouseId: null, marriedOnDay: null };
+}
+
+function defaultPet(id = 'pet-1'): PetState {
+  return {
+    id, name: id === 'pet-1' ? 'Nino' : 'Pina', species: 'dog', age: 2,
+    hunger: 70, mood: 75, x: 0, y: 0, homeId: 'home-1',
+  };
+}
+
+/**
+ * Migra il payload solo DOPO la verifica del checksum: mutare prima renderebbe
+ * illeggibili tutti i salvataggi già pubblicati con la versione 2.
+ */
+function migrate(payload: GameState, version: number): GameState {
+  if (version < 2) {
+    payload.transport ??= { ticketBus: 0, ticketTrain: 0, monthlyPass: false, lastTrip: null };
+    payload.stats ??= { distanceWalked: 0, distanceDriven: 0, npcsMet: 0 };
+  }
+  if (version < 3) {
+    payload.social ??= defaultSocial();
+    payload.pets ??= [];
+    for (const vehicle of payload.vehicles ?? []) {
+      vehicle.condition ??= 100;
+      vehicle.odometer ??= 0;
+      vehicle.lastServiceDay ??= payload.day ?? 1;
+      vehicle.garageId ??= null;
+    }
+  }
+  return normalize(payload);
 }
 
 export function encodeExport(state: GameState): string {
@@ -39,8 +75,9 @@ export function decodeExport(raw: string): GameState {
   return verify(envelope);
 }
 
-/** I salvataggi della versione 1 vengono aggiornati senza perdere i dati. */
+/** Completa i campi mancanti e ripara i tipi annidati danneggiati. */
 export function normalize(state: GameState): GameState {
+  if (!state || typeof state !== 'object') state = {} as GameState;
   state.inventory ??= {};
   state.relationships ??= {};
   state.time ??= 8 * 60;
@@ -50,6 +87,7 @@ export function normalize(state: GameState): GameState {
     x: 0, y: 0, money: 500, savings: 0, energy: 100, hunger: 100,
     job: null, homeId: 'home-1',
   };
+  if (!Number.isFinite(state.player.money)) state.player.money = 500;
   state.player.energy ??= 100;
   state.player.hunger ??= 100;
   state.player.savings ??= 0;
@@ -66,6 +104,67 @@ export function normalize(state: GameState): GameState {
   state.stats.distanceWalked ??= 0;
   state.stats.distanceDriven ??= 0;
   state.stats.npcsMet ??= 0;
+
+  if (!state.social || typeof state.social !== 'object' || Array.isArray(state.social)) {
+    state.social = defaultSocial();
+  }
+  state.social.bonds ??= {};
+  state.social.spouseId ??= null;
+  state.social.marriedOnDay ??= null;
+  for (const [name, affinity] of Object.entries(state.relationships)) {
+    const bond = state.social.bonds[name];
+    if (!bond) {
+      state.social.bonds[name] = {
+        name,
+        affinity: Number.isFinite(affinity) ? affinity : 0,
+        gifts: 0,
+        stage: name === state.social.spouseId ? 'spouse' : 'acquaintance',
+      };
+    } else {
+      bond.affinity ??= Number.isFinite(affinity) ? affinity : 0;
+      bond.gifts ??= 0;
+      bond.stage ??= name === state.social.spouseId ? 'spouse' : 'acquaintance';
+    }
+  }
+  for (const [name, bond] of Object.entries(state.social.bonds)) {
+    if (!bond || typeof bond !== 'object') {
+      delete state.social.bonds[name];
+      continue;
+    }
+    bond.name ??= name;
+    bond.affinity = Number.isFinite(bond.affinity) ? bond.affinity : 0;
+    bond.gifts = Number.isFinite(bond.gifts) ? bond.gifts : 0;
+    bond.stage ??= 'acquaintance';
+  }
+
+  if (!Array.isArray(state.pets)) state.pets = [];
+  const petIds = new Set<string>();
+  state.pets = state.pets.filter((pet): pet is PetState => Boolean(pet) && typeof pet === 'object')
+    .map((pet, index) => {
+      const id = typeof pet.id === 'string' && pet.id ? pet.id : `pet-${index + 1}`;
+      if (petIds.has(id)) return { ...defaultPet(`pet-${index + 10}`), ...pet, id: `pet-${index + 10}` };
+      petIds.add(id);
+      return {
+        ...defaultPet(id), ...pet, id,
+        hunger: Number.isFinite(pet.hunger) ? pet.hunger : 70,
+        mood: Number.isFinite(pet.mood) ? pet.mood : 75,
+      };
+    });
+
+  const vehicleIds = new Set<string>();
+  state.vehicles = state.vehicles.filter((v): v is VehicleState => Boolean(v) && typeof v === 'object')
+    .map((vehicle, index) => {
+      const id = typeof vehicle.id === 'string' && vehicle.id ? vehicle.id : `vehicle-${index + 1}`;
+      if (vehicleIds.has(id)) return { ...vehicle, id: `vehicle-${index + 10}` };
+      vehicleIds.add(id);
+      return {
+        ...vehicle, id,
+        condition: Number.isFinite(vehicle.condition) ? Math.max(0, Math.min(100, vehicle.condition!)) : 100,
+        odometer: Number.isFinite(vehicle.odometer) ? Math.max(0, vehicle.odometer!) : 0,
+        lastServiceDay: Number.isFinite(vehicle.lastServiceDay) ? vehicle.lastServiceDay! : (state.day ?? 1),
+        garageId: vehicle.garageId ?? null,
+      };
+    });
   return state;
 }
 
@@ -76,10 +175,10 @@ function verify(envelope: Envelope): GameState {
     throw new Error('Checksum non valido: salvataggio corrotto');
   }
   const state = envelope.payload;
-  if (!state.player || typeof state.player.money !== 'number') {
+  if (!state || !state.player || typeof state.player.money !== 'number') {
     throw new Error('Dati del giocatore mancanti');
   }
-  return normalize(state);
+  return migrate(state, envelope.version);
 }
 
 export function saveGame(state: GameState): void {
@@ -107,6 +206,7 @@ export function defaultVehicles(): VehicleState[] {
       id: 'starting-car', kind: 'car', name: 'Fiat 126 bianca',
       x: 0, y: 0, angle: 0, fuel: 18, maxFuel: 40,
       color: '#F2EAD8', owned: true,
+      condition: 92, odometer: 18420, lastServiceDay: 1, garageId: null,
     },
   ];
 }
