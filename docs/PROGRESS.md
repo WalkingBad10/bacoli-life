@@ -58,7 +58,9 @@ Aggiornato: milestone 2 (Bacoli estesa + veicoli + trasporti + vita domestica) c
 - QA screenshot OpenCV: `world-chromium-desktop.png` 1280x720, 624 colori
   distinti, densità bordi 0.196; interni 693 colori, 0.088. Nessuna schermata
   vuota o piatta.
-- Live v0.1.0 verificata dopo il deploy: https://walkingbad10.github.io/bacoli-life/
+- Milestone 2 pubblicata e verificata live (commit `631cc5e`, tag
+  `milestone-2-verified`): https://walkingbad10.github.io/bacoli-life/
+  (`bundle index-DIPW_ZeD.js`, 303 luoghi, nessun errore console).
 
 ## Non ancora verificato su dispositivi reali
 - Nessun test su smartphone fisico, MacBook o Windows nativo al di fuori di
