@@ -12,34 +12,37 @@ ne viene predisposta solo l'architettura dati.
 5. **Ricostruire Pianura fedelmente alla realtà**.
 6. **Collegare entrambe le ambientazioni**.
 
-## Fase 1 — Vertical slice (in corso)
+## Fase 1 — Vertical slice (completata)
 - Via Ortensio, Via Spiaggia, piazzetta sul mare.
 - Casa di proprietà, bar, pizzeria, negozi visitabili.
 - Pixel art 16x16, palette mediterranea, ciclo giorno/notte, collisioni.
 - Salvataggi versionati fin dall'inizio.
 
-## Fase 2 — Bacoli completa
-- Centro storico, Villa Comunale, Marina Grande, Lago Miseno, Miseno,
-  Miliscola, Baia, Fusaro, Torregaveta, Cappella.
-- Monumenti: Piscina Mirabilis, Cento Camerelle, Castello Aragonese,
+## Fase 2 — Bacoli completa (milestone 2 verificata)
+- [x] Centro storico, Villa Comunale, Marina Grande, Lago Miseno, Miseno,
+  Miliscola, Baia, Fusaro, Torregaveta, Cappella nella mappa 480x680.
+- [x] Monumenti: Piscina Mirabilis, Cento Camerelle, Castello Aragonese,
   Casina Vanvitelliana.
-- NPC con routine, pathfinding A*, dialoghi in italiano/napoletano.
-- Lavoro, economia, attività ricreative, smartphone virtuale.
+- [x] NPC con A*, routine, dialoghi in italiano/napoletano.
+- [x] Lavoro, economia, attività ricreative, smartphone virtuale.
+- [x] Arredamento, famiglia, umore e interni camminabili con arredi solidi.
 
-## Fase 3 — Veicoli e trasporti locali
-- Automobili, motociclette, scooter, biciclette, barche.
-- Distributori, officine, concessionarie, parcheggi, traffico, carburante.
-- Autobus con fermate, orari, interni e biglietti.
+## Fase 3 — Veicoli e trasporti locali (milestone 2 verificata)
+- [x] Automobili e motociclette guidabili, concessionaria, carburante,
+  parcheggi e traffico.
+- [x] Autobus EAV 101/102/144/145/146/150/153 con biglietti e collegamenti.
+- [ ] Biciclette e barche guidabili.
+- [ ] Officine e manutenzione veicoli.
 
-## Fase 4 — Sistema ferroviario (dopo il completamento di Bacoli)
-Rete reale EAV da riprodurre con fonti ufficiali, foto, OSMap e Mapillary:
-- **Cumana**: Bacoli → Torregaveta → Fusaro → Baia → Miseno → Monte di Scudi →
-  Bagnoli → Napoli. Convogli, stazioni, binari, banchine, pensiline,
-  biglietterie, interni esplorabili, porte automatiche, finestrini,
-  annunci sonori, orari, passeggeri NPC, cambi coerenti.
-- **Circumflegrea**: Torregaveta → Bacoli → Quarto → Pianura → Napoli.
-- Il viaggio deve essere giocabile: il treno si muove, il paesaggio scorre
-  dai finestrini, non un teletrasporto.
+## Fase 4 — Sistema ferroviario (parzialmente implementato)
+Rete reale EAV implementata con stazioni e stati di servizio verificati:
+- [x] **Cumana**: Lucrino → Baia → Fusaro → Torregaveta, con Baia riaperta
+  il 6/11/2025. Non esiste una stazione Miseno: Miseno si collega via bus.
+- [x] **Circumflegrea**: Licola → Marina di Licola → Cuma → Lido Fusaro →
+  Torregaveta, con servizio regolare sospeso oltre Licola dal 2014.
+- [x] Biglietti, tempi di viaggio e verifiche E2E dei viaggi disponibili.
+- [ ] Convogli animati, interni esplorabili, porte, annunci e paesaggio dai
+  finestrini: il viaggio attuale resta un teletrasporto con tempo calcolato.
 
 ## Fase 5 — Espansione Pianura (Napoli, CAP 80126)
 Solo dopo aver completato e testato Bacoli e la rete ferroviaria.

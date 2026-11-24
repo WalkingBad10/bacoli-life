@@ -1,8 +1,12 @@
 import Phaser from 'phaser';
 import type { GameState, PlaceKind } from '../core/types';
 import type { Hud } from '../ui/Hud';
-import { buy, sell, type Wallet } from '../systems/Economy';
+import { buy, deposit, sell, withdraw, type Wallet } from '../systems/Economy';
 import type { ItemId } from '../core/config';
+import {
+  FURNITURE_CATALOG, buyFurniture, familyActivity, homeComfort,
+  type FurnitureId,
+} from '../systems/LifeSystem';
 
 interface InteriorData {
   kind: PlaceKind;
@@ -14,6 +18,7 @@ interface InteriorData {
 interface FurnitureItem {
   sprite: Phaser.GameObjects.Image;
   action: string;
+  radius: number;
 }
 
 const ROOM_W = 26;
@@ -25,7 +30,9 @@ export class InteriorScene extends Phaser.Scene {
   private state!: GameState;
   private player!: Phaser.GameObjects.Sprite;
   private furniture: FurnitureItem[] = [];
-  private keys!: { E: Phaser.Input.Keyboard.Key; ESC: Phaser.Input.Keyboard.Key };
+  private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+  private facing: 'up' | 'down' | 'left' | 'right' = 'down';
+  private interactionCount = 0;
 
   constructor() {
     super('Interior');
@@ -70,12 +77,15 @@ export class InteriorScene extends Phaser.Scene {
     this.cameras.main.centerOn(ROOM_W * 8, ROOM_H * 8);
     this.cameras.main.setBackgroundColor('#1b2c33');
 
-    this.keys = this.input.keyboard!.addKeys('E,ESC') as typeof this.keys;
+    this.keys = this.input.keyboard!.addKeys(
+      'W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT,E,ESC',
+    ) as typeof this.keys;
     this.input.keyboard!.on('keydown-E', () => this.interact());
     this.input.keyboard!.on('keydown-ESC', () => this.exit());
 
     this.hud.openInfo(data.name, [
-      data.kind === 'home' ? 'Sei a casa tua. Usa gli arredi per riposare, cucinare o guardare la TV.'
+      data.kind === 'home'
+        ? `Comfort ${homeComfort(this.state.home)} · famiglia ${this.state.family.length}. Usa gli arredi per riposare, cucinare o guardare la TV.`
         : `Sei dentro ${data.name}. Il personale è disponibile alla cassa.`,
     ], [{ label: 'Esci', action: () => this.exit() }]);
   }
@@ -83,7 +93,38 @@ export class InteriorScene extends Phaser.Scene {
   private addFurniture(key: string, x: number, y: number, action: string): void {
     const img = this.add.image(x * 16 + 8, y * 16 + 16, `f_${key}`);
     img.setOrigin(0.5, 1).setDepth(img.y);
-    this.furniture.push({ sprite: img, action });
+    this.furniture.push({ sprite: img, action, radius: key === 'table' ? 14 : 10 });
+  }
+
+  private canStand(px: number, py: number): boolean {
+    if (px < 14 || py < 20 || px > ROOM_W * 16 - 14 || py > ROOM_H * 16 - 12) return false;
+    return !this.furniture.some((item) =>
+      Math.hypot(px - item.sprite.x, py - item.sprite.y) < 5 + item.radius * 0.6);
+  }
+
+  update(delta: number): void {
+    const k = this.keys;
+    let dx = (k.D?.isDown || k.RIGHT?.isDown ? 1 : 0) - (k.A?.isDown || k.LEFT?.isDown ? 1 : 0);
+    let dy = (k.S?.isDown || k.DOWN?.isDown ? 1 : 0) - (k.W?.isDown || k.UP?.isDown ? 1 : 0);
+    if (dx === 0 && dy === 0) {
+      this.player.anims.stop();
+      this.player.setFrame(({ down: 0, left: 4, right: 8, up: 12 })[this.facing]);
+      return;
+    }
+    const len = Math.hypot(dx, dy) || 1;
+    const speed = 96 * (k.SHIFT?.isDown ? 1.6 : 1) * (delta / 1000);
+    const nx = (dx / len) * speed;
+    const ny = (dy / len) * speed;
+    const steps = Math.max(1, Math.ceil(Math.hypot(nx, ny) / 3));
+    for (let i = 0; i < steps; i++) {
+      if (this.canStand(this.player.x + nx / steps, this.player.y)) this.player.x += nx / steps;
+      if (this.canStand(this.player.x, this.player.y + ny / steps)) this.player.y += ny / steps;
+    }
+    this.facing = Math.abs(nx) > Math.abs(ny)
+      ? (nx > 0 ? 'right' : 'left')
+      : (ny > 0 ? 'down' : 'up');
+    this.player.anims.play(`walk-${this.facing}-player`, true);
+    this.player.setDepth(this.player.y);
   }
 
   private placeFurniture(kind: PlaceKind): void {
@@ -163,15 +204,33 @@ export class InteriorScene extends Phaser.Scene {
     const action = nearest.action;
     if (action === 'Dormi') {
       this.state.player.energy = 100;
+      this.state.time += 480;
       this.hud.openInfo('Riposo', ['Hai dormito bene. Energia ripristinata.'], [
         { label: 'Ok', action: () => this.hud.closePanel() },
       ]);
-    } else if (action === 'Guarda la TV') {
+    } else if (action === 'Guarda la TV' || action === 'Rilassati' || action === 'Siediti') {
       this.state.player.energy = Math.min(100, this.state.player.energy + 10);
-      this.hud.openInfo('TV', ['Passa un film italiano degli anni ’90 in onda sul canale locale.'], [
-        { label: 'Ok', action: () => this.hud.closePanel() },
-      ]);
-    } else if (action === 'Caffè' || action === 'Cassa') {
+      const bonus = familyActivity(this.state.family, 'tv');
+      this.hud.openInfo('TV', [
+        'Passa un film italiano degli anni ’90 in onda sul canale locale.',
+        this.state.family.length ? `Serate in famiglia: umore +${bonus}.` : '',
+      ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Mangia' || action === 'Cucina') {
+      this.state.player.hunger = Math.min(100, this.state.player.hunger + 25);
+      const bonus = familyActivity(this.state.family, 'meal');
+      this.hud.openInfo('Cucina', [
+        'Hai preparato qualcosa di buono. Fame +25.',
+        this.state.family.length ? `Pranzo insieme: umore +${bonus}.` : '',
+      ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Annaffia' || action === 'Piante') {
+      const bonus = familyActivity(this.state.family, 'walk');
+      this.hud.openInfo('Piante', [
+        'Le piante sul balcone sono più verdi.',
+        this.state.family.length ? `Attività condivisa: umore +${bonus}.` : '',
+      ].filter(Boolean), [{ label: 'Ok', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Arreda') {
+      this.openFurnitureMenu();
+    } else if (action === 'Caffè' || action === 'Cassa' || action === 'Frigo') {
       this.hud.openShop(this.data2.name, this.wallet(), {
         buy: (item: ItemId) => {
           const ok = buy(this.wallet(), item);
@@ -181,12 +240,80 @@ export class InteriorScene extends Phaser.Scene {
         sell: (item: ItemId) => { sell(this.wallet(), item); this.sync(); },
         exit: () => this.hud.closePanel(),
       });
+    } else if (action === 'Sportello') {
+      this.hud.openInfo(this.data2.name, [
+        `Conto: € ${this.state.player.money.toFixed(2)} · risparmi: € ${this.state.player.savings.toFixed(2)}`,
+      ], [
+        { label: 'Deposita € 20', action: () => {
+          deposit(this.wallet(), 20);
+          this.sync();
+          this.interactAgain(action);
+        } },
+        { label: 'Preleva € 20', action: () => {
+          withdraw(this.wallet(), 20);
+          this.sync();
+          this.interactAgain(action);
+        } },
+        { label: 'Esci', action: () => this.hud.closePanel() },
+      ]);
+    } else if (action === 'Modulistica') {
+      this.hud.openInfo('Modulistica', [
+        'Moduli per certificati, residenza e pratiche comunali.',
+        'Il personale ti indirizza allo sportello corretto.',
+      ], [{ label: 'Grazie', action: () => this.hud.closePanel() }]);
+    } else if (action === 'Attendi') {
+      this.state.time += 15;
+      this.hud.toast('Hai atteso il tuo turno');
     } else {
-      this.hud.openInfo(action, [
+      this.interactionCount++;
+      const lines: Record<string, string[]> = {
+        Scaffale: this.shelfDescription(),
+        'Cucina': ['Il cuoco sta preparando le specialità della casa.', 'Profumo di pomodoro e basilico.'],
+      };
+      this.hud.openInfo(action, lines[action] ?? [
         `Hai interagito con: ${action.toLowerCase()}.`,
         'Un piccolo momento di vita quotidiana a Bacoli.',
       ], [{ label: 'Ok', action: () => this.hud.closePanel() }]);
     }
+  }
+
+  private interactAgain(action: string): void {
+    this.hud.closePanel();
+    this.interactionCount++;
+    this.hud.toast(`${action}: operazione completata`);
+  }
+
+  private shelfDescription(): string[] {
+    switch (this.data2.kind) {
+      case 'pharmacy':
+        return ['Farmaci, creme solari e rimedi per il mare.', 'Il farmacista consiglia la protezione 50+.'];
+      case 'bank':
+        return ['Opuscoli su mutui, risparmi e prestiti.', 'Tassi e condizioni in chiaro all’interno.'];
+      case 'post_office':
+        return ['Buste, francobolli e moduli per spedizioni.', 'Puoi spedire una cartolina dal lungomare.'];
+      default:
+        return ['Scaffali pieni di prodotti locali.', 'C’è anche un angolo con i dolci tipici di Bacoli.'];
+    }
+  }
+
+  private openFurnitureMenu(): void {
+    const entries = Object.entries(FURNITURE_CATALOG) as [FurnitureId, typeof FURNITURE_CATALOG[FurnitureId]][];
+    const buttons = entries.map(([id, spec]) => ({
+      label: `${spec.name} · € ${spec.price}${this.state.home.furniture.includes(id) ? ' ✓' : ''}`,
+      action: () => {
+        const wallet = this.wallet();
+        const ok = this.state.home.furniture.includes(id)
+          ? false
+          : buyFurniture(this.state.home, wallet, id);
+        this.sync();
+        this.hud.toast(ok ? `${spec.name} aggiunto a casa` : 'Già posseduto o denaro insufficiente');
+        this.openFurnitureMenu();
+      },
+    }));
+    buttons.push({ label: 'Esci', action: () => this.hud.closePanel() });
+    this.hud.openInfo('Arredamento', [
+      `Saldo: € ${this.state.player.money.toFixed(2)} · comfort ${homeComfort(this.state.home)}`,
+    ], buttons);
   }
 
   private exit(): void {

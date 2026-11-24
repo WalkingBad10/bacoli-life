@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-const CHARACTERS = ['player', 'npc_1', 'npc_2', 'npc_3', 'npc_4'];
+const CHARACTERS = ['player', 'npc_1', 'npc_2', 'npc_3', 'npc_4', 'npc_5', 'npc_6', 'npc_7', 'npc_8'];
 const DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
 
 export class BootScene extends Phaser.Scene {
@@ -25,7 +25,11 @@ export class BootScene extends Phaser.Scene {
     for (let i = 0; i < 6; i++) {
       this.load.image(`building_${i}`, `assets/buildings/building_${i}.png`);
     }
-    for (const key of ['palm', 'olive_tree', 'bench', 'lamp', 'umbrella', 'boat']) {
+    for (const key of ['palm', 'olive_tree', 'bench', 'lamp', 'umbrella', 'boat',
+      'flowerpot', 'trash_bin', 'street_sign', 'parking_sign']) {
+      this.load.image(key, `assets/sprites/${key}.png`);
+    }
+    for (const key of ['car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus', 'train']) {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
     for (const key of ['bed', 'sofa', 'table', 'chair', 'fridge', 'stove', 'shelf', 'tv',

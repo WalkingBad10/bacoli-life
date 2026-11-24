@@ -1,66 +1,72 @@
 # BACOLI LIFE — registro progressi
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
-Aggiornato: fase 1 completata, fase 2 iniziata.
+Aggiornato: milestone 2 (Bacoli estesa + veicoli + trasporti + vita domestica) completata e verificata.
 
 ## Strumenti installati e utilizzati
 | Strumento | Stato | Uso concreto |
 | --- | --- | --- |
-| Node.js 26.13.1 LTS | installato (winget) | build e test |
-| npm 11.20.0 | installato | gestione dipendenze |
-| Python 3.12.10 + Pillow + NumPy | installati | pixel art procedurale, analisi foto, audio |
-| Git 2.56.1 / GitHub CLI 2.105.0 | installati | repository locale; remote in attesa di login |
-| Phaser 3.90 | installato | motore grafico |
-| TypeScript 5.9 / Vite 7 | installati | codice e build |
-| Vitest 3.2 | installato | 16 test unitari superati |
-| Playwright 1.55 + Chromium | installati | 8 test E2E desktop/mobile superati |
-| Howler.js | installato | musiche e ambient sounds originali |
-| Tiled JSON | generato da script | mappa 160x120 con layer ground/collision |
-| OpenStreetMap API / Overpass | utilizzati | 1478 strade, 284 POI, 226 edifici reali |
-| ImageMagick / QGIS / Tiled GUI / Pixelorama | non installati | alternative equivalenti: Pillow + script Python + JSON Tiled |
+| Node.js 26.13.1 / npm 11.20.0 | installati | build, test unitari ed E2E |
+| Python 3.12.10 + Pillow + NumPy + OpenCV | installati | pixel art procedurale, analisi foto, QA screenshot |
+| Git 2.56.1 / GitHub CLI 2.105.0 | installati | push e Pages verificati |
+| Phaser 3.90 / TypeScript 5.9 / Vite 7 | installati | motore, tipi, bundle |
+| Vitest 3.2 | installato | 40 test unitari superati |
+| Playwright 1.55 + Chromium | installato | 16 test E2E (desktop + Android emulato) superati |
+| Howler.js | installato | audio originale sintetizzato |
+| Ollama + `qwen2.5vl:3b` | installati | analisi visiva locale senza API key |
+| OpenStreetMap / Overpass | utilizzati | strade, edifici e POI reali |
 
-## Riferimenti dell'utente
-- 6 immagini ricevute (2 riferimenti grafici + 4 fotografie).
-- Analisi numerica con Pillow: dimensioni, 12 colori dominanti, mappa testuale.
-- La generazione AI non è utilizzabile: il servizio risponde "Invalid credential".
-- Le foto hanno guidato la palette: sabbia #D3B59D, terracotta #B67352,
-  mare #185F76 / #3A9FF3, ombra #0C1823, verde oliva #4C6E44.
+## Riferimenti visivi
+- 6 fotografie ricevute e analizzate due volte: numericamente con OpenCV
+  (`VISUAL_ANALYSIS.md`) e semanticamente con il modello locale
+  (`AI_VISION_ANALYSIS.md`).
+- Palette approvata dall'utente: sabbia `#D3B59D`, terracotta `#B67352`,
+  mare `#185F76`/`#3A9FF3`, ombra `#0C1823`, verde oliva `#4C6E44`.
+- Pollinations ha generato un primo asset (`roof_terracotta.png`, 16x16, 12
+  colori quantizzati) ma poi è passato a HTTP 402: non è una fonte affidabile.
+  Ollama locale resta la via principale; Pillow completa la pipeline.
 
 ## Funzionalità implementate e verificate
-- [x] Repository, build, test automatici, salvataggi locali.
-- [x] Pixel art originale: tileset 16x16, 6 edifici dettagliati, 5 personaggi
-      4 direzioni x 4 frame, 6 props, 13 arredi, 4 pavimenti interni.
-- [x] Mappa Tiled reale: Via Ortensio, Via Spiaggia, piazzetta sul mare,
-      226 edifici OSM, 223 luoghi, collisioni, costa e sabbia.
-- [x] Movimento a 4 direzioni con collisioni, corsa, animazioni, joystick touch.
-- [x] Ciclo giorno/notte, pioggia, lampeggio lampade, onde animate.
-- [x] 5 NPC con A*, routine casuali, dialoghi in napoletano.
-- [x] Interazioni: negozi, bar, ristoranti, casa, spiaggia, banca, siti archeologici.
-- [x] Interni visitabili con arredi specifici per tipo di attività.
-- [x] Economia: acquisti, vendite, conto corrente, stipendio, spese.
-- [x] Smartphone: mappa, contatti, consegne, orari trasporti, lavori.
-- [x] Salvataggi manuale/automatico, export/import con checksum e migrazione.
-- [x] Audio originale sintetizzato con Howler.js (onde, gabbiani, pioggia,
-      campane, melodia) avviato alla prima interazione.
-- [x] Architettura delle regioni e delle linee EAV pronta per Pianura (non costruita).
+- [x] Mappa estesa **480x680 tile** con bbox reale
+      `S 40.7770 / N 40.8450 / W 14.0400 / E 14.0960`, 303 luoghi,
+      61.086 tile strada, coste/laghi reali, collegamenti tra frazioni.
+- [x] Collisioni reali: tile solidi, footprint edifici, oggetti circolari con
+      scorrimento assiale. Il giocatore non attraversa muri né arredi.
+- [x] Veicoli guidabili (auto, moto, bus), traffico, carburante, rifornimento,
+      concessionaria, parcheggi. **Bug corretto**: il veicolo non collide più
+      con il proprio ostacolo; gli ostacoli mobili aggiornano la posizione.
+- [x] Trasporti EAV con dati verificati: Cumana
+      `Lucrino → Baia → Fusaro → Torregaveta` (Baia riaperta 6/11/2025),
+      Circumflegrea `Licola → Cuma → Lido Fusaro → Torregaveta` con servizio
+      sospeso oltre Licola dal 2014, bus 101/102/144/145/146/150/153.
+      Nessuna stazione Miseno: i collegamenti Miseno-Baia-Cuma sono bus.
+- [x] Casa di proprietà, arredamento acquistabile (9 arredi), famiglia con
+      umore e attività condivise, turni di lavoro con stipendio ed energia.
+- [x] Interni visitabili **e camminabili**: movimento WASD/frecce, collisioni
+      con gli arredi, interazioni dedicate per bar, ristorante, banca,
+      farmacia, negozio e casa.
+- [x] 12 NPC con A*, routine e dialoghi, 9 personaggi sprite, 39 sprite totali.
+- [x] Ciclo giorno/notte, pioggia, lampade, onde, audio, smartphone,
+      salvataggi v2 con migrazione v1→v2, export/import.
 
-## Verifiche effettuate
-- `npm test`: 16/16 test unitari superati.
-- `npm run test:e2e`: 8/8 test Chromium desktop e mobile Android superati.
-- Screenshot automatici in `screenshots/`: mondo desktop/mobile, smartphone, interni.
-- Analisi screenshot: presenza di mare (~10% pixel blu), colori caldi (~50%),
-  624 colori distinti su desktop: la scena non è una schermata vuota o piatta.
-- `npm run build`: compilazione TypeScript e bundle Vite riusciti.
+## Verifiche effettuate (milestone 2)
+- `npm run build`: `tsc --noEmit` + Vite riusciti.
+- `npm test`: **40/40** test unitari superati (8 file).
+- `npm run test:e2e`: **16/16** test superati su Chromium headless desktop e
+  Android emulato. Include collisioni, guida con consumo carburante, viaggi
+  EAV con biglietti e movimento negli interni.
+- QA screenshot OpenCV: `world-chromium-desktop.png` 1280x720, 624 colori
+  distinti, densità bordi 0.196; interni 693 colori, 0.088. Nessuna schermata
+  vuota o piatta.
+- Live v0.1.0 verificata dopo il deploy: https://walkingbad10.github.io/bacoli-life/
 
 ## Non ancora verificato su dispositivi reali
-- Nessun test eseguito su smartphone fisico, MacBook o Windows nativo al di
-  fuori di Chromium headless. I controlli touch sono testati solo in emulazione.
+- Nessun test su smartphone fisico, MacBook o Windows nativo al di fuori di
+  Chromium headless. I controlli touch sono testati solo in emulazione.
+- Il viaggio in treno è ancora un teletrasporto con calcolo del tempo, non una
+  corsa animata con paesaggio dai finestrini.
 
 ## Problemi aperti
-- GitHub: repository remoto creato e pubblicato. Login effettuato, push
-  riuscito, Pages attiva con GitHub Actions. URL:
-  https://walkingbad10.github.io/bacoli-life/
-- La generazione AI delle immagini richiede credenziali valide.
-- Mancano ancora: veicoli, trasporti pubblici giocabili, famiglia, proprietà,
-  ampliamento territoriale e sistema ferroviario (vedi `ROADMAP.md`).
-- Bundle JS > 500 kB (Phaser): da ottimizzare nella fase 6.
+- Pollinations non affidabile (402 dopo il primo successo): usare Ollama locale.
+- Bundle JS > 500 kB (Phaser): da ottimizzare in fase finale.
+- Pianura non costruita: solo architettura dati (`REGIONS` con `active: false`).

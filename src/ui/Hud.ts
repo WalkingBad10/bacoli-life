@@ -230,7 +230,7 @@ export class Hud {
       this.panel.innerHTML = `<h2>📱 Smartphone</h2>
         <div class="tabs">${Object.entries(tabs).map(([key, label]) =>
           `<button class="tab ${this.activeTab === key ? 'active' : ''}" data-tab="${key}">${label}</button>`).join('')}</div>
-        ${content}
+        <div id="hud-panel-body">${content}</div>
         <div class="row"><button class="bl primary" id="phone-exit">Chiudi</button></div>`;
       this.panel.classList.add('open');
       this.panel.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((btn) => {
