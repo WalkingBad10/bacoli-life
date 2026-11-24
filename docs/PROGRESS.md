@@ -73,6 +73,9 @@ Aggiornato: milestone 3 (simulazione di vita estesa + viaggi EAV animati) comple
 - QA semantico Ollama `qwen2.5vl:3b` su 5 screenshot (`SCREENSHOT_VISION_REVIEW.md`):
   cinque giudizi **OK**, nessun elemento sospeso, deformato o fuori posto.
 - Backup pre-milestone: `bacoli-life-20261124-142845-milestone3-start.zip`.
+- Milestone 3 pubblicata e verificata live (commit `596797b`, tag
+  `milestone-3-verified`): https://walkingbad10.github.io/bacoli-life/
+  (`check_live.mjs`: 303 luoghi, nessun errore console).
 - Milestone 2 pubblicata e verificata live (commit `631cc5e`, tag
   `milestone-2-verified`): https://walkingbad10.github.io/bacoli-life/
 
