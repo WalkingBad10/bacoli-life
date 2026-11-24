@@ -1,0 +1,31 @@
+{
+  "name": "bacoli-life",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BACOLI LIFE - simulatore di vita open world 2D ambientato a Bacoli",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "assets": "python tools/generate_assets.py",
+    "geo": "python tools/osm_to_map.py"
+  },
+  "dependencies": {
+    "howler": "^2.2.4",
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/howler": "^2.2.12",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}
