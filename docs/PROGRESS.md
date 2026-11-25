@@ -6,7 +6,7 @@ Aggiornato: **25 novembre 2026 — checkpoint REBUILD 2.0 su branch dedicato**. 
 
 ## CHECKPOINT REBUILD 2.0 — punto esatto da cui riprendere (25 novembre 2026)
 
-Stato: **anteprima separata completata fino al gate tecnico, non pubblicata**. La live ufficiale resta M6 su https://walkingbad10.github.io/bacoli-life/ . Branch corrente: `rebuild-2.0`, creato da `main` (`c0ce797`); commit del checkpoint: `__COMMIT_CHECKPOINT__`. Nessun commit o push è stato fatto su `main`; `origin/main` resta `c0ce797`.
+Stato: **anteprima separata completata fino al gate tecnico, non pubblicata**. La live ufficiale resta M6 su https://walkingbad10.github.io/bacoli-life/ . Branch corrente: `rebuild-2.0`, creato da `main` (`c0ce797`); commit dei file del checkpoint: `84c3691` (`feat(rebuild2): checkpoint anteprima strutturale verificata`); il commit successivo aggiorna solo questo registro. Nessun commit o push è stato fatto su `main`; `origin/main` resta `c0ce797`.
 
 Backup di ripristino: `C:\Users\rocka\Documents\Progetto predefinito\bacoli-life-backups\bacoli-life-20261125-162647-rebuild2-checkpoint.zip`. Include sorgenti, asset, fotografie, mappe, documentazione, build `dist/`, cronologia `.git` e tutti i file untracked del checkpoint; esclude solo `node_modules/`, `.vite/`, `test-results/` e `playwright-report/`.
 
