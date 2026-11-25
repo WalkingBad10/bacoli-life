@@ -1,0 +1,62 @@
+{
+  "crs": "EPSG:32633",
+  "origin_utm": [
+    422176.8877929378,
+    4517668.951013729
+  ],
+  "grid_tiles": [
+    433,
+    774
+  ],
+  "pixels_per_meter": 16,
+  "definition": {
+    "building_iou": "intersezione/unione tra poligono OSM e poligono del layer footprints, in metri UTM",
+    "centerline_distance_m": "distanza media dai punti campionati sulla centroline OSM al centro del tile stradale più vicino",
+    "coastline_hausdorff_m": "distanza massima dai punti campionati sulla costa OSM al tile della spiaggia OSM più vicino, anche se ricoperto da una strada reale",
+    "poi_offset_px": "scarto tra coordinata OSM proiettata e coordinata del POI nel Tiled JSON",
+    "clipped_elements": "elementi con almeno un vertice fuori dalla griglia; nessun clamp silenzioso"
+  },
+  "values": {
+    "buildings_compared": 353,
+    "building_iou_min": 0.9979,
+    "building_iou_mean": 0.999328,
+    "centerline_samples": 10297,
+    "clipped_centerline_samples": 129,
+    "centerline_distance_mean_m": 0.3835,
+    "centerline_distance_p95_m": 0.5988,
+    "coastline_samples": 242,
+    "coastline_hausdorff_m": 0.6768,
+    "poi_compared": 23,
+    "poi_offset_max_px": 0.0,
+    "clipped_elements": {
+      "buildings": [],
+      "roads": [
+        "249546683",
+        "249546685"
+      ],
+      "places": [],
+      "landcover": [
+        "430526594"
+      ]
+    },
+    "clipped_total": 3
+  },
+  "gates": {
+    "building_iou_min": {
+      ">=": 0.95,
+      "pass": true
+    },
+    "centerline_distance_mean_m": {
+      "<=": 0.5,
+      "pass": true
+    },
+    "coastline_hausdorff_m": {
+      "<=": 1.0,
+      "pass": true
+    },
+    "poi_offset_max_px": {
+      "<=": 0.0,
+      "pass": true
+    }
+  }
+}

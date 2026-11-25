@@ -1,0 +1,19 @@
+{
+  "scale_px_per_m": 16,
+  "floor_px": 52,
+  "source": "palette delle fotografie reali + tavole originali; generato da tools/rebuild2_build_assets.py",
+  "atlas": [
+    "facades",
+    "characters",
+    "vehicles",
+    "props",
+    "interiors"
+  ],
+  "metric_sizes_px": {
+    "person": 28,
+    "door": 34,
+    "car": 64,
+    "bus": 176,
+    "floor": 52
+  }
+}

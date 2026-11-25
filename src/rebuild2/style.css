@@ -1,0 +1,21 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1b2527;
+  color: #dfe7de;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+#rebuild2-game {
+  width: 100vw;
+  height: 100vh;
+}
+
+#rebuild2-game canvas {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

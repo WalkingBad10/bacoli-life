@@ -2,7 +2,48 @@
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
 
-Aggiornato: **25 novembre 2026 — M6 completa, pubblicata e verificata**. Ultima versione pubblicata/verificata: milestone 6, commit `2354269`, tag `milestone-6-verified`, Pages run #13. Report finale: `docs/M6_FINAL_QA.md`.
+Aggiornato: **25 novembre 2026 — checkpoint REBUILD 2.0 su branch dedicato**. Ultima versione pubblicata/verificata: milestone 6, commit `2354269`, tag `milestone-6-verified`. Report M6: `docs/M6_FINAL_QA.md`. Report REBUILD 2.0: `docs/rebuild2/AUDIT_CONSOLIDATO.md`.
+
+## CHECKPOINT REBUILD 2.0 — punto esatto da cui riprendere (25 novembre 2026)
+
+Stato: **anteprima separata completata fino al gate tecnico, non pubblicata**. La live ufficiale resta M6 su https://walkingbad10.github.io/bacoli-life/ . Branch corrente: `rebuild-2.0`, creato da `main` (`c0ce797`); commit del checkpoint: `__COMMIT_CHECKPOINT__`. Nessun commit o push è stato fatto su `main`; `origin/main` resta `c0ce797`.
+
+Backup di ripristino: `C:\Users\rocka\Documents\Progetto predefinito\bacoli-life-backups\bacoli-life-20261125-162647-rebuild2-checkpoint.zip`. Include sorgenti, asset, fotografie, mappe, documentazione, build `dist/`, cronologia `.git` e tutti i file untracked del checkpoint; esclude solo `node_modules/`, `.vite/`, `test-results/` e `playwright-report/`.
+
+### Già fatto in REBUILD 2.0
+- Otto audit in `docs/rebuild2/audit/` e Report unico in `docs/rebuild2/AUDIT_CONSOLIDATO.md`: verdetto recuperare logica M6 / riscrivere geografia, rendering, collisioni, navigazione e traffico.
+- OSM reale: `docs/rebuild2/data/osm_baia_sample.osm` (1.120.117 byte, 4100 nodi, 456 way, 15 relation, bbox `14.0775,40.7995–14.0830,40.8062`). Dataset metrico: 353 edifici, 63 strade, 33 POI, 2 aree naturali/landuse, 4100 nodi e 8534 archi OSMnx in `EPSG:32633`.
+- Mappa caricata davvero dal runtime: `public/rebuild2/maps/sample/` — 433x774 tile, 16 px/m, origine `422176.8877929378 / 4517668.951013729`, 335.142 tile, 64.582 solidi, 29.737 strade, 13.618 marciapiedi, 376 oggetti Tiled; 931 corsie, 551 guidabili, 51 compatibili bus.
+- Overlay verificabile: `docs/rebuild2/data/osm_reference.png` e `docs/rebuild2/audit/overlay.png` alla scala di gioco; `overlay_metrics.json` con IoU edifici minimo 0,9979, distanza media centroline 0,3835 m, Hausdorff costa 0,6768 m, scarto POI 0 px, 3 elementi clippati dichiarati.
+- Atlas originali: `facades` 288 frame, `characters` 256, `vehicles` 36, `props` 12, `interiors` 4, `shadow.png`, `tileset.png`, manifest con persona 28 px, porta 34 px, auto 64 px, bus 176 px, piano 52 px.
+- Runtime separato: `rebuild2.html`, `src/rebuild2/*`, `vite.config.ts` multi-pagina. M6 (`index.html`, `src/main.ts`, `src/scenes/*`) non modificato.
+- Collisioni: poligoni OSM + buffer solido, swept step/sliding, OBB veicoli con angolo reale, A* in `Pathfinding.ts`, debug F1. Traffico: 3 auto e 1 bus su corsie guidabili, nessuna sovrapposizione veicolo/veicolo o con solidi.
+- Arredo e level design: 42 oggetti solo su marciapiede/aree verdi; zero marker testuali, zero rettangoli blu/verdi nella scena giocabile. `Cafè Centrale`, `Il Portico` e casa residenziale OSM visitabili con `E`.
+- QA finale del checkpoint: `npm run build` verde; `npm test` 107/107; Playwright REBUILD 2.0 6/6 (desktop + mobile), movimento reale da nord/sud/est/ovest senza teletrasporti; cattura `docs/rebuild2/audit/rebuild2_preview.png` con `ready: true`, 353 edifici, 42 arredi, 4 veicoli, 7 NPC con A*, `errors: []`.
+- Confronto OpenCV: blu 0,05% / 2 componenti, verde 0%, marker testuali assenti; Ollama usato solo come supporto descrittivo e conferma "non ci sono rettangoli colorati, marker, scale sbagliate o oggetti fluttuanti evidenti". Approvazione visiva finale spetta all'utente.
+
+### Da fare subito alla ripresa (in ordine)
+1. Verificare che git sia ancora su `rebuild-2.0` e che `origin/main` sia `c0ce797`; non fare merge né deploy su `main`.
+2. Avviare l'anteprima locale con `node "node_modules\vite\bin\vite.js" preview --host 127.0.0.1 --port 4173` e aprire `http://127.0.0.1:4173/rebuild2.html`; usare `cmd /c "npm run build"` su PowerShell.
+3. Mostrare all'utente screenshot, overlay, `overlay_metrics.json`, `confronto_visivo.md`, `rebuild2_preview_ollama.md` e i test; attendere approvazione visiva esplicita prima di qualsiasi pubblicazione.
+4. Solo dopo approvazione: creare repository Pages dedicato per l'anteprima. Non sostituire la live M6 finché l'utente non richiede il passaggio ufficiale.
+5. Dopo il gate visivo: innestare progressivamente famiglia, abitazioni, economia, carburante, Cumana/Circumflegrea, animali, negozi, inventario, smartphone e salvataggi con migrazione, recuperando la logica M6 senza riportare la pipeline grafica respinta.
+6. Ampliare la zona giocabile da Via Antonio De Curtis a Via Ortensio/Via Spiaggia solo dopo che la qualità del campione sia approvata.
+
+### Istruzioni da conservare integralmente
+- Struttura: ricostruire rendering, mappe, collisioni e navigazione; non aggiungere patch sopra sistemi progettati male.
+- Cartografia: OSM/Overpass + PyProj/GeoPandas/Shapely/OSMnx + Tiled; CRS e origine condivisi; ogni approssimazione dichiarata; overlay verificabile.
+- Rendering: Phaser 3 mantenuto; tilemap multilivello, autotiling, atlas, nearest-neighbor, profondità dal punto di contatto, ombre, occlusione, caricamento dinamico, prospettiva 3/4 uniforme.
+- Collisioni: impronte reali, poligoni, swept collision, A*, debug hitbox, test reali da 4 direzioni senza teletrasporti; nessun attraversamento di edifici/muri/recinzioni/mobili/veicoli.
+- Proporzioni: persona 1,75 m / 28 px, porta 2,10 m / 34 px, auto ~4 m / 64 px, bus 10-12 m / 176 px, piano ~3 m / 52 px.
+- Traffico: grafo reale, corsie, sensi unici, sprite orientati, bus solo su strade compatibili, fermate, nessun veicolo su marciapiedi/edifici/aiuole/mezzi.
+- Level design: arredo solo per regole spaziali rigorose e coerenti con le foto; zero marker/quadrati colorati/placeholder nella versione giocabile.
+- Asset: tavole, foto e atlas originali conservati; palazzi mediterranei dettagliati e NPC originali a 4 direzioni.
+- QA: Playwright/Vitest/OpenCV con sessioni reali registrate; build verde o giudizio Ollama non bastano.
+- Non toccare CAMPANIA LIFE o CAMPANIA CODEX; non iniziare Pianura; non chiedere all'utente di usare terminale o modificare file; non effettuare acquisti.
+
+### Terminazione sicura di questo checkpoint
+Tutti i processi avviati per QA e preview sono stati terminati: nessun server Vite, Playwright o Chromium headless resta attivo. Non è stato pubblicato nulla e la live M6 non è stata sovrascritta.
 
 ## M6 — chiusura della revisione (25 novembre 2026)
 

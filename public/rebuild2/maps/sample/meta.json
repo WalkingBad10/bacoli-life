@@ -1,0 +1,12 @@
+{
+  "width": 433,
+  "height": 774,
+  "tile_px": 16,
+  "px_per_m": 16,
+  "origin_x": 422176.8877929378,
+  "origin_y": 4517668.951013729,
+  "buildings": 353,
+  "roads": 63,
+  "pois": 33,
+  "gid_manifest": "assets/gid_manifest.json"
+}

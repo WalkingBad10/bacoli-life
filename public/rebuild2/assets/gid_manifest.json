@@ -1,0 +1,32 @@
+{
+  "tilewidth": 16,
+  "tileheight": 16,
+  "firstgid": 1,
+  "gid": {
+    "empty": 1,
+    "asphalt": 2,
+    "basolato": 3,
+    "sidewalk": 4,
+    "building": 5,
+    "sand": 6,
+    "grass": 7,
+    "water": 8,
+    "crosswalk": 9,
+    "lane_dash": 10,
+    "parking": 11,
+    "shadow": 12,
+    "roof": 13,
+    "wall": 14,
+    "manhole": 15,
+    "curb": 16
+  },
+  "sidewalk_base": 16,
+  "road_class": {
+    "asphalt": 1,
+    "basolato": 2,
+    "sidewalk": 3,
+    "sand": 4,
+    "empty": 0
+  },
+  "note": "Il runtime deve leggere questo manifest: nessun intervallo GID scritto a mano."
+}

@@ -1,0 +1,101 @@
+{
+  "b3b88625": {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\afddf867-7aaa-4875-b09f-06808c466191\\b3b88625-a6df-4732-9fe3-5e801b8fbaf7.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "palette": [
+      {
+        "hex": "#786246",
+        "percent": 24.8
+      },
+      {
+        "hex": "#987a60",
+        "percent": 24.5
+      },
+      {
+        "hex": "#bd9a78",
+        "percent": 17.6
+      },
+      {
+        "hex": "#5a511a",
+        "percent": 17.1
+      },
+      {
+        "hex": "#d4bda5",
+        "percent": 9.0
+      },
+      {
+        "hex": "#2f3f30",
+        "percent": 7.1
+      }
+    ]
+  },
+  "fb51c0b3": {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\8a3153af-15a8-41b0-ad87-843805808f5d\\fb51c0b3-ad53-47eb-a4c1-828a7ef8591e.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "palette": [
+      {
+        "hex": "#a48a79",
+        "percent": 25.1
+      },
+      {
+        "hex": "#926141",
+        "percent": 23.2
+      },
+      {
+        "hex": "#c6b1a8",
+        "percent": 19.0
+      },
+      {
+        "hex": "#61462e",
+        "percent": 16.4
+      },
+      {
+        "hex": "#cc8359",
+        "percent": 12.0
+      },
+      {
+        "hex": "#4168a1",
+        "percent": 4.3
+      }
+    ]
+  },
+  "f5b6326b": {
+    "file": "C:\\Users\\rocka\\AppData\\Local\\Temp\\opencode\\uploads\\ecb979fa-a823-4146-aaba-caba514882f5\\f5b6326b-79d7-438b-bc5e-6f96b1919ba2.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "palette": [
+      {
+        "hex": "#c2b2a2",
+        "percent": 24.1
+      },
+      {
+        "hex": "#968a83",
+        "percent": 23.8
+      },
+      {
+        "hex": "#dbd9d4",
+        "percent": 19.3
+      },
+      {
+        "hex": "#585858",
+        "percent": 17.6
+      },
+      {
+        "hex": "#8b733c",
+        "percent": 9.0
+      },
+      {
+        "hex": "#1e7b99",
+        "percent": 6.3
+      }
+    ]
+  }
+}
