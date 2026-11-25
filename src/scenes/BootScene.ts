@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import worldData from '../data/bacoli_world.json';
+import { loadGame } from '../systems/SaveSystem';
+import { regionTextureKeys } from '../systems/AssetKeys';
 
 interface WorldRegionData {
   id: string;
@@ -16,25 +18,16 @@ const CHARACTERS = [
   'npc_7', 'npc_8', 'npc_9', 'npc_10', 'npc_11', 'npc_12', 'npc_fisher',
 ];
 const DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
-// Carichiamo solo le combinazioni presenti nella mappa reale: 58 facciate e
-// 38 tetti invece di 210 texture, con un guadagno evidente su smartphone.
-const BUILDING_KEYS = new Set<string>();
-const ROOF_KEYS = new Set<string>();
-const SHADOW_KEYS = new Set<string>();
-for (const region of worldData.regions as WorldRegionData[]) {
-  for (const place of region.places) {
-    if (!place.bounds) continue;
-    const width = place.facadeWidth ?? 128;
-    const floors = place.floors ?? 3;
-    const variant = place.variant ?? 0;
-    BUILDING_KEYS.add(`building_${width}_${floors}_${variant}`);
-    ROOF_KEYS.add(`roof_${width}_${variant}`);
-    SHADOW_KEYS.add(`shadow_${width}`);
-  }
-}
+// Solo la regione attiva entra nel primo avvio. Le altre facciate vengono
+// caricate da WorldScene.ensureRegionTextures() al momento del viaggio.
+const SAVED_REGION = loadGame()?.regionId ?? 'centro';
+const INITIAL_REGION = (worldData.regions as WorldRegionData[])
+  .find((region) => region.id === SAVED_REGION) ?? (worldData.regions as WorldRegionData[])[0];
+const INITIAL_TEXTURES = regionTextureKeys(INITIAL_REGION.places);
 const PROPS = [
   'palm', 'olive_tree', 'bench', 'lamp', 'umbrella', 'boat', 'cafe_table',
   'fisher', 'casina', 'flowerpot', 'trash_bin', 'street_sign', 'parking_sign',
+  'bus_stop',
   'car_white', 'car_blue', 'car_red', 'car_yellow', 'moto', 'bus', 'train',
   'station_eav', 'platform', 'rail',
 ];
@@ -58,6 +51,8 @@ export class BootScene extends Phaser.Scene {
     for (const region of worldData.regions as WorldRegionData[]) {
       this.load.binary(`ground_${region.id}`, `assets/maps/${region.id}/ground.bin`);
       this.load.binary(`collision_${region.id}`, `assets/maps/${region.id}/collision.bin`);
+      // Classi stradali OSM: asfalto/basolato percorribili, marciapiedi pedonali.
+      this.load.binary(`roads_${region.id}`, `assets/maps/${region.id}/roads.bin`);
       this.load.json(`meta_${region.id}`, `assets/maps/${region.id}/meta.json`);
     }
 
@@ -68,13 +63,7 @@ export class BootScene extends Phaser.Scene {
       });
     });
 
-    for (const key of BUILDING_KEYS) {
-      this.load.image(key, `assets/scale/${key}.png`);
-    }
-    for (const key of ROOF_KEYS) {
-      this.load.image(key, `assets/scale/${key}.png`);
-    }
-    for (const key of SHADOW_KEYS) {
+    for (const key of INITIAL_TEXTURES) {
       this.load.image(key, `assets/scale/${key}.png`);
     }
 

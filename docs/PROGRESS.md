@@ -2,11 +2,26 @@
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
 
-Aggiornato: **25 novembre 2026 — checkpoint M6 (lavoro in corso, non pubblicato)**. Ultima versione pubblicata/verificata: milestone 5, commit `336a5dc`, tag `milestone-5-verified`, Pages run #12.
+Aggiornato: **25 novembre 2026 — M6 completa e verificata, pronta per la pubblicazione**. Ultima versione pubblicata/verificata: milestone 5, commit `336a5dc`, tag `milestone-5-verified`, Pages run #12. Report finale: `docs/M6_FINAL_QA.md`.
+
+## M6 — chiusura della revisione (25 novembre 2026)
+
+Stato: **completa, stabile e verificata**; la live resta M5 fino al deploy finale.
+Report dettagliato: `docs/M6_FINAL_QA.md`. In sintesi:
+
+- build OK; **99/99** test unitari e **64/64** E2E (desktop + mobile emitato).
+- validators geografia/mondo/proporzioni/screenshot tutti OK.
+- 9 regioni con screenshot M6 dedicati; baseline M5 ripristinata e immutata.
+- traffico su grafo OSM, collisioni condivise, arredo regolato, interni
+  data-driven, fermate bus EAV reali, avvisi completi e caricamento dinamico.
+- bug finali corretti: template B&B/chiesa, stato interno riutilizzato,
+  protagonista bloccato dal proprio solido, hook/debug e `update()` durante
+  il riavvio con loader.
+- backup finale creato prima di commit/tag/push; Pianura non avviata.
 
 ## CHECKPOINT M6 — punto esatto da cui riprendere (25 novembre 2026)
 
-Stato: **incompleto ma salvato su branch di lavoro**. La versione live resta M5: non pubblicare questo stato.
+Stato storico: **era incompleto quando il checkpoint è stato salvato**. Non è più lo stato corrente; la live resta M5 fino al deploy finale.
 
 ### Già fatto in M6
 - Backup pre-M6: `bacoli-life-20261125-010000-prima-milestone6.zip` (fuori repo, in `bacoli-life-backups/`).

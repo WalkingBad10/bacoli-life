@@ -6,10 +6,12 @@ const REGIONS = [
   'centro', 'marina_grande', 'lago_miseno', 'villa_comunale', 'miseno',
   'miliscola', 'baia', 'fusaro', 'torregaveta',
 ];
-const OUT = resolve(process.cwd(), 'docs', 'M5_SCREENSHOTS');
+// La baseline M5 resta intoccabile: il QA visivo delle nove regioni M6 va in
+// una cartella dedicata, così rieseguire E2E non sovrascrive i riferimenti.
+const OUT = resolve(process.cwd(), 'docs', 'M6_SCREENSHOTS', 'regioni');
 
 for (const region of REGIONS) {
-  test(`QA visiva regione M5: ${region}`, async ({ page }) => {
+  test(`QA visiva regione M6: ${region}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     mkdirSync(OUT, { recursive: true });

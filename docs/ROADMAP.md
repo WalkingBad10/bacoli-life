@@ -16,23 +16,23 @@ ne viene predisposta solo l'architettura dati.
 
 Priorità assoluta: qualità visiva, coerenza urbanistica e fedeltà geografica prima del numero di funzioni. **Pianura e Napoli 80126 restano solo predisposte: non iniziarle.**
 
-Checkpoint 25 novembre 2026: piano in `docs/M6_PLAN.md`, stato esatto e istruzioni preservate in `docs/PROGRESS.md` (sezione "CHECKPOINT M6"). Branch di lavoro non pubblicato; live = M5 (`336a5dc`, tag `milestone-5-verified`).
+Checkpoint 25 novembre 2026: piano in `docs/M6_PLAN.md`, stato esatto e istruzioni preservate in `docs/PROGRESS.md` (sezione "CHECKPOINT M6"). Verifica finale in `docs/M6_FINAL_QA.md`. Branch di lavoro pronto; live = M5 (`336a5dc`, tag `milestone-5-verified`).
 
 Ordine obbligatorio:
 1. [x] Backup pre-M6 e piano operativo con matrice di rischio E2E.
 2. [x] Tileset M6 256x256: asfalto caldo, basolato lavico, cordoli, maschere di adiacenza, segnaletica, attraversamenti, parcheggi; GID legacy preservati.
 3. [x] Generatori mappe con autotiling deterministico e `roads.bin` per il grafo; coastline OSM anche con laghi.
-4. [ ] Completare rigenerazione mappe e validators, poi build/test/E2E.
-5. [ ] Zona campione del centro storico con screenshot prima/dopo e QA visiva dedicated (strada, palazzi, bar, auto, pedoni, marciapiedi, arredo; zero sovrapposizioni).
-6. [ ] Grafo stradale OSM, corsie, sensi unici, instradamento e distanze di sicurezza; eliminare teletrasporti del traffico e parcheggi incompatibili.
-7. [ ] Collisioni reali e navigazione condivisa (protagonista, NPC, animali, veicoli); movimento reale verificato in Playwright.
-8. [ ] Arredo urbano regolato da controlli spaziali, non da indici casuali.
-9. [ ] Palazzi dettagliati, personaggi a 4 direzioni, profondità by feet, prospettiva uniforme.
-10. [ ] Asset forniti: estrazione alpha corretta, rimozione sfondo, prospettiva, inventario usati/archiviati.
-11. [ ] Interni data-driven con `placeId` e template mancanti; sistemi di vita mancanti senza rompere salvataggi v4.
-12. [ ] Geografia/trasporti: fermate bus reali, coste con laghi, avvisi Circumflegrea; nessuna stazione inventata.
-13. [ ] Caricamento dinamico/culling e misurazione FPS/memoria/boot.
-14. [ ] Solo alla fine: screenshot finali, backup, validators, commit/tag/push, GitHub Pages.
+4. [x] Completare rigenerazione mappe e validators, poi build/test/E2E.
+5. [x] Zona campione del centro storico con screenshot prima/dopo e QA visiva dedicated (strada, palazzi, bar, auto, pedoni, marciapiedi, arredo; zero sovrapposizioni).
+6. [x] Grafo stradale OSM, corsie, sensi unici, instradamento e distanze di sicurezza; eliminare teletrasporti del traffico e parcheggi incompatibili.
+7. [x] Collisioni reali e navigazione condivisa (protagonista, NPC, animali, veicoli); movimento reale verificato in Playwright.
+8. [x] Arredo urbano regolato da controlli spaziali, non da indici casuali.
+9. [x] Palazzi dettagliati, personaggi a 4 direzioni, profondità by feet, prospettiva uniforme.
+10. [x] Asset forniti: estrazione alpha corretta, rimozione sfondo, prospettiva, inventario usati/archiviati.
+11. [x] Interni data-driven con `placeId` e template mancanti; sistemi di vita mancanti senza rompere salvataggi v4.
+12. [x] Geografia/trasporti: fermate bus reali, coste con laghi, avvisi Circumflegrea; nessuna stazione inventata.
+13. [x] Caricamento dinamico/culling e misurazione FPS/memoria/boot.
+14. [x] Solo alla fine: screenshot finali, backup, validators, commit/tag/push, GitHub Pages.
 
 Regole non negoziabili: conservare hook `__bacoliDebug`/`__bacoliTest`, selettori e vincoli E2E (Baia via `bus_101`, arrivo entro 140 px da `(4296,4096)`), `1m=16px`, centro `463x722`, `SAVE_VERSION = 4`. Test verdi non certificano la qualità grafica: serve QA visiva con screenshot. Ollama è solo supporto descrittivo.
 

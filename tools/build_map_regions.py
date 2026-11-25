@@ -23,10 +23,12 @@ import m6_tiles as TILES
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "tools" / "generated" / "m5_osm_raw.json"
+BUS_STOPS = ROOT / "tools" / "generated" / "m6_bus_stops.json"
 CENTRO_DATA = ROOT / "src" / "data" / "bacoli_centro.json"
 CENTRO_MAPS = ROOT / "public" / "assets" / "maps" / "centro"
 OUT_MAPS = ROOT / "public" / "assets" / "maps"
 DATA_OUT = ROOT / "src" / "data" / "bacoli_world.json"
+BUS_STOP_LIST = json.loads(BUS_STOPS.read_text(encoding="utf-8"))["stops"]
 
 TILE = 16
 GRASS, GRASS2, SAND, SAND2, COBBLE, COBBLE2, ASPHALT, PAVING_GID = (
@@ -230,6 +232,10 @@ def entrance_tile(footprint: set[tuple[int, int]], roads: set[tuple[int, int]],
 def add_place(places: list[dict], prefix: str, name: str, kind: str,
               x: int, y: int, footprint: set[tuple[int, int]] | None = None,
               **extra: object) -> None:
+    # to_tile clampa a 0 gli elementi fuori bbox: senza questo filtro creano
+    # un ammasso di attività inesistenti sull'angolo della mappa.
+    if x < 2 or y < 2:
+        return
     bounds: list[int] | None = None
     if footprint:
         bounds = [min(p[0] for p in footprint), min(p[1] for p in footprint),
@@ -449,6 +455,19 @@ def build_region(region_id: str, zone: dict, seed: int) -> dict:
         if poi.get("name"):
             add_place(places, region_id, poi["name"], kind, x, y, marker=True,
                       source="OSM POI; posizione puntuale, nessun edificio inventato")
+
+    # Fermate bus OSM reali: il cartello resta un segnaposto puntuale e viene
+    # ancorato al marciapiede in fase di spawn, non trasformato in edificio.
+    for stop in BUS_STOP_LIST:
+        if stop["region"] != region_id:
+            continue
+        sx, sy = to_tile(stop["lat"], stop["lon"])
+        if not (2 <= sx < width and 2 <= sy < height):
+            continue
+        add_place(
+            places, region_id, f"Fermata · {stop['name']}", "bus_stop", sx, sy,
+            marker=True, osmId=stop["id"], source=stop["source"],
+        )
 
     # Meccaniche esistenti: conservano un punto di accesso in ogni frazione,
     # dichiarato come servizio non georeferenziato quando OSM non lo fornisce.

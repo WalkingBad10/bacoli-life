@@ -1,0 +1,10 @@
+{
+  "project": "mobile-android",
+  "bootMs": 2017,
+  "initialTextures": 307,
+  "texturesAfterTorregaveta": 389,
+  "fps": 48,
+  "frames": 58,
+  "heapMb": 117,
+  "errors": []
+}

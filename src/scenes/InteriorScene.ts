@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import worldData from '../data/bacoli_world.json';
 import type { GameState, PlaceKind } from '../core/types';
 import type { Hud } from '../ui/Hud';
 import { buy, deposit, sell, withdraw, type Wallet } from '../systems/Economy';
@@ -17,12 +18,26 @@ interface InteriorData {
   returnX: number;
   returnY: number;
   placeId?: string;
+  regionId?: string;
+  floors?: number;
+  facadeWidth?: number;
+  source?: string;
 }
 
 type InteriorTemplate =
   | 'home' | 'bar' | 'pizzeria' | 'fish' | 'supermarket'
   | 'tobacco' | 'church' | 'workshop' | 'pharmacy'
-  | 'bank' | 'post_office' | 'shop' | 'generic';
+  | 'bank' | 'post_office' | 'shop' | 'hotel' | 'lido'
+  | 'station' | 'fuel' | 'generic';
+
+interface WorldPlace {
+  id: string;
+  kind: string;
+  name: string;
+  floors?: number;
+  facadeWidth?: number;
+  source?: string;
+}
 
 interface FurnitureItem {
   sprite: Phaser.GameObjects.Image;
@@ -35,15 +50,21 @@ const ROOM_W = 24;
 const ROOM_H = 16;
 
 /** Interni riconoscibili: la tipologia reale del luogo guida arredi e servizi. */
-function templateFor(kind: PlaceKind, name: string): InteriorTemplate {
-  const text = name.toLowerCase();
-  if (kind === 'home' || kind === 'house') return 'home';
+function templateFor(kind: PlaceKind, name: string, place?: WorldPlace): InteriorTemplate {
+  const text = `${name} ${place?.kind ?? ''} ${place?.source ?? ''}`.toLowerCase();
+  // Il nome OSM ha priorità sulla tipologia generica "home": una casa che è
+  // anche B&B, chiesa o albergo deve aprire gli arredi del servizio reale.
+  if (/hotel|alberg|pensione|b&b|residence|affittacamere/.test(text)) return 'hotel';
+  if (/stazione|fermata|railway|bus_stop|station/.test(text)) return 'station';
+  if (/distributore|benzina|carburante|fuel|service_station/.test(text)) return 'fuel';
+  if (/lido|stabiliment|balnear|spiaggia|beach/.test(text)) return 'lido';
   if (/pizzeri|pizza|pizzeria/.test(text)) return 'pizzeria';
   if (/pesce|pescheria|ristorante|trattoria|sapori|taverna|cucina|marina/.test(text)) return 'fish';
   if (/super|mercato|alimentari|conad|coop/.test(text)) return 'supermarket';
   if (/tabach|tabacc|edicola|farmacia/.test(text) && !/farmacia/.test(text)) return 'tobacco';
   if (/chies|basil|santuar|duomo|parrocchia/.test(text)) return 'church';
   if (/officina|garage|meccan|carrozzeria/.test(text)) return 'workshop';
+  if (kind === 'home' || kind === 'house') return 'home';
   if (kind === 'pharmacy') return 'pharmacy';
   if (kind === 'bank') return 'bank';
   if (kind === 'post_office') return 'post_office';
@@ -72,6 +93,7 @@ export class InteriorScene extends Phaser.Scene {
   private timeSystem?: TimeSystem;
   private seats: Record<string, SeatState> = {};
   private template: InteriorTemplate = 'generic';
+  private placeData?: WorldPlace;
   private staff?: Phaser.GameObjects.Sprite;
 
   constructor() {
@@ -84,16 +106,43 @@ export class InteriorScene extends Phaser.Scene {
     this.state = this.registry.get('state') as GameState;
     this.timeSystem = this.registry.get('time') as TimeSystem | undefined;
     this.seats = {};
+    // La scena viene riutilizzata a ogni ingresso: senza azzerare questi
+    // riferimenti, arredi e personale della visita precedente resterebbero
+    // attivi dentro il nuovo locale.
+    this.furniture = [];
+    this.staff = undefined;
+    this.interactionCount = 0;
     if (!this.hud || !this.state) {
       this.scene.stop();
       this.scene.resume('World');
       return;
     }
 
-    this.template = templateFor(data.kind, data.name);
+    // placeId è la chiave reale del luogo OSM: la stanza eredita tipologia e
+    // piano dal dato, non da una lista di template scollegata dal mondo.
+    for (const region of worldData.regions) {
+      const found = (region.places as WorldPlace[]).find((place) => place.id === data.placeId);
+      if (found) { this.placeData = found; break; }
+    }
+    this.template = templateFor(data.kind, data.name, this.placeData);
+    // Hook di sola diagnostica: verifica che la stanza usi davvero il luogo
+    // OSM passato dal mondo, non un template scelto a caso dal nome.
+    (window as unknown as { __bacoliInterior?: () => unknown }).__bacoliInterior = () => ({
+      template: this.template,
+      placeId: this.placeData?.id ?? data.placeId ?? null,
+      regionId: data.regionId ?? null,
+      name: data.name,
+      floors: this.placeData?.floors ?? data.floors ?? null,
+      facadeWidth: this.placeData?.facadeWidth ?? data.facadeWidth ?? null,
+      source: this.placeData?.source ?? data.source ?? null,
+      furniture: this.furniture.map((item) => item.action),
+      staff: Boolean(this.staff),
+      interactionCount: this.interactionCount,
+    });
+    const realFloors = this.placeData?.floors ?? data.floors ?? 3;
     const floorIndex = this.template === 'home' ? 0
-      : this.template === 'fish' || this.template === 'pizzeria' ? 2
-        : this.template === 'church' ? 3 : 1;
+      : this.template === 'church' ? 3
+        : this.template === 'fish' || this.template === 'pizzeria' || realFloors >= 3 ? 2 : 1;
     const grid: number[][] = [];
     for (let y = 0; y < ROOM_H; y++) {
       const row: number[] = [];
@@ -156,7 +205,9 @@ export class InteriorScene extends Phaser.Scene {
       fish: 'RISTORANTE DI PESCE', supermarket: 'SUPERMERCATO',
       tobacco: 'TABACCHERIA · EDICOLA', church: 'LUOGO DI CULTO',
       workshop: 'OFFICINA', pharmacy: 'FARMACIA', bank: 'BANCA',
-      post_office: 'POSTE', shop: 'NEGOZIO', generic: 'ESERCIZIO LOCALE',
+      post_office: 'POSTE', shop: 'NEGOZIO', hotel: 'ALBERGO · RICEVIMENTO',
+      lido: 'LIDO · SPIAGGIA', station: 'STAZIONE · BIGLIETTERIA',
+      fuel: 'DISTRIBUTORE · CARBURANTE', generic: 'ESERCIZIO LOCALE',
     };
     this.add.text(ROOM_W * 8, 58, subtitle[this.template], {
       fontFamily: 'monospace', fontSize: '11px', color: '#e6ab2d',
@@ -171,6 +222,7 @@ export class InteriorScene extends Phaser.Scene {
       bar: 'npc_2', pizzeria: 'npc_4', fish: 'npc_fisher',
       supermarket: 'npc_6', tobacco: 'npc_8', workshop: 'npc_10',
       pharmacy: 'npc_5', bank: 'npc_3', post_office: 'npc_7', shop: 'npc_9',
+      hotel: 'npc_11', lido: 'npc_fisher', station: 'npc_6', fuel: 'npc_10',
     };
     const key = keys[this.template] ?? 'npc_1';
     const x = this.template === 'bank' || this.template === 'post_office' ? 8 * 16 + 8 : 17 * 16 + 8;
@@ -335,6 +387,48 @@ export class InteriorScene extends Phaser.Scene {
       this.addFurniture('register', 18, 5, 'Cassa');
       this.addFurniture('plant', 13, 11, 'Piante');
       this.addFurniture('table', 5, 11, 'Attendi');
+      return;
+    }
+
+    if (this.template === 'hotel') {
+      this.addFurniture('register', 5, 3, 'Cassa');
+      this.addFurniture('desk', 10, 3, 'Check-in');
+      this.addFurniture('shelf', 19, 3, 'Bagagli');
+      for (const tx of [4, 9, 14, 19]) {
+        this.addFurniture('bed', tx, 10, 'Dormi');
+        this.addFurniture('plant', tx + 2, 10, 'Piante');
+      }
+      return;
+    }
+
+    if (this.template === 'lido') {
+      this.addFurniture('register', 4, 3, 'Cassa');
+      this.addFurniture('fridge', 9, 3, 'Frigo');
+      this.addFurniture('shelf', 19, 3, 'Attrezzatura');
+      for (const [tx, ty] of [[5, 9], [11, 9], [17, 9]] as const) {
+        this.addFurniture('chair', tx, ty, 'Prendersole');
+        this.addFurniture('table', tx + 2, ty, 'Siediti');
+      }
+      this.addFurniture('plant', 21, 12, 'Piante');
+      return;
+    }
+
+    if (this.template === 'station') {
+      this.addFurniture('register', 5, 3, 'Biglietti');
+      this.addFurniture('shelf', 11, 3, 'Orari');
+      this.addFurniture('desk', 18, 3, 'Ricevimento');
+      for (const tx of [4, 9, 14, 19]) this.addFurniture('chair', tx, 10, 'Siediti');
+      this.addFurniture('plant', 21, 11, 'Piante');
+      return;
+    }
+
+    if (this.template === 'fuel') {
+      this.addFurniture('register', 5, 3, 'Cassa');
+      this.addFurniture('shelf', 10, 3, 'Ricambi');
+      this.addFurniture('fridge', 15, 3, 'Bevande');
+      this.addFurniture('desk', 20, 3, 'Ricevimento');
+      this.addFurniture('table', 8, 10, 'Ripara');
+      this.addFurniture('plant', 20, 11, 'Piante');
       return;
     }
 

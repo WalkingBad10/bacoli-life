@@ -1,0 +1,598 @@
+{
+  "source": "OpenStreetMap API 0.6 map",
+  "filter": "node[highway=bus_stop] nelle bbox delle regioni costruite",
+  "sources": [
+    {
+      "region": "marina_grande",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.075,40.791,14.082,40.7975",
+      "retrieved_at": "2026-11-25T12:49:14+00:00",
+      "count": 8
+    },
+    {
+      "region": "villa_comunale",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.0749,40.7944,14.0788,40.7969",
+      "retrieved_at": "2026-11-25T12:49:14+00:00",
+      "count": 1
+    },
+    {
+      "region": "lago_miseno",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.0666,40.7901,14.0784,40.7968",
+      "retrieved_at": "2026-11-25T12:49:15+00:00",
+      "count": 9
+    },
+    {
+      "region": "miseno",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.078,40.776,14.091,40.792",
+      "retrieved_at": "2026-11-25T12:49:15+00:00",
+      "count": 3
+    },
+    {
+      "region": "miliscola",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.06,40.783,14.073,40.796",
+      "retrieved_at": "2026-11-25T12:49:16+00:00",
+      "count": 4
+    },
+    {
+      "region": "baia",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.063,40.81,14.079,40.826",
+      "retrieved_at": "2026-11-25T12:49:17+00:00",
+      "count": 19
+    },
+    {
+      "region": "fusaro",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.055,40.813,14.068,40.826",
+      "retrieved_at": "2026-11-25T12:49:18+00:00",
+      "count": 12
+    },
+    {
+      "region": "torregaveta",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.038,40.805,14.052,40.819",
+      "retrieved_at": "2026-11-25T12:49:19+00:00",
+      "count": 5
+    },
+    {
+      "region": "centro",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=14.0775,40.7995,14.083,40.806",
+      "retrieved_at": "2026-11-25T12:49:19+00:00",
+      "count": 6
+    }
+  ],
+  "stops": [
+    {
+      "id": 4210937320,
+      "region": "marina_grande",
+      "name": "Bacoli - Via Risorgimento, 216",
+      "lat": 40.7972343,
+      "lon": 14.0766541,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998154,
+      "region": "marina_grande",
+      "name": "Bacoli - Via Lungolago, 46",
+      "lat": 40.7969147,
+      "lon": 14.0752549,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4211018889,
+      "region": "marina_grande",
+      "name": "Bacoli - Via Risorgimento, 216",
+      "lat": 40.7971429,
+      "lon": 14.0767339,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162890,
+      "region": "marina_grande",
+      "name": "Via Miseno a Virgilio",
+      "lat": 40.7917195,
+      "lon": 14.0778081,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162891,
+      "region": "marina_grande",
+      "name": "Via Miseno Virgilio",
+      "lat": 40.791791,
+      "lon": 14.0777166,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162892,
+      "region": "marina_grande",
+      "name": "Fermata bus",
+      "lat": 40.7931595,
+      "lon": 14.0788218,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162893,
+      "region": "marina_grande",
+      "name": "Via Miseno 18",
+      "lat": 40.7929889,
+      "lon": 14.0785697,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162894,
+      "region": "marina_grande",
+      "name": "Bacoli - Via Lungolago, 10",
+      "lat": 40.7966446,
+      "lon": 14.0770387,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162894,
+      "region": "villa_comunale",
+      "name": "Bacoli - Via Lungolago, 10",
+      "lat": 40.7966446,
+      "lon": 14.0770387,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998156,
+      "region": "lago_miseno",
+      "name": "Fermata bus",
+      "lat": 40.7959528,
+      "lon": 14.0723069,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998157,
+      "region": "lago_miseno",
+      "name": "Fermata bus",
+      "lat": 40.7958847,
+      "lon": 14.0724008,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998161,
+      "region": "lago_miseno",
+      "name": "Fermata bus",
+      "lat": 40.7951295,
+      "lon": 14.0682543,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998163,
+      "region": "lago_miseno",
+      "name": "Fermata bus",
+      "lat": 40.7950426,
+      "lon": 14.0682218,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162788,
+      "region": "lago_miseno",
+      "name": "50021",
+      "lat": 40.7904463,
+      "lon": 14.0776838,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162889,
+      "region": "lago_miseno",
+      "name": "Fermata bus",
+      "lat": 40.7902519,
+      "lon": 14.0775578,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162890,
+      "region": "lago_miseno",
+      "name": "Via Miseno a Virgilio",
+      "lat": 40.7917195,
+      "lon": 14.0778081,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162891,
+      "region": "lago_miseno",
+      "name": "Via Miseno Virgilio",
+      "lat": 40.791791,
+      "lon": 14.0777166,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162894,
+      "region": "lago_miseno",
+      "name": "Bacoli - Via Lungolago, 10",
+      "lat": 40.7966446,
+      "lon": 14.0770387,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162786,
+      "region": "miseno",
+      "name": "Fermata bus",
+      "lat": 40.7878888,
+      "lon": 14.079218,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4212162787,
+      "region": "miseno",
+      "name": "Capolinea Miseno",
+      "lat": 40.7870145,
+      "lon": 14.082248,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 14297111268,
+      "region": "miseno",
+      "name": "Fermata bus",
+      "lat": 40.7879808,
+      "lon": 14.0792311,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998156,
+      "region": "miliscola",
+      "name": "Fermata bus",
+      "lat": 40.7959528,
+      "lon": 14.0723069,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998157,
+      "region": "miliscola",
+      "name": "Fermata bus",
+      "lat": 40.7958847,
+      "lon": 14.0724008,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998161,
+      "region": "miliscola",
+      "name": "Fermata bus",
+      "lat": 40.7951295,
+      "lon": 14.0682543,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998163,
+      "region": "miliscola",
+      "name": "Fermata bus",
+      "lat": 40.7950426,
+      "lon": 14.0682218,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937290,
+      "region": "baia",
+      "name": "Via Terme Romane, 104",
+      "lat": 40.8191004,
+      "lon": 14.0670119,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937291,
+      "region": "baia",
+      "name": "Fermata bus",
+      "lat": 40.8183708,
+      "lon": 14.0682252,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937293,
+      "region": "baia",
+      "name": "Bacoli - V.Le Vanvitelli, 60",
+      "lat": 40.8184912,
+      "lon": 14.0666228,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937294,
+      "region": "baia",
+      "name": "Bacoli - V.Le Vanvitelli, 42",
+      "lat": 40.8191788,
+      "lon": 14.0647734,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937295,
+      "region": "baia",
+      "name": "Bacoli - V.Le Vanvitelli, 40",
+      "lat": 40.8191467,
+      "lon": 14.0641824,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937296,
+      "region": "baia",
+      "name": "Fermata bus",
+      "lat": 40.8183382,
+      "lon": 14.0691211,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937299,
+      "region": "baia",
+      "name": "Via Lucullo (Piazza de Gasperi)",
+      "lat": 40.8183554,
+      "lon": 14.0713762,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937301,
+      "region": "baia",
+      "name": "Via Lucullo 96",
+      "lat": 40.8155161,
+      "lon": 14.0716497,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937302,
+      "region": "baia",
+      "name": "Via Lucullo, df 112 – Civico N° 101",
+      "lat": 40.8154171,
+      "lon": 14.0719159,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937303,
+      "region": "baia",
+      "name": "Via Lucullo Fiart",
+      "lat": 40.8138163,
+      "lon": 14.0739141,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937304,
+      "region": "baia",
+      "name": "Via Lucullo, 71 (Fiart)",
+      "lat": 40.8137141,
+      "lon": 14.0742284,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937306,
+      "region": "baia",
+      "name": "Via Salita Castello 26",
+      "lat": 40.8118593,
+      "lon": 14.0764822,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937307,
+      "region": "baia",
+      "name": "Via Castello, 5",
+      "lat": 40.8119339,
+      "lon": 14.0766085,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937308,
+      "region": "baia",
+      "name": "Via Salita Castello Cava",
+      "lat": 40.811169,
+      "lon": 14.0768375,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937311,
+      "region": "baia",
+      "name": "Via Castello, 37",
+      "lat": 40.8112275,
+      "lon": 14.0767372,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 11140867076,
+      "region": "baia",
+      "name": "Fermata bus",
+      "lat": 40.8228026,
+      "lon": 14.0756547,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 14273736908,
+      "region": "baia",
+      "name": "Piazza De Gasperi",
+      "lat": 40.8185314,
+      "lon": 14.0713275,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 14296848003,
+      "region": "baia",
+      "name": "Fermata bus",
+      "lat": 40.8193069,
+      "lon": 14.0708021,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 14296848004,
+      "region": "baia",
+      "name": "Fermata bus",
+      "lat": 40.8194065,
+      "lon": 14.0702924,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210936686,
+      "region": "fusaro",
+      "name": "Bacoli - V.Le Vanvitelli,109",
+      "lat": 40.8193736,
+      "lon": 14.0616789,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210936687,
+      "region": "fusaro",
+      "name": "Bacoli - V.Le Vanvitelli, 100",
+      "lat": 40.8194669,
+      "lon": 14.0617057,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210936688,
+      "region": "fusaro",
+      "name": "Bacoli - Via Fusaro, 30",
+      "lat": 40.8209403,
+      "lon": 14.061398,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937289,
+      "region": "fusaro",
+      "name": "Bacoli-Via Fusaro, 40",
+      "lat": 40.8213199,
+      "lon": 14.0617601,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937290,
+      "region": "fusaro",
+      "name": "Via Terme Romane, 104",
+      "lat": 40.8191004,
+      "lon": 14.0670119,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937293,
+      "region": "fusaro",
+      "name": "Bacoli - V.Le Vanvitelli, 60",
+      "lat": 40.8184912,
+      "lon": 14.0666228,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937294,
+      "region": "fusaro",
+      "name": "Bacoli - V.Le Vanvitelli, 42",
+      "lat": 40.8191788,
+      "lon": 14.0647734,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937295,
+      "region": "fusaro",
+      "name": "Bacoli - V.Le Vanvitelli, 40",
+      "lat": 40.8191467,
+      "lon": 14.0641824,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4217416936,
+      "region": "fusaro",
+      "name": "Bacoli - Via Fusaro, 45",
+      "lat": 40.8233568,
+      "lon": 14.0609144,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4217416937,
+      "region": "fusaro",
+      "name": "Fermata bus",
+      "lat": 40.8234668,
+      "lon": 14.060945,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4217416950,
+      "region": "fusaro",
+      "name": "Bacoli - Via Fusaro, 65",
+      "lat": 40.8256316,
+      "lon": 14.0594491,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4217416951,
+      "region": "fusaro",
+      "name": "Bacoli - Via Fusaro, 67",
+      "lat": 40.8256462,
+      "lon": 14.0593642,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 2479783554,
+      "region": "torregaveta",
+      "name": "Fermata bus",
+      "lat": 40.8115063,
+      "lon": 14.0456211,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998185,
+      "region": "torregaveta",
+      "name": "Fermata bus",
+      "lat": 40.808918,
+      "lon": 14.0505723,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998186,
+      "region": "torregaveta",
+      "name": "Fermata bus",
+      "lat": 40.8088644,
+      "lon": 14.0505276,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998187,
+      "region": "torregaveta",
+      "name": "Fermata bus",
+      "lat": 40.8100762,
+      "lon": 14.0474275,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210998188,
+      "region": "torregaveta",
+      "name": "Fermata bus",
+      "lat": 40.8100012,
+      "lon": 14.0473532,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937314,
+      "region": "centro",
+      "name": "Bacoli - Via Roma, 137",
+      "lat": 40.8054875,
+      "lon": 14.0794872,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937315,
+      "region": "centro",
+      "name": "Bacoli - Via Risorgimento, 8",
+      "lat": 40.8054769,
+      "lon": 14.0791182,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937316,
+      "region": "centro",
+      "name": "Bacoli - Via Risorgimento, 72",
+      "lat": 40.8041503,
+      "lon": 14.0785044,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4210937317,
+      "region": "centro",
+      "name": "Bacoli - Via Risorgimento, 31",
+      "lat": 40.8026299,
+      "lon": 14.0780366,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4211018892,
+      "region": "centro",
+      "name": "Fermata bus",
+      "lat": 40.7996579,
+      "lon": 14.0784365,
+      "source": "OSM node highway=bus_stop"
+    },
+    {
+      "id": 4211018893,
+      "region": "centro",
+      "name": "Bacoli - Via Roma, 60",
+      "lat": 40.8033381,
+      "lon": 14.0793621,
+      "source": "OSM node highway=bus_stop"
+    }
+  ]
+}

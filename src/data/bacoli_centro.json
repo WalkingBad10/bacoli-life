@@ -5220,16 +5220,6 @@
   },
   {
    "id": "place-227",
-   "name": "Ewa",
-   "kind": "fuel",
-   "x": 50,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-228",
    "name": "Cento Camerelle",
    "kind": "archaeological_site",
    "x": 462,
@@ -5239,207 +5229,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-229",
-   "name": "Grotte dell'Acqua - Lago Fusaro",
-   "kind": "archaeological_site",
-   "x": 0,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-230",
-   "name": "Bar Pina",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-231",
-   "name": "Baya Club",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-232",
-   "name": "Cucina di Ruggiero",
-   "kind": "restaurant",
-   "x": 99,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-233",
-   "name": "Family Nest",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-234",
-   "name": "Ristorante Sapoti in Vista",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 133,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-235",
-   "name": "Biblioteca Comunale",
-   "kind": "office",
-   "x": 0,
-   "y": 721,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-236",
-   "name": "Sala Matrimoni",
-   "kind": "shop",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-237",
-   "name": "Sala Riunioni",
-   "kind": "shop",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-238",
-   "name": "Sala del Sindaco",
-   "kind": "shop",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-239",
-   "name": "Postamat",
-   "kind": "bank",
-   "x": 0,
-   "y": 667,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-240",
-   "name": "Poste Italiane",
-   "kind": "post_office",
-   "x": 0,
-   "y": 0,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-241",
-   "name": "Banco di Napoli",
-   "kind": "bank",
-   "x": 0,
-   "y": 0,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-242",
-   "name": "Poste Italiane",
-   "kind": "post_office",
-   "x": 0,
-   "y": 0,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-243",
-   "name": "Ninfeo",
-   "kind": "archaeological_site",
-   "x": 0,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-244",
-   "name": "Villa Protiro",
-   "kind": "archaeological_site",
-   "x": 0,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-245",
-   "name": "Villa dei Pisoni",
-   "kind": "archaeological_site",
-   "x": 105,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-246",
-   "name": "Secca Fumosa",
-   "kind": "archaeological_site",
-   "x": 462,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-247",
-   "name": "Portus Julius",
-   "kind": "archaeological_site",
-   "x": 462,
-   "y": 0,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-248",
-   "name": "La Taverna dei Sapori",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 661,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-249",
+   "id": "place-228",
    "name": "Da Fefè",
    "kind": "restaurant",
    "x": 151,
@@ -5449,7 +5239,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-250",
+   "id": "place-229",
    "name": "Murphy's Law Bacoli",
    "kind": "restaurant",
    "x": 158,
@@ -5459,27 +5249,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-251",
-   "name": "Esso",
-   "kind": "fuel",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-252",
-   "name": "IP",
-   "kind": "fuel",
-   "x": 175,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-253",
+   "id": "place-230",
    "name": "Farmacia Guardascione",
    "kind": "pharmacy",
    "x": 127,
@@ -5489,7 +5259,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-254",
+   "id": "place-231",
    "name": "Talent Caffè",
    "kind": "cafe",
    "x": 174,
@@ -5499,7 +5269,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-255",
+   "id": "place-232",
    "name": "Farmacia Sant'Anna",
    "kind": "pharmacy",
    "x": 37,
@@ -5509,7 +5279,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-256",
+   "id": "place-233",
    "name": "Bar De Rosa",
    "kind": "bar",
    "x": 62,
@@ -5519,7 +5289,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-257",
+   "id": "place-234",
    "name": "La Catagna",
    "kind": "restaurant",
    "x": 462,
@@ -5529,637 +5299,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-258",
-   "name": "Stella Marina Ristopescheria",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-259",
-   "name": "Crazy Pizza",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-260",
-   "name": "Bisciù",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-261",
-   "name": "Farmacia dell'Arco",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-262",
-   "name": "Pizzeria Napul è",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-263",
-   "name": "Almi Macelleria e Gastronomia",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-264",
-   "name": "Farmacia Comunale",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-265",
-   "name": "Punto Pizza",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-266",
-   "name": "Pizzeria L'isolotto",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 6,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-267",
-   "name": "China Town",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 8,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-268",
-   "name": "Mose A Ridosso",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 168,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-269",
-   "name": "Trattoria Pizzeria Song e Napule",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-270",
-   "name": "La Biste",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-271",
-   "name": "Bacoli VET",
-   "kind": "office",
-   "x": 0,
-   "y": 0,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-272",
-   "name": "Forti Emozioni",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-273",
-   "name": "Azimut",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-274",
-   "name": "Riccio",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-275",
-   "name": "Bahia 69",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-276",
-   "name": "Pizza Village",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-277",
-   "name": "Lucullo",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-278",
-   "name": "Nudibranko Ristorante e Pizzeria",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-279",
-   "name": "Aret O'Puort Trattoria",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-280",
-   "name": "BBC Bay Beach Club",
-   "kind": "bar",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-281",
-   "name": "La Fattoria Girarrosto & Pizzeria",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-282",
-   "name": "Crudo Bar Baia",
-   "kind": "bar",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-283",
-   "name": "Farmacia del Porto",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-284",
-   "name": "La Tortuga",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-285",
-   "name": "Il Paolanto Ristorante",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-286",
-   "name": "Nereis",
-   "kind": "bar",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-287",
-   "name": "Molo Sud",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-288",
-   "name": "Villa Chiara",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-289",
-   "name": "Ideal Bar",
-   "kind": "bar",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-290",
-   "name": "Locanda  dei Re",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-291",
-   "name": "La Locanda del Testardo",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-292",
-   "name": "Scuola Sommozzatori & Diving",
-   "kind": "shop",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-293",
-   "name": "La Cucina di Venere",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-294",
-   "name": "Old Friends",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-295",
-   "name": "Cycas",
-   "kind": "bar",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-296",
-   "name": "Bar Roma",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-297",
-   "name": "Nariz cafe",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-298",
-   "name": "Piazza 27",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-299",
-   "name": "Bar Coloniali",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-300",
-   "name": "Sun Bar",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-301",
-   "name": "Lo Sfizio",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-302",
-   "name": "Chiesa Parrocchiale di Santa Maria del Riposo",
-   "kind": "house",
-   "x": 0,
-   "y": 0,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-303",
-   "name": "Velò",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-304",
-   "name": "Vineria del Porto",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-305",
-   "name": "Madame Butterfly",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-306",
-   "name": "La Locanda degli Amori e Sapori",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-307",
-   "name": "Sub Evolution",
-   "kind": "shop",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-308",
-   "name": "El Sueno",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-309",
-   "name": "Il Sestante",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-310",
-   "name": "La Brace Secondo Me",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-311",
-   "name": "Espo Pizza & Cucina",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-312",
-   "name": "Miglio Zero",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-313",
-   "name": "Bella 'mbriana",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-314",
-   "name": "Frudisi",
-   "kind": "gelateria",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-315",
-   "name": "Travelers Cafe",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-316",
-   "name": "Arte Pizza",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-317",
-   "name": "Il Giardino Cafe",
-   "kind": "cafe",
-   "x": 0,
-   "y": 635,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-318",
-   "name": "Ristorantino Cycas",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-319",
-   "name": "Vision",
-   "kind": "shop",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-320",
-   "name": "La Dimora di Gea",
-   "kind": "shop",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-321",
+   "id": "place-235",
    "name": "Osteria Il Garum",
    "kind": "restaurant",
    "x": 114,
@@ -6169,107 +5309,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-322",
-   "name": "Osteria Nerone",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-323",
-   "name": "Rusticotto",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-324",
-   "name": "Brivido",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-325",
-   "name": "Trattoria Mare",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-326",
-   "name": "Box Burger",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-327",
-   "name": "Pallin Bisciu",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-328",
-   "name": "Pilato",
-   "kind": "shop",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-329",
-   "name": "Meseta",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-330",
-   "name": "Sibilla",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-331",
-   "name": "eFarma Group S.r.l.",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-332",
+   "id": "place-236",
    "name": "Tetris Cafe",
    "kind": "bar",
    "x": 26,
@@ -6279,37 +5319,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-333",
-   "name": "Spazio Lucrino",
-   "kind": "cafe",
-   "x": 462,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-334",
-   "name": "Mario Ristorante",
-   "kind": "restaurant",
-   "x": 462,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-335",
-   "name": "Sea Bar",
-   "kind": "restaurant",
-   "x": 462,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-336",
+   "id": "place-237",
    "name": "Villa Scalera",
    "kind": "shop",
    "x": 258,
@@ -6319,87 +5329,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-337",
-   "name": "Farmacia Peccerella",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-338",
-   "name": "Zanzibar",
-   "kind": "cafe",
-   "x": 0,
-   "y": 646,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-339",
-   "name": "Sleepy Pub - Cornetteria",
-   "kind": "cafe",
-   "x": 0,
-   "y": 688,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-340",
-   "name": "Forno Flegreo",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 313,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-341",
-   "name": "Down Up Coffee di Achile Cappola",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-342",
-   "name": "Acquamagica",
-   "kind": "garage",
-   "x": 0,
-   "y": 98,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-343",
-   "name": "Bar Victoria",
-   "kind": "cafe",
-   "x": 0,
-   "y": 429,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-344",
-   "name": "Ozia! Pizzeria Slow Eat",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 403,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-345",
+   "id": "place-238",
    "name": "Ristorante Garibaldi",
    "kind": "restaurant",
    "x": 309,
@@ -6409,37 +5339,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-346",
-   "name": "Ristorante Villa Molpe",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-347",
-   "name": "Villa Baia dei Cesari",
-   "kind": "shop",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-348",
-   "name": "Stazione Carabinieri di Monte di Procida",
-   "kind": "office",
-   "x": 0,
-   "y": 721,
-   "sprite": 1,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-349",
+   "id": "place-239",
    "name": "Parcheggio Punta Pennadio Lido",
    "kind": "parking",
    "x": 462,
@@ -6449,7 +5349,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-350",
+   "id": "place-240",
    "name": "Villa Mirabilis",
    "kind": "shop",
    "x": 462,
@@ -6459,7 +5359,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-351",
+   "id": "place-241",
    "name": "Bolliera",
    "kind": "restaurant",
    "x": 462,
@@ -6469,87 +5369,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-352",
-   "name": "Farmacia Sichenze",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 721,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-353",
-   "name": "Farmacia Dott. Colesanti",
-   "kind": "pharmacy",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-354",
-   "name": "Toastime",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-355",
-   "name": "Madcap Public House",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-356",
-   "name": "Kuma 65",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-357",
-   "name": "Scirocco",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-358",
-   "name": "Marabà",
-   "kind": "cafe",
-   "x": 0,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-359",
-   "name": "Colombario Via Miliscola",
-   "kind": "archaeological_site",
-   "x": 0,
-   "y": 721,
-   "sprite": 3,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-360",
+   "id": "place-242",
    "name": "Una fetta di Napoli",
    "kind": "restaurant",
    "x": 109,
@@ -6559,77 +5379,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-361",
-   "name": "Slowly",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-362",
-   "name": "Surprise",
-   "kind": "cafe",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-363",
-   "name": "Il furgone",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-364",
-   "name": "IP",
-   "kind": "fuel",
-   "x": 0,
-   "y": 0,
-   "sprite": 4,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-365",
-   "name": "Casa Azul",
-   "kind": "bar",
-   "x": 433,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-366",
-   "name": "Casa Azul",
-   "kind": "bar",
-   "x": 462,
-   "y": 0,
-   "sprite": 2,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-367",
-   "name": "Garage Il Faro",
-   "kind": "parking",
-   "x": 0,
-   "y": 721,
-   "sprite": 5,
-   "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
-  },
-  {
-   "id": "place-368",
+   "id": "place-243",
    "name": "Wolf Rent Boat",
    "kind": "shop",
    "x": 394,
@@ -6639,7 +5389,7 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-369",
+   "id": "place-244",
    "name": "Sponda Sud",
    "kind": "cafe",
    "x": 125,
@@ -6649,17 +5399,73 @@
    "source": "OSM POI; posizione puntuale, nessun edificio inventato"
   },
   {
-   "id": "place-370",
-   "name": "Sazio",
-   "kind": "restaurant",
-   "x": 0,
-   "y": 721,
-   "sprite": 2,
+   "id": "place-245",
+   "name": "Fermata · Bacoli - Via Roma, 137",
+   "kind": "bus_stop",
+   "x": 167,
+   "y": 57,
+   "sprite": 5,
    "marker": true,
-   "source": "OSM POI; posizione puntuale, nessun edificio inventato"
+   "osmId": 4210937314,
+   "source": "OSM node highway=bus_stop"
   },
   {
-   "id": "place-371",
+   "id": "place-246",
+   "name": "Fermata · Bacoli - Via Risorgimento, 8",
+   "kind": "bus_stop",
+   "x": 136,
+   "y": 58,
+   "sprite": 5,
+   "marker": true,
+   "osmId": 4210937315,
+   "source": "OSM node highway=bus_stop"
+  },
+  {
+   "id": "place-247",
+   "name": "Fermata · Bacoli - Via Risorgimento, 72",
+   "kind": "bus_stop",
+   "x": 85,
+   "y": 206,
+   "sprite": 5,
+   "marker": true,
+   "osmId": 4210937316,
+   "source": "OSM node highway=bus_stop"
+  },
+  {
+   "id": "place-248",
+   "name": "Fermata · Bacoli - Via Risorgimento, 31",
+   "kind": "bus_stop",
+   "x": 45,
+   "y": 375,
+   "sprite": 5,
+   "marker": true,
+   "osmId": 4210937317,
+   "source": "OSM node highway=bus_stop"
+  },
+  {
+   "id": "place-249",
+   "name": "Fermata · Fermata bus",
+   "kind": "bus_stop",
+   "x": 79,
+   "y": 705,
+   "sprite": 5,
+   "marker": true,
+   "osmId": 4211018892,
+   "source": "OSM node highway=bus_stop"
+  },
+  {
+   "id": "place-250",
+   "name": "Fermata · Bacoli - Via Roma, 60",
+   "kind": "bus_stop",
+   "x": 157,
+   "y": 296,
+   "sprite": 5,
+   "marker": true,
+   "osmId": 4211018893,
+   "source": "OSM node highway=bus_stop"
+  },
+  {
+   "id": "place-251",
    "name": "Piazzetta sul mare",
    "kind": "beach",
    "x": 324,
@@ -6669,7 +5475,7 @@
    "source": "coordinate verificate"
   },
   {
-   "id": "place-372",
+   "id": "place-252",
    "name": "Villa Comunale",
    "kind": "beach",
    "x": 169,
@@ -6679,7 +5485,7 @@
    "source": "coordinate verificate"
   },
   {
-   "id": "place-373",
+   "id": "place-253",
    "name": "Gelateria Piazzetta",
    "kind": "gelateria",
    "x": 324,
@@ -6689,7 +5495,7 @@
    "source": "coordinata verificata"
   },
   {
-   "id": "place-374",
+   "id": "place-254",
    "name": "Centro consegne Bacoli",
    "kind": "delivery",
    "x": 262,
@@ -6699,7 +5505,7 @@
    "source": "posizione approssimata nel centro; servizio non georeferenziato"
   },
   {
-   "id": "place-375",
+   "id": "place-255",
    "name": "Garage comunale",
    "kind": "garage",
    "x": 133,
@@ -6709,7 +5515,7 @@
    "source": "posizione approssimata nel centro; servizio non georeferenziato"
   },
   {
-   "id": "place-376",
+   "id": "place-256",
    "name": "Pescheria del centro",
    "kind": "pescheria",
    "x": 330,

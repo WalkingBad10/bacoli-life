@@ -187,6 +187,67 @@ export interface Trip {
   minutes: number;
 }
 
+/** Avvisi di servizio EAV: informano, senza riattivare stazioni sospese. */
+export interface ServiceAlert {
+  id: string;
+  line: LineId;
+  operator: 'EAV';
+  severity: 'warning' | 'info';
+  title: string;
+  body: string;
+  stations: string[];
+  source: string;
+}
+
+export const SERVICE_ALERTS: ServiceAlert[] = [
+  {
+    id: 'circumflegrea-licola-torregaveta',
+    line: 'circumflegrea', operator: 'EAV', severity: 'warning',
+    title: 'Circumflegrea: servizio regolare sospeso oltre Licola',
+    body: 'Dal 2014 non circolano treni regolari da Licola a Torregaveta. '
+      + 'Cuma e Lido Fusaro restano luoghi visitabili ma non sono destinazioni di viaggio: '
+      + 'usa gli autobus 144/145 per raggiungerli.',
+    stations: ['cuma_station', 'lido_fusaro', 'torregaveta', 'licola'],
+    source: 'Avviso EAV di sospensione (archiviato) · orari Circumflegrea',
+  },
+  {
+    id: 'cumana-baia-riaperta',
+    line: 'cumana', operator: 'EAV', severity: 'info',
+    title: 'Cumana: Baia riaperta dal 6 novembre 2025',
+    body: 'La fermata di Baia è di nuovo servita dalla Cumana. '
+      + 'Torregaveta resta il capolinea; verifica sempre gli orari EAV prima di partire.',
+    stations: ['baia_station', 'torregaveta', 'fusaro_station', 'lucrino'],
+    source: 'EAV · orari Cumana L9 in vigore dal 11 settembre 2026',
+  },
+  {
+    id: 'bus-144-145-supporto',
+    line: 'bus_144', operator: 'EAV', severity: 'info',
+    title: 'Bus 144/145: collegamento di supporto alle linee flegree',
+    body: 'Gli autobus EAV 144 e 145 collegano Bacoli, Fusaro, Cuma e Miseno '
+      + 'e servono come alternativa alle tratte ferroviarie sospese. '
+      + 'Le fermate presenti nel mondo sono quelle reali estratte da OSM.',
+    stations: ['bacoli_centro', 'fusaro_station', 'cuma_station', 'miseno',
+      'miliscola', 'mercato_sabato', 'piazza_de_gasperi'],
+    source: 'EAV · orario autobus 144/145 di supporto alle linee flegree',
+  },
+];
+
+/**
+ * Quadro EAV del telefono: mette in cima gli avvisi pertinenti alla fermata
+ * corrente ma mostra sempre anche gli altri, così il giocatore vede lo stato
+ * dell'intera rete senza scoprire solo dopo aver viaggiato che una linea è chiusa.
+ */
+export function eavAlerts(stationId?: string): ServiceAlert[] {
+  const station = stationId ? STATIONS.find((item) => item.id === stationId) : undefined;
+  if (!station) return SERVICE_ALERTS;
+  const relevant = SERVICE_ALERTS.filter((alert) =>
+    alert.stations.includes(station.id)
+    || station.lines.includes(alert.line)
+    || (alert.line === 'bus_144' && station.lines.includes('bus_145')));
+  const others = SERVICE_ALERTS.filter((alert) => !relevant.includes(alert));
+  return [...relevant, ...others];
+}
+
 export function planTrip(fromId: string, toId: string): Trip | null {
   const from = STATIONS.find((station) => station.id === fromId);
   const to = STATIONS.find((station) => station.id === toId);

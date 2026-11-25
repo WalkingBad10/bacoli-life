@@ -48,6 +48,10 @@ export class CollisionSystem {
     if (solid.id) this.solidsById.set(solid.id, solid);
   }
 
+  hasSolid(id: string): boolean {
+    return this.solidsById.has(id);
+  }
+
   /** Aggiorna la posizione di un ostacolo mobile (veicoli). */
   updateSolid(id: string, x: number, y: number): void {
     const solid = this.solidsById.get(id);
@@ -73,7 +77,9 @@ export class CollisionSystem {
     return this.blocked[ty * this.width + tx] === 1;
   }
 
-  canStand(px: number, py: number, radius = 5, ignoreId?: string): boolean {
+  canStand(
+    px: number, py: number, radius = 5, ignoreId?: string | string[],
+  ): boolean {
     // Campiona il bordo della sagoma: due tile sopra e sotto, ai lati e al centro.
     const points: [number, number][] = [
       [px, py - radius], [px, py + radius],
@@ -84,12 +90,14 @@ export class CollisionSystem {
     if (points.some(([x, y]) => this.isSolidTile(Math.floor(x / 16), Math.floor(y / 16)))) {
       return false;
     }
+    const ignored = new Set(typeof ignoreId === 'string' ? [ignoreId] : ignoreId ?? []);
     return !this.solids.some((s) =>
-      (!ignoreId || s.id !== ignoreId) && Math.hypot(px - s.x, py - s.y) < radius + s.radius);
+      !ignored.has(s.id ?? '') && Math.hypot(px - s.x, py - s.y) < radius + s.radius);
   }
 
   move(
-    px: number, py: number, dx: number, dy: number, radius = 5, ignoreId?: string,
+    px: number, py: number, dx: number, dy: number, radius = 5,
+    ignoreId?: string | string[],
   ): { x: number; y: number } {
     let x = px;
     let y = py;

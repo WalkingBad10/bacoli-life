@@ -40,6 +40,7 @@ export class Hud {
   private readonly hunger: HTMLElement;
   private readonly panel: HTMLElement;
   private readonly toastEl: HTMLElement;
+  private readonly onKeyDown: (ev: KeyboardEvent) => void;
   private activeTab = 'mappa';
 
   constructor(root: HTMLElement) {
@@ -88,10 +89,16 @@ export class Hud {
     this.byId('hud-save').onclick = () => this.onSave?.();
     this.byId('hud-load').onclick = () => this.onLoad?.();
 
-    window.addEventListener('keydown', (ev) => {
+    this.onKeyDown = (ev: KeyboardEvent) => {
       if (ev.key === 'F5') { ev.preventDefault(); this.onSave?.(); }
       if (ev.key === 'F9') { ev.preventDefault(); this.onLoad?.(); }
-    });
+    };
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  /** Rilascia i listener globali quando la scena cambia regione. */
+  destroy(): void {
+    window.removeEventListener('keydown', this.onKeyDown);
   }
 
   private byId(id: string): HTMLElement {

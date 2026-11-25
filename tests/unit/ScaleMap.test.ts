@@ -83,6 +83,8 @@ describe('Mappa metrica del centro storico', () => {
       expect(place.source).toMatch(/approssim/);
     }
     const osmPlaces = centro.places.filter((place) => place.source?.startsWith('OSM'));
-    expect(osmPlaces.length).toBeGreaterThan(300);
+    // I 126 POI clampati a (0,0) dal bbox sono stati rimossi: restano solo
+    // elementi OSM realmente interni al centro storico, più 6 fermate bus OSM.
+    expect(osmPlaces.length).toBeGreaterThan(200);
   });
 });

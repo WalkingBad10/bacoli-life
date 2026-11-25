@@ -1,6 +1,6 @@
 # BACOLI LIFE — Milestone 6: piano operativo
 
-Stato: **in corso**. Backup prima della revisione: `bacoli-life-20261125-010000-prima-milestone6.zip`.
+Stato: **completato e verificato**. Backup prima della revisione: `bacoli-life-20261125-010000-prima-milestone6.zip`. Verifica finale: `docs/M6_FINAL_QA.md`.
 Vincoli invariati: M4/M5, `1 m = 16 px`, adulto 28 px, piano 52 px, `centro` `463x722`,
 `SAVE_VERSION = 4`, hook `__bacoliDebug`/`__bacoliTest`, viaggio Baia da `centro` via `bus_101`
 con arrivo entro 140 px da `(4296,4096)`, Pianura/Napoli non giocabili.

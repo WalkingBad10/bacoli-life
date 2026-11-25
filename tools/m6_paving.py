@@ -10,9 +10,8 @@ from pathlib import Path
 from m6_tiles import (
     ASPHALT, ASPHALT_MASK, CROSSWALK, GRASS, GRASS2, GRAVEL_MASK, MASK_RANGES,
     PAVING, PAVING_MASK, SAND, SAND2, WATER_IDS, COBBLE_MASK,
-    CROSS_H, CROSS_H2, CROSS_V, CROSS_V2, DASH_H, DASH_V, DRAIN, EDGE_H, EDGE_V,
-    INTERSECTION, MANHOLE, PARK_H, PARK_V, PATCH, SOLID_H, SOLID_V, STOP_H,
-    STOP_V, ASPHALT_MARK,
+    ARROW_S, ARROW_T, CROSS_H, CROSS_H2, CROSS_V, CROSS_V2, DASH_H, DASH_V,
+    DRAIN, EDGE_H, EDGE_V, MANHOLE, PARK_H, PARK_V, PATCH, ASPHALT_MARK,
 )
 
 # Classi stradali: 0 = non strada, 1 = asfalto, 2 = basolato, 3 = marciapiede,
@@ -113,30 +112,33 @@ def paint(ground: list[list[int]], collision: list[list[int]], width: int, heigh
         vertical_neighbours = (classes.get((x, y - 1)) == kind and classes.get((x, y + 1)) == kind)
         gid: int | None = None
         if horizontal_neighbours and vertical_neighbours:
-            gid = INTERSECTION if wide else None
+            # Configurazione a maglia: la maggior parte dei tile del centro ha
+            # vicini su tutti e quattro i lati. Una croce bianca qui creerebbe
+            # migliaia di incroci inventati: si lascia asfalto pulito.
+            gid = None
         elif wide:
             gid = DASH_H if direction == 'h' else DASH_V
-            if seed % 11 == 0 and (x + y) % 17 == 0:
-                gid = SOLID_H if direction == 'h' else SOLID_V
-            if (x * 7 + y * 3 + seed) % 43 == 0:
-                gid = STOP_H if direction == 'h' else STOP_V
+            if (x * 7 + y * 3 + seed) % 37 == 0:
+                gid = ARROW_T if direction == 'h' else ARROW_S
         else:
             gid = EDGE_H if direction == 'h' else EDGE_V
-        # Throughze pedonali: la pavement pedonale lambisce la carreggiata.
+
+        # Attraversamenti pedonali solo dove una pavement pedonale lambisce la
+        # carreggiata, e con densità bassa: non a ogni tile adiacente.
         footway = any(classes.get((x + dx, y + dy)) in ('cobble', 'paving')
                       for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)))
-        if footway and wide and (x * 5 + y * 11 + seed) % 9 == 0:
+        if footway and wide and (x * 5 + y * 11 + seed) % 97 == 0:
             gid = CROSS_H if direction == 'h' else CROSS_V
+        elif wide and not footway and (x * 13 + y * 7 + seed) % 23 == 0:
+            gid = PARK_H if direction == 'h' else PARK_V
+
         if gid is not None:
             ground[y][x] = gid
-        # Stalli di sosta solo sul bordo delle strade larghe.
-        if wide and (x * 13 + y * 7 + seed) % 19 == 0 and not footway:
-            ground[y][x] = PARK_H if direction == 'h' else PARK_V
-        # Manhole e griglie di drenaggio, distanti fra loro e mai in throughza.
-        if horizontal_neighbours and vertical_neighbours and (x + y * 3 + seed) % 53 == 0:
-            ground[y][x] = MANHOLE
-        elif (x * 3 + y * 17 + seed) % 71 == 0 and not wide:
-            ground[y][x] = DRAIN if ground[y][x] in (EDGE_H, EDGE_V) else PATCH
+        # Manhole e griglie di drenaggio: dettagli isolati, non ripetuti a maglia.
+        if (x * 3 + y * 17 + seed) % 71 == 0:
+            ground[y][x] = MANHOLE if wide else (
+                DRAIN if ground[y][x] in (EDGE_H, EDGE_V) else PATCH
+            )
 
     counts['gidUsed'] = len({cell for row in ground for cell in row})
     return counts

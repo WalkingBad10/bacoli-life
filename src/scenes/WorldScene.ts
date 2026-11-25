@@ -10,11 +10,15 @@ import { decodeExport, defaultVehicles, encodeExport, loadGame, normalize, saveG
 import { AudioSystem } from '../systems/AudioSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
 import { DebugOverlay } from '../systems/DebugOverlay';
+import { RoadGraph, type RoadPoint } from '../systems/RoadGraph';
+import { regionTextureKeys } from '../systems/AssetKeys';
 import {
   buyVehicle, canDrive, consumeFuel, needsService, refuel, serviceVehicle,
   SERVICE_PRICE, VEHICLE_CATALOG,
 } from '../systems/VehicleSystem';
-import { LINES, STATIONS, planTrip, reachableFrom, type Station } from '../systems/TransportSystem';
+import {
+  LINES, STATIONS, eavAlerts, planTrip, reachableFrom, type Station,
+} from '../systems/TransportSystem';
 import {
   NPC_PROFILES, routineLabel, routineSlot,
   type NpcProfile, type NpcKind, type RoutineSlot,
@@ -114,6 +118,7 @@ export class WorldScene extends Phaser.Scene {
   private facing: Direction = 'down';
   private npcs: NpcData[] = [];
   private overlay!: Phaser.GameObjects.Rectangle;
+  private resizeHandler?: (size: Phaser.Structs.Size) => void;
   private lamps: Phaser.GameObjects.Image[] = [];
   private boats: Phaser.GameObjects.Image[] = [];
   private rain?: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -123,6 +128,19 @@ export class WorldScene extends Phaser.Scene {
   private lastInteract = 0;
   private lastBellHour = -1;
   private traffic: VehicleState[] = [];
+  /** Rotta OSM rimasta da percorrere per ogni veicolo del traffico. */
+  private trafficPaths = new Map<string, RoadPoint[]>();
+  private trafficTargets = new Map<string, RoadPoint>();
+  private trafficStalls = new Map<string, number>();
+  private npcStalls = new Map<number, number>();
+  private roadGraph!: RoadGraph;
+  /** Occupazione dell'arredo: evita sovrapposizioni fra oggetti e ingressi. */
+  private urbanOccupied: Array<{ x: number; y: number; radius: number }> = [];
+  /** Ombre proiettate ai piedi: la profondità è sempre calcolata dal punto di contatto. */
+  private actorShadows = new Map<string, Phaser.GameObjects.Ellipse>();
+  private busStops = 0;
+  /** Binari disegnati solo sulle stazioni ferroviarie attive della regione. */
+  private railMarkers: Array<{ id: string; x: number; y: number }> = [];
   private vehicleSprites = new Map<string, Phaser.GameObjects.Image>();
   private petSprites = new Map<string, Phaser.GameObjects.Image>();
   private courierSprites = new Map<string, Phaser.GameObjects.Image>();
@@ -190,8 +208,28 @@ export class WorldScene extends Phaser.Scene {
     // Il Scene non viene ricostruito da scene.restart(): gli sprite della
     // regione precedente sono già stati distrutti e vanno dimenticati.
     this.selectRegion();
+    // Viaggiare non ricarica BootScene: le facciate della regione di arrivo
+    // vengono lette dal disco una sola volta, poi il create riparte pulito.
+    const missingTextures = regionTextureKeys(this.region.places)
+      .filter((key) => !this.textures.exists(key));
+    if (missingTextures.length) {
+      for (const key of missingTextures) {
+        this.load.image(key, `assets/scale/${key}.png`);
+      }
+      this.load.once('complete', () => this.scene.restart());
+      this.load.start();
+      return;
+    }
     this.npcs = [];
     this.traffic = [];
+    this.trafficPaths.clear();
+    this.trafficTargets.clear();
+    this.trafficStalls.clear();
+    this.npcStalls.clear();
+    this.actorShadows.clear();
+    this.busStops = 0;
+    this.railMarkers = [];
+    this.urbanOccupied = [];
     this.driving = null;
     this.vehicleSprites.clear();
     this.petSprites.clear();
@@ -241,6 +279,11 @@ export class WorldScene extends Phaser.Scene {
     if (!layer) throw new Error('Layer ground non creato');
     this.groundLayer = layer;
     this.loadCollision();
+    const roadClasses = new Uint8Array(this.cache.binary.get(`roads_${this.region.id}`));
+    if (roadClasses.length !== meta.width * meta.height) {
+      throw new Error('Buffer stradale non valido');
+    }
+    this.roadGraph = new RoadGraph(roadClasses, meta.width, meta.height, this.blocked);
     this.spawnStations();
 
     this.spawnProps();
@@ -253,6 +296,7 @@ export class WorldScene extends Phaser.Scene {
     this.spawnVehicles();
     this.spawnTraffic();
     this.spawnNpcs();
+    this.spawnBusStops();
     this.spawnUrbanDetails();
     this.syncPetSprites();
     this.syncCourierSprites();
@@ -286,6 +330,7 @@ export class WorldScene extends Phaser.Scene {
       syncHomeMirror(this.state);
       this.registry.set('state', this.state);
       this.player.setPosition(this.state.player.x, this.state.player.y);
+      this.syncPlayerActor();
       this.timeSystem.minutes = this.state.time;
       this.timeSystem.day = this.state.day;
       this.timeSystem.weather = this.state.weather;
@@ -297,8 +342,16 @@ export class WorldScene extends Phaser.Scene {
       this.hud.toast('Partita caricata');
     };
 
-    (window as unknown as { __bacoliDebug?: () => Record<string, unknown> }).__bacoliDebug = () => ({
-      player: { x: this.player.x, y: this.player.y },
+    (window as unknown as { __bacoliDebug?: () => Record<string, unknown> }).__bacoliDebug = () => {
+      // Durante il caricamento dinamico delle facciate la scena può riavviarsi:
+      // l'hook della visita precedente resta visibile finché il nuovo create non
+      // ricrea player e sistemi. Non deve mai leggere campi non inizializzati.
+      if (!this.scene.isActive() || !this.player?.anims || !this.timeSystem
+        || !this.collision || !this.hud) {
+        return { region: this.region?.id ?? null, loading: true };
+      }
+      return {
+        player: { x: this.player.x, y: this.player.y },
       npcs: this.npcs.map((n) => ({ x: n.sprite.x, y: n.sprite.y, name: n.name })),
       places: this.region.places.length,
       region: this.region.id,
@@ -308,6 +361,42 @@ export class WorldScene extends Phaser.Scene {
       walkingNpcs: this.npcs.filter((n) => n.path.length > 0).length,
       vehicles: this.state.vehicles.length,
       traffic: this.traffic.length,
+      urbanProps: this.urbanOccupied.length,
+      urbanSpots: this.urbanOccupied,
+      lamps: this.lamps.length,
+      busStops: this.busStops,
+      rails: this.railMarkers,
+      trainSprites: this.children.list
+        .filter((child): child is Phaser.GameObjects.Image =>
+          child instanceof Phaser.GameObjects.Image && child.texture.key.startsWith('train'))
+        .map((sprite) => ({ x: sprite.x, y: sprite.y, texture: sprite.texture.key })),
+      alerts: eavAlerts(this.originStation().id).map((alert) => alert.id),
+      loadedTextures: this.textures.getTextureKeys().length,
+      actors: [
+        { id: 'player', x: this.player.x, y: this.player.y, radius: 5 },
+        ...this.npcs.map((npc) => ({
+          id: `npc-${npc.index}`, x: npc.sprite.x, y: npc.sprite.y, radius: 5,
+        })),
+        ...this.traffic.map((vehicle) => ({
+          id: vehicle.id, x: vehicle.x, y: vehicle.y, radius: this.vehicleRadius(vehicle),
+        })),
+        ...this.state.pets.map((pet) => ({
+          id: `pet-${pet.id}`, x: pet.x, y: pet.y, radius: 4,
+        })),
+      ],
+      trafficRoutes: this.traffic.map((vehicle) => ({
+        id: vehicle.id,
+        x: vehicle.x, y: vehicle.y,
+        remaining: this.trafficPaths.get(vehicle.id)?.length ?? 0,
+        target: this.trafficTargets.get(vehicle.id) ?? null,
+        stalls: this.trafficStalls.get(vehicle.id) ?? 0,
+      })),
+      // Profondità calcolata sempre dai piedi: sprite e ombra condividono y.
+      shadows: [...this.actorShadows.entries()].map(([id, shadow]) => ({
+        id, x: shadow.x, y: shadow.y, depth: shadow.depth, visible: shadow.visible,
+      })),
+      playerAnim: this.player.anims.currentAnim?.key ?? null,
+      playerDepth: this.player.depth,
       driving: this.driving?.id ?? null,
       fuel: this.driving?.fuel ?? null,
       homeOwned: this.state.home.owned,
@@ -327,15 +416,20 @@ export class WorldScene extends Phaser.Scene {
       careerLevel: this.state.career?.level ?? 1,
       deliveries: this.state.deliveries?.length ?? 0,
       event: eventForDay(this.timeSystem.day)?.id ?? null,
-      debugOverlay: this.debugOverlay.active,
-    });
+        debugOverlay: this.debugOverlay.active,
+      };
+    };
 
     // Hook dedicato ai test E2E: permette di verificare collisioni, guida e
     // viaggi senza affidarsi a sequenze di tasti fragili.
     (window as unknown as { __bacoliTest?: Record<string, unknown> }).__bacoliTest = {
       debugOverlay: () => this.debugOverlay.active,
-      teleport: (x: number, y: number) => { this.player.setPosition(x, y); },
-      canStand: (x: number, y: number, radius = 5) => this.canStand(x, y, radius),
+      teleport: (x: number, y: number) => {
+        this.player.setPosition(x, y);
+        this.syncPlayerActor();
+      },
+      canStand: (x: number, y: number, radius = 5, ignoreId?: string | string[]) =>
+        this.canStand(x, y, radius, ignoreId),
       enterVehicle: () => this.toggleVehicle(),
       travel: (id: string) => this.travel(id),
       giveTickets: () => {
@@ -442,6 +536,8 @@ export class WorldScene extends Phaser.Scene {
       // non deve sovrascriverla con le coordinate della regione precedente.
       if (!this.pendingSpawn) this.syncState();
       saveGame(this.state);
+      if (this.resizeHandler) this.scale.off('resize', this.resizeHandler);
+      this.hud.destroy();
       uiRoot.remove();
     });
   }
@@ -472,8 +568,10 @@ export class WorldScene extends Phaser.Scene {
     return !this.collision.isSolidTile(tx, ty);
   }
 
-  private canStand(px: number, py: number, radius = 5): boolean {
-    return this.collision.canStand(px, py, radius);
+  private canStand(
+    px: number, py: number, radius = 5, ignoreId?: string | string[],
+  ): boolean {
+    return this.collision.canStand(px, py, radius, ignoreId);
   }
 
   /** Raggio del solido circolare coerente con le dimensioni native del veicolo. */
@@ -510,14 +608,20 @@ export class WorldScene extends Phaser.Scene {
     if (!this.canStand(this.player.x, this.player.y)) {
       this.player.setPosition(this.region.spawn.x * 16 + 8, this.region.spawn.y * 16 + 16);
     }
+    const shadow = this.add.ellipse(this.player.x, this.player.y - 1, 13, 4, 0x0c1823, 0.28)
+      .setDepth(this.player.y - 1);
+    this.actorShadows.set('player', shadow);
+    // Il protagonista è un ostacolo per NPC, animali e traffico come ogni altro
+    // attore: il raggio coincide con la sagoma pedonale di 16x32 px.
+    this.collision.addSolid({ id: 'player', x: this.player.x, y: this.player.y, radius: 5 });
   }
 
-  private addProp(key: string, tx: number, ty: number, solidRadius = 0): void {
-    if (!this.walkable(tx, ty)) return;
-    const x = tx * 16 + 8;
-    const y = ty * 16 + 16;
-    this.add.image(x, y, key).setOrigin(0.5, 1).setDepth(y);
-    if (solidRadius) this.collision.addSolid({ x, y: y - 8, radius: solidRadius });
+  /** Allinea solido e ombra del giocatore dopo ogni spostamento o caricamento. */
+  private syncPlayerActor(): void {
+    this.collision.updateSolid('player', this.player.x, this.player.y);
+    this.actorShadows.get('player')
+      ?.setPosition(this.player.x, this.player.y - 1)
+      .setDepth(this.player.y - 1);
   }
 
   /** Variante della facciata: i dati OSM hanno priorità, poi tipologia e nome. */
@@ -560,6 +664,7 @@ export class WorldScene extends Phaser.Scene {
       const x = spawn.x * 16 + 8;
       const y = spawn.y * 16 + 16;
       this.add.image(x, y + 8, 'rail').setOrigin(0.5, 1).setDepth(y + 7);
+      this.railMarkers.push({ id: station.id, x, y });
       this.add.image(x, y, 'platform').setOrigin(0.5, 1).setDepth(y + 6);
       this.add.image(x, y - 6, 'station_eav').setOrigin(0.5, 1).setDepth(y + 5);
     }
@@ -606,49 +711,112 @@ export class WorldScene extends Phaser.Scene {
       this.add.image(centerX, baseY - buildingHeight + ROOF_HEIGHT, `roof_${width}_${variant}`)
         .setOrigin(0.5, 1).setDepth(baseY + 3);
     });
+  }
 
-    // Dettagli ambientali nelle strade attorno allo spawn e alla piazzetta.
-    const props: [string, number, number, number][] = [
-      ['flowerpot', -3, -1, 0], ['flowerpot', 4, 2, 0], ['trash_bin', -2, 4, 5],
-      ['bench', -5, 3, 7], ['street_sign', 2, -3, 0], ['parking_sign', 6, 3, 0],
-      ['flowerpot', 10, -4, 0], ['trash_bin', -7, -2, 5], ['bench', 12, 6, 7],
+  /**
+   * Arredo urbano regolato: ogni oggetto nasce solo su marciapiede/basolato
+   * vicino a un luogo o a una strada, con raggio d'ingombro reale e distanza
+   * minima dagli altri oggetti. Niente oggetti in mezzo all'asfalto o in zone
+   * vuote, niente raggi finti usati solo come filtro e mai come collisione.
+   */
+  private placeUrbanProp(
+    key: string, tx: number, ty: number, radius: number, requireSurface = true,
+  ): boolean {
+    const surface = this.roadGraph.surfaceAt(tx, ty);
+    if (requireSurface && surface !== 2 && surface !== 3 && surface !== 0) return false;
+    if (surface === 1 || !this.walkable(tx, ty)) return false;
+    const x = tx * 16 + 8;
+    const y = ty * 16 + 16;
+    if (!this.canStand(x, y, radius)) return false;
+    const gap = this.urbanOccupied.some((other) =>
+      Math.hypot(other.x - x, other.y - y) < other.radius + radius + 8);
+    if (gap) return false;
+    // L'ingresso dei palazzi resta libero: nessun ostacolo entro 10 px.
+    if (this.region.places.some((place) => place.bounds && Math.hypot(
+      place.x * 16 + 8 - x, place.y * 16 + 16 - y) < 12)) return false;
+
+    const sprite = this.add.image(x, y, key).setOrigin(0.5, 1).setDepth(y);
+    if (key === 'lamp') {
+      const glow = this.add.image(x, y - 40, 'glow').setBlendMode(Phaser.BlendModes.ADD).setDepth(y);
+      glow.setAlpha(0);
+      sprite.setData('glow', glow);
+      this.lamps.push(sprite);
+    }
+    this.collision.addSolid({ id: `prop-${key}-${tx}-${ty}`, x, y: y - 8, radius });
+    this.urbanOccupied.push({ x, y, radius });
+    return true;
+  }
+
+  /** Cerca il primo punto pedonale libero in una piccola spirale locale. */
+  private placeUrbanNear(
+    key: string, px: number, py: number, radius: number,
+  ): boolean {
+    const offsets = [
+      [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1],
+      [1, -1], [-1, -1], [2, 0], [-2, 0], [0, 2], [0, -2],
     ];
-    for (const [key, dx, dy, radius] of props) {
-      this.addProp(key, this.region.spawn.x + dx, this.region.spawn.y + dy, radius);
+    return offsets.some(([dx, dy]) => this.placeUrbanProp(key, px + dx, py + dy, radius));
+  }
+
+  /** Fermate bus OSM reali: cartello sul marciapiede, non in mezzo all'asfalto. */
+  private spawnBusStops(): void {
+    const stops = this.region.places.filter((place) => place.kind === 'bus_stop');
+    for (const place of stops) {
+      if (this.placeUrbanNear('bus_stop', place.x, place.y, 4)) this.busStops++;
     }
   }
 
-  /** Verde e arredo urbano distribuiti nel centro, tutti alla scala nativa. */
+  /** Verde e arredo urbano distribuiti secondo la funzione del luogo OSM. */
   private spawnUrbanDetails(): void {
-    const keys = ['flowerpot', 'olive_tree', 'palm', 'trash_bin', 'bench', 'cafe_table'];
-    let placed = 0;
-    for (let i = 0; i < this.region.places.length && placed < 54; i += 4) {
-      const place = this.region.places[i];
-      const tx = place.x + ((i % 3) - 1) * 3;
-      const ty = place.y + (i % 2 === 0 ? 2 : -2);
-      let key = keys[Math.floor((i / 4) % keys.length)];
-      if (['cafe', 'bar', 'restaurant', 'gelateria'].includes(place.kind)) key = 'cafe_table';
-      else if (place.kind === 'beach') key = 'palm';
-      else if (place.kind === 'archaeological_site') key = 'olive_tree';
-      const radius = key === 'palm' ? 48 : key === 'olive_tree' ? 40
-        : key === 'cafe_table' ? 40 : key === 'bench' ? 32 : 12;
-      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, radius)) continue;
-      const x = tx * 16 + 8;
-      const y = ty * 16 + 16;
-      this.add.image(x, y, key)
-        .setOrigin(0.5, 1)
-        .setAlpha(0.92)
-        .setDepth(y);
-      placed++;
+    const cafes = this.region.places.filter((place) =>
+      ['cafe', 'bar', 'restaurant', 'gelateria', 'pescheria'].includes(place.kind));
+    const green = this.region.places.filter((place) =>
+      ['park', 'garden', 'piazzetta', 'archaeological_site', 'beach'].includes(place.kind));
+    const services = this.region.places.filter((place) =>
+      ['shop', 'pharmacy', 'post_office', 'bank', 'office'].includes(place.kind));
+
+    cafes.slice(0, 26).forEach((place, index) => {
+      this.placeUrbanNear('cafe_table', place.x + 1, place.y + 1, 10);
+      if (index % 2 === 0) this.placeUrbanNear('flowerpot', place.x - 1, place.y + 1, 6);
+      if (index % 3 === 0) this.placeUrbanNear('bench', place.x + 2, place.y + 2, 12);
+    });
+    green.slice(0, 18).forEach((place, index) => {
+      const key = place.kind === 'beach' ? 'palm' : 'olive_tree';
+      this.placeUrbanNear(key, place.x + (index % 2 ? 2 : -2), place.y + 1, 5);
+      if (index % 3 === 0) this.placeUrbanNear('bench', place.x, place.y + 2, 12);
+    });
+    services.slice(0, 20).forEach((place, index) => {
+      if (index % 2 === 0) this.placeUrbanNear('trash_bin', place.x + 1, place.y - 1, 6);
+      if (index % 4 === 0) this.placeUrbanNear('flowerpot', place.x - 1, place.y - 1, 6);
+    });
+
+    // Lampioni e segnaletica lungo i marciapiedi, non a intervalli ciechi.
+    let lamps = 0;
+    for (let ty = 4; ty < this.height - 4 && lamps < 40; ty += 9) {
+      for (let tx = 4; tx < this.width - 4 && lamps < 40; tx += 9) {
+        if (this.roadGraph.surfaceAt(tx, ty) !== 3) continue;
+        if (!this.roadGraph.drivable(tx + 1, ty) && !this.roadGraph.drivable(tx - 1, ty)
+          && !this.roadGraph.drivable(tx, ty + 1) && !this.roadGraph.drivable(tx, ty - 1)) continue;
+        if (this.placeUrbanProp('lamp', tx, ty, 3)) lamps++;
+      }
+    }
+    let signs = 0;
+    for (let ty = 6; ty < this.height - 6 && signs < 8; ty += 17) {
+      for (let tx = 6; tx < this.width - 6 && signs < 8; tx += 17) {
+        if (this.roadGraph.surfaceAt(tx, ty) !== 3) continue;
+        const cross = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+          .filter(([dx, dy]) => this.roadGraph.drivable(tx + dx, ty + dy)).length;
+        if (cross < 3) continue;
+        const key = signs % 2 === 0 ? 'street_sign' : 'parking_sign';
+        if (this.placeUrbanProp(key, tx, ty, 3)) signs++;
+      }
     }
 
-    this.region.places.filter((place) => place.kind === 'beach').forEach((place, index) => {
-      const tx = place.x + (index % 2 === 0 ? 2 : -2);
+    this.region.places.filter((place) => place.kind === 'beach').slice(0, 6).forEach((place) => {
+      const tx = place.x + 2;
       const ty = place.y + 1;
-      if (!this.walkable(tx, ty) || !this.canStand(tx * 16 + 8, ty * 16 + 16, 8)) return;
-      const x = tx * 16 + 8;
-      const y = ty * 16 + 16;
-      this.add.image(x, y, 'fisher').setOrigin(0.5, 1).setDepth(y);
+      if (!this.walkable(tx, ty)) return;
+      this.add.image(tx * 16 + 8, ty * 16 + 16, 'fisher').setOrigin(0.5, 1).setDepth(ty * 16 + 16);
     });
   }
 
@@ -690,6 +858,38 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Piazzola stradale libera: i veicoli devono nascere sull'asfalto/basolato
+   * OSM, non su un marciapiede, e non sovrapposti a un altro veicolo.
+   */
+  private findRoadSpot(
+    tx: number, ty: number, radius: number, salt: number,
+  ): { x: number; y: number } | null {
+    for (let ring = 0; ring <= 20; ring++) {
+      const start = (salt * 7 + ring * 13) % Math.max(1, ring * 8);
+      for (let k = 0; k < Math.max(1, ring * 8); k++) {
+        const index = (start + k) % Math.max(1, ring * 8);
+        const dir = Math.floor(index / Math.max(1, ring)) % 8;
+        const step = ring === 0 ? 0 : 1 + (index % ring);
+        const dx = ring === 0 ? 0 : [[1, 0], [1, 1], [0, 1], [-1, 1],
+          [-1, 0], [-1, -1], [0, -1], [1, -1]][dir][0] * step;
+        const dy = ring === 0 ? 0 : [[1, 0], [1, 1], [0, 1], [-1, 1],
+          [-1, 0], [-1, -1], [0, -1], [1, -1]][dir][1] * step;
+        const cx = tx + dx;
+        const cy = ty + dy;
+        if (!this.roadGraph.drivable(cx, cy)) continue;
+        const x = cx * 16 + 8;
+        const y = cy * 16 + 16;
+        if (!this.canStand(x, y, radius)) continue;
+        const clear = [...this.traffic, ...this.state.vehicles].every((other) => (
+          Math.hypot(other.x - x, other.y - y) > radius + this.vehicleRadius(other) + 8
+        ));
+        if (clear) return { x, y };
+      }
+    }
+    return null;
+  }
+
   private spawnTraffic(): void {
     const colors = ['#F2EAD8', '#3A6EA5', '#B1403B', '#E6AB2D'];
     for (let i = 0; i < 8; i++) {
@@ -698,21 +898,27 @@ export class WorldScene extends Phaser.Scene {
       const vehicle: VehicleState = {
         id: `traffic-${i}`, kind,
         name: bus ? 'Bus EAV' : 'Traffico',
-        x: (this.region.spawn.x + (i - 4) * 7) * 16 + 8,
-        y: (this.region.spawn.y + 5 + Math.floor(i / 4) * 4) * 16 + 16,
+        x: 0, y: 0,
         angle: 0, fuel: 99, maxFuel: 99, color: colors[i % colors.length],
         owned: false,
       };
       const radius = this.vehicleRadius(vehicle);
-      const spot = this.findVehicleSpot(
-        Math.floor(vehicle.x / 16), Math.floor(vehicle.y / 16), radius,
+      const spot = this.findRoadSpot(
+        this.region.spawn.x + (i - 4) * 6,
+        this.region.spawn.y + 5 + Math.floor(i / 4) * 3, radius, i,
       );
-      if (!this.canStand(spot.x, spot.y, radius)) continue;
+      if (!spot) continue;
       vehicle.x = spot.x;
       vehicle.y = spot.y;
       this.traffic.push(vehicle);
       this.createVehicleSprite(vehicle);
       this.collision.addSolid({ id: vehicle.id, x: vehicle.x, y: vehicle.y, radius });
+      const here = { x: Math.floor(spot.x / 16), y: Math.floor(spot.y / 16) };
+      const target = this.roadGraph.pickDestination(here, i);
+      if (target) {
+        this.trafficTargets.set(vehicle.id, target);
+        this.trafficPaths.set(vehicle.id, this.roadGraph.route(here, target));
+      }
     }
   }
 
@@ -727,12 +933,17 @@ export class WorldScene extends Phaser.Scene {
       const key = profile.kind === 'fisher'
         ? 'npc_fisher' : NPC_KEYS[i % NPC_KEYS.length];
       const anchor = this.region.places[(i * 17 + 5) % this.region.places.length];
-      let tx = anchor.x + ((i % 3) - 1) * 2;
-      let ty = anchor.y + (i % 2 === 0 ? 2 : -2);
-      if (!this.walkable(tx, ty)) { tx = this.region.spawn.x + ((i % 5) - 2); ty = this.region.spawn.y + 2; }
-      if (!this.walkable(tx, ty)) { tx = this.region.spawn.x; ty = this.region.spawn.y; }
-      const sprite = this.add.sprite(tx * 16 + 8, ty * 16 + 16, key);
-      sprite.setOrigin(0.5, 1);
+      const spot = this.freePedestrianTile(anchor.x, anchor.y, i);
+      const tx = spot.x;
+      const ty = spot.y;
+      const x = tx * 16 + 8;
+      const y = ty * 16 + 16;
+      const sprite = this.add.sprite(x, y, key);
+      sprite.setOrigin(0.5, 1).setDepth(y);
+      const shadow = this.add.ellipse(x, y - 1, 12, 4, 0x0c1823, 0.24)
+        .setDepth(y - 1);
+      this.actorShadows.set(`npc-${i}`, shadow);
+      this.collision.addSolid({ id: `npc-${i}`, x, y, radius: 5 });
       this.npcs.push({
         sprite, key, name: profile.name, profile,
         kind: profile.kind ?? 'resident',
@@ -781,17 +992,8 @@ export class WorldScene extends Phaser.Scene {
     this.overlay = this.add.rectangle(0, 0, cam.width, cam.height, 0x0c1823, 0);
     this.overlay.setOrigin(0, 0).setScrollFactor(0).setDepth(9000);
 
-    for (let i = 0; i < 9; i++) {
-      const x = this.region.spawn.x * 16 + ((i % 3) - 1) * 160;
-      const y = this.region.spawn.y * 16 + 64 + Math.floor(i / 3) * 96;
-      if (!this.walkable(Math.floor(x / 16), Math.floor(y / 16))) continue;
-      const lamp = this.add.image(x, y, 'lamp').setOrigin(0.5, 1).setDepth(y + 1);
-      const glow = this.add.image(x, y - 40, 'glow').setBlendMode(Phaser.BlendModes.ADD).setDepth(y);
-      glow.setAlpha(0);
-      this.lamps.push(lamp);
-      lamp.setData('glow', glow);
-      this.collision.addSolid({ x, y: y - 8, radius: 3 });
-    }
+    // I lampioni sono generati da spawnUrbanDetails() solo sui marciapiedi OSM;
+    // qui restano solo l'overlay atmosferico e l'animazione dell'acqua.
 
     this.groundLayer.forEachTile((tile) => {
       if (tile.index >= 8 && tile.index <= 11 && this.waterTiles.length < 1400) {
@@ -800,9 +1002,10 @@ export class WorldScene extends Phaser.Scene {
     });
     this.spawnBoats();
 
-    this.scale.on('resize', (size: Phaser.Structs.Size) => {
+    this.resizeHandler = (size: Phaser.Structs.Size) => {
       this.overlay.setSize(size.width, size.height);
-    });
+    };
+    this.scale.on('resize', this.resizeHandler);
     this.applyWeather();
   }
 
@@ -826,6 +1029,9 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
+    // create() può tornare prima di costruire la scena mentre carica le facciate
+    // della nuova regione: in quel frame gli sprite sono già stati distrutti.
+    if (!this.player?.anims || !this.hud || !this.collision || !this.debugOverlay) return;
     this.debugOverlay.update(this.cameras.main);
     if (this.hud.panelOpen) {
       this.player.anims.stop();
@@ -926,12 +1132,15 @@ export class WorldScene extends Phaser.Scene {
       this.state.stats.distanceDriven += distance;
       const sprite = this.vehicleSprites.get(drivingId);
       sprite?.setPosition(moved.x, moved.y).setDepth(moved.y);
+      this.syncPlayerActor();
       return;
     }
     const speed = PLAYER_SPEED * (fast ? RUN_MULTIPLIER : 1) * (delta / 1000);
     const beforeX = this.player.x;
     const beforeY = this.player.y;
-    const moved = this.collision.move(beforeX, beforeY, nx * speed, ny * speed, 5);
+    // Il solido del giocatore lo rappresenta per gli altri attori: va ignorato
+    // quando si calcola il suo stesso passo, altrimenti si blocca su sé stesso.
+    const moved = this.collision.move(beforeX, beforeY, nx * speed, ny * speed, 5, 'player');
     this.player.setPosition(moved.x, moved.y);
     this.state.stats.distanceWalked += Math.hypot(moved.x - beforeX, moved.y - beforeY);
     this.facing = Math.abs(nx) > Math.abs(ny)
@@ -939,11 +1148,47 @@ export class WorldScene extends Phaser.Scene {
       : (ny > 0 ? 'down' : 'up');
     this.player.anims.play(`walk-${this.facing}-player`, true);
     this.player.setDepth(this.player.y);
+    this.syncPlayerActor();
     if (fast) this.state.player.energy = Math.max(0, this.state.player.energy - delta * 0.0025);
   }
 
   private faceFrame(): number {
     return ({ down: 0, left: 4, right: 8, up: 12 })[this.facing];
+  }
+
+  /**
+   * Tile pedonale libero vicino a un luogo, con rotazione deterministica e
+   * distanza minima fra pedoni: evita che routine diverse convergeano tutte
+   * sulla stessa casella o che gli NPC si accatastino allo spawn.
+   */
+  private freePedestrianTile(tx: number, ty: number, salt: number): { x: number; y: number } {
+    const dirs = [
+      [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1],
+    ];
+    const distant = (x: number, y: number) => this.npcs.every((npc) => {
+      const dx = npc.sprite.x - (x * 16 + 8);
+      const dy = npc.sprite.y - (y * 16 + 16);
+      return dx * dx + dy * dy > 144 // almeno 12 px fra pedoni
+        && this.canStand(x * 16 + 8, y * 16 + 16, 5);
+    });
+    for (let radius = 0; radius <= 14; radius++) {
+      const cells = radius === 0 ? 1 : radius * 8;
+      const offset = (salt * 3 + radius * 5) % Math.max(1, cells);
+      for (let k = 0; k < cells; k++) {
+        const index = (offset + k) % cells;
+        const dx = radius === 0 ? 0 : dirs[Math.floor(index / radius) % 8][0] * (1 + index % radius);
+        const dy = radius === 0 ? 0 : dirs[Math.floor(index / radius) % 8][1] * (1 + index % radius);
+        const x = tx + dx;
+        const y = ty + dy;
+        if (this.walkable(x, y) && distant(x, y)) return { x, y };
+      }
+    }
+    for (let r = 0; r <= 8; r++) {
+      const x = this.region.spawn.x + r;
+      const y = this.region.spawn.y + (r % 3);
+      if (this.walkable(x, y) && distant(x, y)) return { x, y };
+    }
+    return { x: this.region.spawn.x, y: this.region.spawn.y };
   }
 
   /** Destinazione della routine, scelta in modo deterministico tra i luoghi reali. */
@@ -968,8 +1213,7 @@ export class WorldScene extends Phaser.Scene {
     if (!pool.length) pool = this.region.places.filter((place) => kinds[slot].includes(place.kind));
     const source = pool.length ? pool : this.region.places;
     const place = source[(index * 7 + slot.length) % source.length];
-    const spot = this.findVehicleSpot(place.x, place.y + 2);
-    return { x: Math.floor(spot.x / 16), y: Math.floor(spot.y / 16) };
+    return this.freePedestrianTile(place.x, place.y, index + slot.length);
   }
 
   private updateNpcs(delta: number): void {
@@ -981,8 +1225,11 @@ export class WorldScene extends Phaser.Scene {
     );
     for (const npc of this.npcs) {
       if (!npc.sprite.active || !npc.sprite.anims) continue;
+      const solidId = `npc-${npc.index}`;
+      const shadow = this.actorShadows.get(solidId);
       const onScreen = Phaser.Geom.Rectangle.Contains(bounds, npc.sprite.x, npc.sprite.y);
       npc.sprite.setVisible(onScreen);
+      shadow?.setVisible(onScreen);
       if (!onScreen) { npc.sprite.anims.stop(); continue; }
       const slot = routineSlot(npc.name, this.timeSystem.hour);
       const changed = npc.slot !== slot;
@@ -996,7 +1243,10 @@ export class WorldScene extends Phaser.Scene {
             x: Phaser.Math.Clamp(from.x + Phaser.Math.Between(-4, 4), 2, this.width - 3),
             y: Phaser.Math.Clamp(from.y + Phaser.Math.Between(-4, 4), 2, this.height - 3),
           };
-        npc.path = findPath(from, target, (x, y) => this.walkable(x, y));
+        const clear = (x: number, y: number) => this.walkable(x, y)
+          && this.canStand(x * 16 + 8, y * 16 + 16, 5, solidId);
+        npc.path = findPath(from, target, clear);
+        if (!npc.path.length) npc.path = findPath(from, target, (x, y) => this.walkable(x, y));
       }
       const next = npc.path[0];
       if (next) {
@@ -1004,13 +1254,24 @@ export class WorldScene extends Phaser.Scene {
         const ty = next.y * 16 + 16;
         const angle = Math.atan2(ty - npc.sprite.y, tx - npc.sprite.x);
         const step = npc.speed * (delta / 1000);
-        const nx = npc.sprite.x + Math.cos(angle) * step;
-        const ny = npc.sprite.y + Math.sin(angle) * step;
-        if (Math.hypot(tx - nx, ty - ny) < 4) {
+        const moved = this.collision.move(
+          npc.sprite.x, npc.sprite.y, Math.cos(angle) * step, Math.sin(angle) * step, 5, solidId,
+        );
+        const progressed = Math.hypot(moved.x - npc.sprite.x, moved.y - npc.sprite.y);
+        const reached = Math.hypot(tx - moved.x, ty - moved.y) < 4
+          && this.canStand(tx, ty, 5, solidId);
+        if (reached) {
           npc.sprite.setPosition(tx, ty);
           npc.path.shift();
         } else {
-          npc.sprite.setPosition(nx, ny);
+          npc.sprite.setPosition(moved.x, moved.y);
+        }
+        if (progressed < step * 0.25) {
+          const stalls = (this.npcStalls.get(npc.index) ?? 0) + 1;
+          this.npcStalls.set(npc.index, stalls);
+          if (stalls > 10) { npc.path = []; this.npcStalls.set(npc.index, 0); }
+        } else {
+          this.npcStalls.set(npc.index, 0);
         }
         const dir: Direction = Math.abs(tx - npc.sprite.x) > Math.abs(ty - npc.sprite.y)
           ? (tx > npc.sprite.x ? 'right' : 'left')
@@ -1020,28 +1281,63 @@ export class WorldScene extends Phaser.Scene {
       } else {
         npc.sprite.anims.stop();
       }
+      this.collision.updateSolid(solidId, npc.sprite.x, npc.sprite.y);
+      shadow?.setPosition(npc.sprite.x, npc.sprite.y - 1).setDepth(npc.sprite.y - 1);
     }
   }
 
   private updateTraffic(delta: number): void {
-    for (const vehicle of this.traffic) {
-      const current = { x: Math.floor(vehicle.x / 16), y: Math.floor(vehicle.y / 16) };
-      if (!this.walkable(current.x + 1, current.y) && !this.walkable(current.x - 1, current.y)) {
-        const spot = this.findVehicleSpot(this.region.spawn.x + Phaser.Math.Between(-8, 8), this.region.spawn.y + 5);
-        vehicle.x = spot.x;
-        vehicle.y = spot.y;
-      }
-      const goesRight = this.walkable(current.x + 2, current.y);
-      const target = { x: current.x + (goesRight ? 2 : -2), y: current.y };
-      const step = (vehicle.kind === 'bus' ? 20 : 30) * (delta / 1000);
-      vehicle.x += Math.sign(target.x - current.x) * step;
+    let routeBudget = 4; // A* limitato per frame: la strada non si teletrasporta.
+    for (const [index, vehicle] of this.traffic.entries()) {
       const sprite = this.vehicleSprites.get(vehicle.id);
-      sprite?.setPosition(vehicle.x, vehicle.y).setDepth(vehicle.y).setFlipX(!goesRight);
-      if (vehicle.x > (this.region.spawn.x + 18) * 16 || vehicle.x < (this.region.spawn.x - 18) * 16) {
-        const spot = this.findVehicleSpot(this.region.spawn.x + Phaser.Math.Between(-10, 10), this.region.spawn.y + 5);
-        vehicle.x = spot.x;
-        vehicle.y = spot.y;
+      let path = this.trafficPaths.get(vehicle.id) ?? [];
+
+      // Ricalcolo solo quando serve: percorso finito, tile non più guidabile o
+      // veicolo bloccato da un ostacolo per troppo tempo.
+      if (!path.length && routeBudget > 0) {
+        routeBudget--;
+        const here = { x: Math.floor(vehicle.x / 16), y: Math.floor(vehicle.y / 16) };
+        const target = this.roadGraph.pickDestination(here, index + this.state.day * 7)
+          ?? this.roadGraph.nearest(here.x + 12, here.y + 4);
+        if (target) {
+          this.trafficTargets.set(vehicle.id, target);
+          path = this.roadGraph.route(here, target);
+          this.trafficPaths.set(vehicle.id, path);
+        }
       }
+
+      const next = path[0];
+      if (next) {
+        const tx = next.x * 16 + 8;
+        const ty = next.y * 16 + 16;
+        const dx = tx - vehicle.x;
+        const dy = ty - vehicle.y;
+        const distance = Math.hypot(dx, dy);
+        const radius = this.vehicleRadius(vehicle);
+        const speed = (vehicle.kind === 'bus' ? 22 : vehicle.kind === 'moto' ? 36 : 30) * (delta / 1000);
+        const ratio = Math.min(1, speed / distance);
+        const nx = vehicle.x + dx * ratio;
+        const ny = vehicle.y + dy * ratio;
+        const blocked = !this.canStand(nx, ny, radius, vehicle.id);
+        if (blocked) {
+          const stalls = (this.trafficStalls.get(vehicle.id) ?? 0) + 1;
+          this.trafficStalls.set(vehicle.id, stalls);
+          if (stalls > 45) { path.length = 0; this.trafficStalls.set(vehicle.id, 0); }
+        } else {
+          this.trafficStalls.set(vehicle.id, 0);
+          vehicle.x = nx;
+          vehicle.y = ny;
+          vehicle.angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        }
+        if (Math.hypot(tx - vehicle.x, ty - vehicle.y) < 3) {
+          path.shift();
+          // Punto successivo già raggiunto: evita un frame fermo su tile corti.
+          while (path.length && Math.hypot(path[0].x * 16 + 8 - vehicle.x,
+            path[0].y * 16 + 16 - vehicle.y) < 3) path.shift();
+        }
+        sprite?.setFlipX(dx < 0);
+      }
+      sprite?.setPosition(vehicle.x, vehicle.y).setDepth(vehicle.y);
       this.collision.updateSolid(vehicle.id, vehicle.x, vehicle.y);
     }
   }
@@ -1379,6 +1675,10 @@ export class WorldScene extends Phaser.Scene {
       if (this.state.pets.some((pet) => pet.id === id)) continue;
       sprite.destroy();
       this.petSprites.delete(id);
+      const solidId = `pet-${id}`;
+      this.collision.removeSolid(solidId);
+      this.actorShadows.get(solidId)?.destroy();
+      this.actorShadows.delete(solidId);
     }
     this.state.pets.forEach((pet) => {
       let sprite = this.petSprites.get(pet.id);
@@ -1386,6 +1686,11 @@ export class WorldScene extends Phaser.Scene {
         sprite = this.add.image(pet.x, pet.y, `pet_${pet.species}`)
           .setOrigin(0.5, 1).setDepth(pet.y);
         this.petSprites.set(pet.id, sprite);
+        const solidId = `pet-${pet.id}`;
+        this.collision.addSolid({ id: solidId, x: pet.x, y: pet.y, radius: 4 });
+        this.actorShadows.set(solidId, this.add.ellipse(
+          pet.x, pet.y - 1, 10, 3, 0x0c1823, 0.22,
+        ).setDepth(pet.y - 1));
       }
       sprite.setPosition(pet.x, pet.y);
     });
@@ -1395,12 +1700,13 @@ export class WorldScene extends Phaser.Scene {
     if (!this.state.pets.length) return;
     advancePets(this.state.pets, delta / 3_600_000);
     this.state.pets.forEach((pet, index) => {
-      // Segue a lato del giocatore e non attraversa muri o acqua.
+      // Segue a lato del giocatore e non attraversa muri, acqua o altri attori.
+      const solidId = `pet-${pet.id}`;
       const side = pet.x >= this.player.x ? 16 : -16;
       const beforeX = pet.x;
       const beforeY = pet.y;
       followPet(pet, this.player.x + side, this.player.y, delta);
-      const valid = (x: number, y: number) => this.canStand(x, y, 4)
+      const valid = (x: number, y: number) => this.canStand(x, y, 4, solidId)
         && this.walkable(Math.floor(x / 16), Math.floor(y / 16));
       if (!valid(pet.x, pet.y)) {
         // Scorrimento assiale: evita muri e acqua senza teletrasportare l'animale.
@@ -1421,14 +1727,29 @@ export class WorldScene extends Phaser.Scene {
       sprite?.setPosition(pet.x, pet.y + Math.sin(this.time.now / 320 + index) * 1.2)
         .setDepth(pet.y + 1)
         .setFlipX(pet.x > this.player.x);
+      this.collision.updateSolid(solidId, pet.x, pet.y);
+      this.actorShadows.get(solidId)
+        ?.setPosition(pet.x, pet.y - 1)
+        .setDepth(pet.y - 1);
     });
   }
 
   private toggleVehicle(): void {
     if (this.driving) {
       this.driving = null;
+      // Il pedone non può restare dentro il solido del veicolo: cerca un
+      // marciapiede libero accanto alla portiera prima di tornare giocabile.
+      const spot = this.findVehicleSpot(
+        Math.floor(this.player.x / 16) + 1, Math.floor(this.player.y / 16), 5,
+      );
+      this.player.setPosition(spot.x, spot.y);
+      this.state.player.x = spot.x;
+      this.state.player.y = spot.y;
+      this.collision.addSolid({ id: 'player', x: spot.x, y: spot.y, radius: 5 });
       this.player.setVisible(true);
+      this.actorShadows.get('player')?.setVisible(true);
       this.player.setFrame(this.faceFrame());
+      this.syncPlayerActor();
       this.hud.toast('Sei sceso dal veicolo');
       return;
     }
@@ -1439,7 +1760,11 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     this.driving = vehicle;
+    // Durante la guida il solido del pedone coinciderebbe con quello del
+    // veicolo e impedirebbe ogni movimento: resta solo il raggio dell'auto.
+    this.collision.removeSolid('player');
     this.player.setVisible(false);
+    this.actorShadows.get('player')?.setVisible(false);
     const warning = (vehicle.condition ?? 100) < 35 ? ' · passa in officina!' : '';
     this.hud.toast(`Stai guidando: ${vehicle.name}${warning}`);
   }
@@ -1515,7 +1840,8 @@ export class WorldScene extends Phaser.Scene {
     this.scene.launch('Interior', {
       kind: place.kind, name: place.name,
       returnX: this.player.x, returnY: this.player.y,
-      placeId: place.id,
+      placeId: place.id, regionId: this.region.id,
+      floors: place.floors, facadeWidth: place.facadeWidth, source: place.source,
     });
     this.scene.pause();
   }
@@ -1924,6 +2250,15 @@ export class WorldScene extends Phaser.Scene {
       {
         title: 'Trasporti pubblici',
         rows: trips.slice(0, 6),
+      },
+      {
+        title: 'Avvisi EAV',
+        rows: eavAlerts(this.originStation().id).map((alert) => ({
+          label: `${alert.severity === 'warning' ? 'AVVISO' : 'INFO'} · ${alert.title}`,
+          action: () => this.hud.openInfo(alert.title, [alert.body, alert.source], [
+            { label: 'Ho capito', action: () => this.hud.closePanel() },
+          ]),
+        })),
       },
       {
         title: `Famiglia · ${this.state.family.length || 'nessun membro'}`

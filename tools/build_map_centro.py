@@ -36,6 +36,7 @@ import m6_tiles as TILES
 
 ROOT = Path(__file__).resolve().parents[1]
 GEO = ROOT / "src" / "data" / "bacoli_geo.json"
+BUS_STOPS = ROOT / "tools" / "generated" / "m6_bus_stops.json"
 OUT = ROOT / "public" / "assets" / "maps" / "centro"
 DATA_OUT = ROOT / "src" / "data" / "bacoli_centro.json"
 TILED_OUT = ROOT / "tools" / "generated" / "centro.tiled.json"
@@ -94,6 +95,7 @@ OSM_KIND = {
     "police": "office", "townhall": "office", "public_building": "office",
     "library": "office", "university": "office", "veterinary": "office",
     "post_office": "post_office", "marketplace": "shop",
+    "bus_stop": "bus_stop", "bus_station": "bus_stop",
     "boat_rental": "shop", "dive_centre": "shop", "recycling": "shop",
     "events_venue": "shop", "car_wash": "garage", "yes": "shop",
     "building": "home",
@@ -236,6 +238,11 @@ def entrance_tile(footprint: set[tuple[int, int]], roads: set[tuple[int, int]],
 
 def add_place(places: list[dict], name: str, kind: str, x: int, y: int,
               footprint: set[tuple[int, int]] | None = None, **extra: object) -> None:
+    # `to_tile` clampa a 0 le coordinate fuori bbox: un POI fuori dal centro
+    # diventerebbe un fantasma nell'angolo nord-ovest, attirando NPC e botteghe
+    # verso un unto che non esiste. Le zone limitrofe hanno le loro mappe.
+    if x < 2 or y < 2:
+        return
     # Il JSON pubblicato conserva solo il rettangolo di ingestione dell'impronta:
     # i tile esatti sono già nel buffer collision.bin, quindi memorizzarli qui
     # gonfierebbe il bundle di 1,8 MB senza aggiungere informazioni utilizzate.
@@ -405,6 +412,19 @@ def main() -> None:
         if poi.get("name"):
             add_place(places, poi["name"], kind, x, y, marker=True,
                       source="OSM POI; posizione puntuale, nessun edificio inventato")
+
+    # Fermate bus OSM reali: segnaposto puntuali, mai edifici inventati.
+    # Il cartello viene collocato sul marciapiede da WorldScene.spawnBusStops().
+    for stop in json.loads(BUS_STOPS.read_text(encoding="utf-8"))["stops"]:
+        if stop["region"] != "centro":
+            continue
+        x, y = to_tile(stop["lat"], stop["lon"])
+        if not (2 <= x < TW and 2 <= y < TH):
+            continue
+        add_place(
+            places, f"Fermata · {stop['name']}", "bus_stop", x, y, marker=True,
+            osmId=stop["id"], source=stop["source"],
+        )
 
     # Piazzetta sul mare e servizi necessari alle meccaniche esistenti.
     add_place(places, "Piazzetta sul mare", "beach", *to_tile(40.80170, 14.08134),

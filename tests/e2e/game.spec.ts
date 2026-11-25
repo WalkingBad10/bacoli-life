@@ -229,6 +229,14 @@ test('adozione di un animale: sprite, follow e persistenza', async ({ page }) =>
   // l'animale deve seguirlo senza attraversare ostacoli solidi.
   const target = await page.evaluate((p) => {
     const test = (window as any).__bacoliTest;
+    // I pedoni sono ostacoli reali: il test cerca una corsia libera dagli
+    // altri attori, non una corsia vuota di gente.
+    const ignored = [
+      p.id, `pet-${p.id}`, 'player',
+      ...(window as any).__bacoliDebug().actors
+        .filter((actor: { id: string }) => actor.id.startsWith('npc-'))
+        .map((actor: { id: string }) => actor.id),
+    ];
     const offsets: [number, number][] = [];
     for (const axis of ['x', 'y']) {
       for (const direction of [1, -1]) {
@@ -243,9 +251,12 @@ test('adozione di un animale: sprite, follow e persistenza', async ({ page }) =>
       let clear = true;
       for (let step = 8; step <= length; step += 8) {
         const t = step / length;
-        if (!test.canStand(p.x + dx * t, p.y + dy * t, 6)) { clear = false; break; }
+        if (!test.canStand(p.x + dx * t, p.y + dy * t, 6, ignored)) {
+          clear = false;
+          break;
+        }
       }
-      if (!clear || !test.canStand(p.x + dx, p.y + dy, 6)) continue;
+      if (!clear || !test.canStand(p.x + dx, p.y + dy, 6, ignored)) continue;
       test.teleport(p.x + dx, p.y + dy);
       return { dx, dy };
     }
@@ -259,7 +270,8 @@ test('adozione di un animale: sprite, follow e persistenza', async ({ page }) =>
   expect(Math.hypot(movedX, movedY)).toBeGreaterThan(5);
   expect(movedX * target!.dx + movedY * target!.dy).toBeGreaterThan(0);
   expect(await page.evaluate(
-    (p) => (window as any).__bacoliTest.canStand(p.x, p.y, 4), followed,
+    (p) => (window as any).__bacoliTest.canStand(p.x, p.y, 4, [`pet-${p.id}`, p.id]),
+    followed,
   )).toBe(true);
 
   await page.screenshot({ path: `screenshots/pet-${test.info().project.name}.png` });

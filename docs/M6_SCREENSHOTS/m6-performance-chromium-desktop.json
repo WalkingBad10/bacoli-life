@@ -1,0 +1,10 @@
+{
+  "project": "chromium-desktop",
+  "bootMs": 1934,
+  "initialTextures": 307,
+  "texturesAfterTorregaveta": 389,
+  "fps": 26,
+  "frames": 31,
+  "heapMb": 133,
+  "errors": []
+}

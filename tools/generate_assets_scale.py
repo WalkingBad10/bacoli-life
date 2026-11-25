@@ -296,6 +296,39 @@ def awning(d: ImageDraw.ImageDraw, x: int, y: int, w: int) -> None:
     rect(d, x - 1, y - 1, w + 2, 1, "wood_dark")
 
 
+def laundry_line(d: ImageDraw.ImageDraw, left: int, right: int, y: int, seed: int) -> None:
+    """Panni stesi tra due finestre: dettaglio quotidiano del centro storico."""
+    if right - left < 30:
+        return
+    rect(d, left, y, right - left, 1, "ink")
+    colors = ("white", "red", "sea_mid", "ochre", "leaf")
+    count = min(4, (right - left) // 12)
+    for i in range(count):
+        x = left + 5 + i * ((right - left - 10) // max(1, count))
+        drop = 5 + ((seed + i * 3) % 4)
+        rect(d, x, y, 7, drop, colors[(seed + i) % len(colors)])
+        rect(d, x + 2, y, 1, 2, "ink")
+
+
+def ac_unit(d: ImageDraw.ImageDraw, x: int, y: int) -> None:
+    """Condizionatore compatto sotto la finestra, con griglia e ombra."""
+    rect(d, x - 1, y - 1, 16, 11, "ink")
+    rect(d, x, y, 14, 9, "white")
+    rect(d, x + 1, y + 1, 12, 3, "shade")
+    for gx in range(x + 2, x + 13, 2):
+        rect(d, gx, y + 4, 1, 4, "shade")
+    rect(d, x + 3, y + 7, 8, 1, "ink")
+
+
+def terrace_parapet(d: ImageDraw.ImageDraw, w: int, y: int, variant: int) -> None:
+    """Parapetto di terrazzo sul coronamento, con ombra e puntelli."""
+    rect(d, 2, y, w - 4, 3, "stone")
+    rect(d, 2, y + 2, w - 4, 1, "ink")
+    for x in range(6, w - 5, 14):
+        rect(d, x, y - 5, 2, 5, "shade")
+    rect(d, 4, y - 6, w - 8, 2, "white" if variant % 2 else "shade")
+
+
 def window_centers(w: int) -> list[int]:
     cx = w // 2
     centers: list[int] = []
@@ -309,15 +342,24 @@ def window_centers(w: int) -> list[int]:
 
 def make_building(w: int, floors: int, variant: int) -> None:
     h = CORNICE + FLOOR_PX * floors
-    im = facade(w, h, variant, 700 + w + floors * 7 + variant)
+    seed = 700 + w + floors * 7 + variant
+    im = facade(w, h, variant, seed)
     d = ImageDraw.Draw(im)
     centers = window_centers(w)
+    terrace_parapet(d, w, CORNICE + 2, variant)
+    # Grondaia e pluviale: la cornice esiste già in facade(), qui aggiungiamo
+    # il tubo che scende fino allo zoccolo, interrotto dai balconi.
+    rect(d, w - 3, CORNICE + 5, 2, h - CORNICE - 10, "shade")
     for f in range(floors):
         bottom = h - 5 - FLOOR_PX * f
         for idx, cx in enumerate(centers):
             win(d, cx, bottom - 31, variant, planter=(f == 0 and idx % 2 == 0))
             if f > 0 and (f % 2 == 1 or variant == 0):
                 balcony(d, cx, bottom - 8)
+            if f == 0 and idx % 2 == 1 and abs(cx - w // 2) > 16:
+                ac_unit(d, cx + 8, bottom - 12)
+        if f > 0 and len(centers) >= 2 and (f + variant) % 2 == 0:
+            laundry_line(d, centers[0] + 9, centers[1] - 9, bottom - 38, seed + f)
         if f == 0:
             door(d, w // 2, bottom, "wood_dark")
             if variant == 3:
