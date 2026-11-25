@@ -2,11 +2,11 @@
 
 Repository dedicato, indipendente da CAMPANIA LIFE e CAMPANIA CODEX.
 
-Aggiornato: **25 novembre 2026 — M6 completa e verificata, pronta per la pubblicazione**. Ultima versione pubblicata/verificata: milestone 5, commit `336a5dc`, tag `milestone-5-verified`, Pages run #12. Report finale: `docs/M6_FINAL_QA.md`.
+Aggiornato: **25 novembre 2026 — M6 completa, pubblicata e verificata**. Ultima versione pubblicata/verificata: milestone 6, commit `2354269`, tag `milestone-6-verified`, Pages run #13. Report finale: `docs/M6_FINAL_QA.md`.
 
 ## M6 — chiusura della revisione (25 novembre 2026)
 
-Stato: **completa, stabile e verificata**; la live resta M5 fino al deploy finale.
+Stato: **completa, stabile, pubblicata e verificata**; la live serve M6 dal Pages run #13.
 Report dettagliato: `docs/M6_FINAL_QA.md`. In sintesi:
 
 - build OK; **99/99** test unitari e **64/64** E2E (desktop + mobile emitato).

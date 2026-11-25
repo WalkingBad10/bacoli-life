@@ -1,7 +1,7 @@
 # BACOLI LIFE — Milestone 6: verifica finale
 
-Data: **25 novembre 2026**. Branch: `m6/checkpoint-20261125`.
-La versione live resta la milestone 5 finché questo stato non viene pubblicato.
+Data: **25 novembre 2026**. Branch: `m6/checkpoint-20261125`, poi unito a `main`.
+Milestone 6 **pubblicata e verificata su GitHub Pages**.
 **Pianura e Napoli 80126 non sono state costruite**: restano solo predisposte nei dati.
 
 ## Risultati delle verifiche
@@ -72,6 +72,16 @@ le 389 dopo il viaggio includono le facciate di Torregaveta, non tutte le 835.
    `update()` muoveva sprite già distrutti mentre il loader caricava le facciate:
    ora entrambe le fasi hanno guardie esplicite. Il caricamento dinamico arriva
    al 100% senza errori console.
+
+## Pubblicazione e verifica live
+
+- [x] Backup finale: `bacoli-life-backups/bacoli-life-20261125-142413-m6-verificata-prima-pubblicazione.zip` (170.404.512 byte, 3.048 file).
+- [x] Commit `2354269`, tag `milestone-6-verified`, push di branch e tag su `origin`.
+- [x] Merge fast-forward su `origin/main` e deploy GitHub Pages run **#13** (`45623477716`): build 27 s, deploy 11 s, **successo**.
+- [x] Live `https://walkingbad10.github.io/bacoli-life/` servente `assets/index-CJjol3t0.js`, identico all'hash della build verificata; `bus_stop.png`, `tileset.png` e `roads.bin` disponibili.
+- [x] Verifica runtime sulla live, desktop e Android emulato: canvas visibile, `regions: 9`, centro `places: 256`, `solidTiles: 129975`, `urbanProps` e `lamps` attivi, 6 fermate bus, 3 avvisi EAV, traffico e 49 attori, telefono con “Avvisi EAV”, passaggio a `torregaveta` con oltre 400 luoghi e binario attivo, `errors: []`.
+
+Milestone 6 pubblicata e verificata.
 
 ## Limiti dichiarati
 

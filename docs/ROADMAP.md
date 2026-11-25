@@ -16,7 +16,7 @@ ne viene predisposta solo l'architettura dati.
 
 Priorità assoluta: qualità visiva, coerenza urbanistica e fedeltà geografica prima del numero di funzioni. **Pianura e Napoli 80126 restano solo predisposte: non iniziarle.**
 
-Checkpoint 25 novembre 2026: piano in `docs/M6_PLAN.md`, stato esatto e istruzioni preservate in `docs/PROGRESS.md` (sezione "CHECKPOINT M6"). Verifica finale in `docs/M6_FINAL_QA.md`. Branch di lavoro pronto; live = M5 (`336a5dc`, tag `milestone-5-verified`).
+Checkpoint 25 novembre 2026: piano in `docs/M6_PLAN.md`, stato esatto e istruzioni preservate in `docs/PROGRESS.md` (sezione "CHECKPOINT M6"). Verifica finale e pubblicazione in `docs/M6_FINAL_QA.md`. Live = M6 (`2354269`, tag `milestone-6-verified`, Pages run #13).
 
 Ordine obbligatorio:
 1. [x] Backup pre-M6 e piano operativo con matrice di rischio E2E.
